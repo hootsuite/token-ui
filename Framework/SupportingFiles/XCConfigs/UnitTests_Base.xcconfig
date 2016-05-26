@@ -1,0 +1,11 @@
+//
+//  UnitTests_Base.xcconfig
+//  Copyright © 2015 Hootsuite. All rights reserved.
+//
+
+INFOPLIST_FILE = $(SRCROOT)/SupportingFiles/PropertyLists/UnitTests_Info.plist
+
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+
+PRODUCT_BUNDLE_IDENTIFIER = com.hootsuite.OwlTokenTextViewTests
+PRODUCT_NAME = OwlTokenTextViewTests

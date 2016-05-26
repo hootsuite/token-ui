@@ -1,0 +1,15 @@
+//
+//  UnitTests_Base.xcconfig
+//  Copyright © 2015 Hootsuite. All rights reserved.
+//
+
+INFOPLIST_FILE = $(SRCROOT)/SupportingFiles/PropertyLists/UnitTests_Info.plist
+
+PRODUCT_BUNDLE_IDENTIFIER = com.hootsuite.TokenTextAppTests
+PRODUCT_NAME = TokenTextAppTests
+
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @loader_path/Frameworks
+
+BUNDLE_LOADER = $(TEST_HOST)
+
+TEST_HOST = $(BUILT_PRODUCTS_DIR)/TokenTextApp.app/TokenTextApp

@@ -1,0 +1,6 @@
+//
+//  UnitTests_Debug.xcconfig
+//  Copyright © 2015 Hootsuite. All rights reserved.
+//
+
+#include "UnitTests_Base.xcconfig"

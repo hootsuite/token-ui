@@ -1,0 +1,369 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7386F4C51BEBDA3D006DB941 /* OwlTokenTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */; };
+		7386F4D71BEBDB3B006DB941 /* OwlTokenTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */; };
+		7386F4EB1BEBE1C0006DB941 /* OwlTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7386F4C61BEBDA3D006DB941 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7386F4B11BEBDA3D006DB941 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7386F4B91BEBDA3D006DB941;
+			remoteInfo = HootsuiteSearch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OwlTokenTextView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7386F4C41BEBDA3D006DB941 /* OwlTokenTextViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OwlTokenTextViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwlTokenTextViewTests.swift; sourceTree = "<group>"; };
+		7386F4E01BEBDDCF006DB941 /* Framework_Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Framework_Info.plist; sourceTree = "<group>"; };
+		7386F4E11BEBDDCF006DB941 /* UnitTests_Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = UnitTests_Info.plist; sourceTree = "<group>"; };
+		7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwlTokenTextView.h; sourceTree = "<group>"; };
+		7387909B1C3F175700DA269D /* Framework_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework_Debug.xcconfig; sourceTree = "<group>"; };
+		7387909C1C3F175700DA269D /* Framework_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework_Release.xcconfig; sourceTree = "<group>"; };
+		7387909D1C3F175700DA269D /* Framework_Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework_Base.xcconfig; sourceTree = "<group>"; };
+		7387909E1C3F175700DA269D /* UnitTests_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UnitTests_Debug.xcconfig; sourceTree = "<group>"; };
+		7387909F1C3F175700DA269D /* UnitTests_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UnitTests_Release.xcconfig; sourceTree = "<group>"; };
+		738790A01C3F175700DA269D /* UnitTests_Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = UnitTests_Base.xcconfig; sourceTree = "<group>"; };
+		738790A11C3F17A100DA269D /* Project_Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project_Base.xcconfig; sourceTree = "<group>"; };
+		738790A21C3F17A100DA269D /* Project_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project_Debug.xcconfig; sourceTree = "<group>"; };
+		738790A31C3F17A100DA269D /* Project_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project_Release.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7386F4B61BEBDA3D006DB941 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7386F4C11BEBDA3D006DB941 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7386F4C51BEBDA3D006DB941 /* OwlTokenTextView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7386F4B01BEBDA3D006DB941 = {
+			isa = PBXGroup;
+			children = (
+				7386F4D41BEBDB2D006DB941 /* Source */,
+				7386F4D51BEBDB3B006DB941 /* Tests */,
+				7386F4D81BEBDB45006DB941 /* SupportingFiles */,
+				7386F4BB1BEBDA3D006DB941 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7386F4BB1BEBDA3D006DB941 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */,
+				7386F4C41BEBDA3D006DB941 /* OwlTokenTextViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7386F4D41BEBDB2D006DB941 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		7386F4D51BEBDB3B006DB941 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		7386F4D81BEBDB45006DB941 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				7387909A1C3F175700DA269D /* XCConfigs */,
+				7386F4DF1BEBDDCF006DB941 /* PropertyLists */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		7386F4DF1BEBDDCF006DB941 /* PropertyLists */ = {
+			isa = PBXGroup;
+			children = (
+				7386F4E01BEBDDCF006DB941 /* Framework_Info.plist */,
+				7386F4E11BEBDDCF006DB941 /* UnitTests_Info.plist */,
+			);
+			path = PropertyLists;
+			sourceTree = "<group>";
+		};
+		7387909A1C3F175700DA269D /* XCConfigs */ = {
+			isa = PBXGroup;
+			children = (
+				738790A61C3F17D700DA269D /* Project */,
+				738790A71C3F17DC00DA269D /* Framework */,
+				738790A81C3F17E100DA269D /* UnitTests */,
+			);
+			path = XCConfigs;
+			sourceTree = "<group>";
+		};
+		738790A61C3F17D700DA269D /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				738790A11C3F17A100DA269D /* Project_Base.xcconfig */,
+				738790A21C3F17A100DA269D /* Project_Debug.xcconfig */,
+				738790A31C3F17A100DA269D /* Project_Release.xcconfig */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		738790A71C3F17DC00DA269D /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				7387909D1C3F175700DA269D /* Framework_Base.xcconfig */,
+				7387909B1C3F175700DA269D /* Framework_Debug.xcconfig */,
+				7387909C1C3F175700DA269D /* Framework_Release.xcconfig */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+		738790A81C3F17E100DA269D /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				738790A01C3F175700DA269D /* UnitTests_Base.xcconfig */,
+				7387909E1C3F175700DA269D /* UnitTests_Debug.xcconfig */,
+				7387909F1C3F175700DA269D /* UnitTests_Release.xcconfig */,
+			);
+			name = UnitTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		7386F4B71BEBDA3D006DB941 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7386F4EB1BEBE1C0006DB941 /* OwlTokenTextView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		7386F4B91BEBDA3D006DB941 /* OwlTokenTextView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7386F4CE1BEBDA3D006DB941 /* Build configuration list for PBXNativeTarget "OwlTokenTextView" */;
+			buildPhases = (
+				7386F4B51BEBDA3D006DB941 /* Sources */,
+				7386F4B61BEBDA3D006DB941 /* Frameworks */,
+				7386F4B71BEBDA3D006DB941 /* Headers */,
+				7386F4B81BEBDA3D006DB941 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OwlTokenTextView;
+			productName = HootsuiteSearch;
+			productReference = 7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7386F4C31BEBDA3D006DB941 /* OwlTokenTextViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7386F4D11BEBDA3D006DB941 /* Build configuration list for PBXNativeTarget "OwlTokenTextViewTests" */;
+			buildPhases = (
+				7386F4C01BEBDA3D006DB941 /* Sources */,
+				7386F4C11BEBDA3D006DB941 /* Frameworks */,
+				7386F4C21BEBDA3D006DB941 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7386F4C71BEBDA3D006DB941 /* PBXTargetDependency */,
+			);
+			name = OwlTokenTextViewTests;
+			productName = HootsuiteSearchTests;
+			productReference = 7386F4C41BEBDA3D006DB941 /* OwlTokenTextViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7386F4B11BEBDA3D006DB941 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Hootsuite;
+				TargetAttributes = {
+					7386F4B91BEBDA3D006DB941 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					7386F4C31BEBDA3D006DB941 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = 7386F4B41BEBDA3D006DB941 /* Build configuration list for PBXProject "OwlTokenTextView" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7386F4B01BEBDA3D006DB941;
+			productRefGroup = 7386F4BB1BEBDA3D006DB941 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7386F4B91BEBDA3D006DB941 /* OwlTokenTextView */,
+				7386F4C31BEBDA3D006DB941 /* OwlTokenTextViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7386F4B81BEBDA3D006DB941 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7386F4C21BEBDA3D006DB941 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7386F4B51BEBDA3D006DB941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7386F4C01BEBDA3D006DB941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7386F4D71BEBDB3B006DB941 /* OwlTokenTextViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7386F4C71BEBDA3D006DB941 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7386F4B91BEBDA3D006DB941 /* OwlTokenTextView */;
+			targetProxy = 7386F4C61BEBDA3D006DB941 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7386F4CC1BEBDA3D006DB941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 738790A21C3F17A100DA269D /* Project_Debug.xcconfig */;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		7386F4CD1BEBDA3D006DB941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 738790A31C3F17A100DA269D /* Project_Release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		7386F4CF1BEBDA3D006DB941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7387909B1C3F175700DA269D /* Framework_Debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7386F4D01BEBDA3D006DB941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7387909C1C3F175700DA269D /* Framework_Release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+			};
+			name = Release;
+		};
+		7386F4D21BEBDA3D006DB941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7387909E1C3F175700DA269D /* UnitTests_Debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		7386F4D31BEBDA3D006DB941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7387909F1C3F175700DA269D /* UnitTests_Release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7386F4B41BEBDA3D006DB941 /* Build configuration list for PBXProject "OwlTokenTextView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7386F4CC1BEBDA3D006DB941 /* Debug */,
+				7386F4CD1BEBDA3D006DB941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7386F4CE1BEBDA3D006DB941 /* Build configuration list for PBXNativeTarget "OwlTokenTextView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7386F4CF1BEBDA3D006DB941 /* Debug */,
+				7386F4D01BEBDA3D006DB941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7386F4D11BEBDA3D006DB941 /* Build configuration list for PBXNativeTarget "OwlTokenTextViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7386F4D21BEBDA3D006DB941 /* Debug */,
+				7386F4D31BEBDA3D006DB941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7386F4B11BEBDA3D006DB941 /* Project object */;
+}

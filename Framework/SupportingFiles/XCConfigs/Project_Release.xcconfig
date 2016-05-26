@@ -1,0 +1,16 @@
+//
+//  Project_Release.xcconfig
+//  Copyright © 2016 Hootsuite. All rights reserved.
+//
+
+#include "Project_Base.xcconfig"
+
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+
+VALIDATE_PRODUCT = YES
+
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Distribution
+
+ENABLE_NS_ASSERTIONS = NO
+
+MTL_ENABLE_DEBUG_INFO = NO

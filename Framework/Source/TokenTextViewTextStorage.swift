@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import HootUIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
     func textStorageIsUpdatingFormatting(sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
@@ -75,7 +76,7 @@ class TokenTextViewTextStorage: NSTextStorage {
 
         // Set default attributes of edited range
         addAttribute(NSForegroundColorAttributeName, value: UIColor.hsc_primaryTextColor(), range: searchRange)
-        addAttribute(NSFontAttributeName, value: UIFont.hsc_messageline(), range: searchRange)
+        addAttribute(NSFontAttributeName, value: TextStyle.Messageline.font, range: searchRange)
         addAttribute(NSKernAttributeName, value: 0.0, range: searchRange)
 
         if let (_, range) = inputTextAndRange() {

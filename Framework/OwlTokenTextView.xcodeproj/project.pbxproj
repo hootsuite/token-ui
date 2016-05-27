@@ -10,6 +10,7 @@
 		616F0FDA1CF8B8CA00E6D683 /* TokenTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD71CF8B8CA00E6D683 /* TokenTextViewController.swift */; };
 		616F0FDB1CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD81CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift */; };
 		616F0FDC1CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD91CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift */; };
+		616F0FE01CF8C11B00E6D683 /* HootUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */; };
 		7386F4C51BEBDA3D006DB941 /* OwlTokenTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */; };
 		7386F4D71BEBDB3B006DB941 /* OwlTokenTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */; };
 		7386F4EB1BEBE1C0006DB941 /* OwlTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -29,6 +30,7 @@
 		616F0FD71CF8B8CA00E6D683 /* TokenTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewController.swift; sourceTree = "<group>"; };
 		616F0FD81CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewTextStorage.swift; sourceTree = "<group>"; };
 		616F0FD91CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewLayoutManager.swift; sourceTree = "<group>"; };
+		616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HootUIKit.framework; path = ../Carthage/Build/iOS/HootUIKit.framework; sourceTree = "<group>"; };
 		7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OwlTokenTextView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7386F4C41BEBDA3D006DB941 /* OwlTokenTextViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OwlTokenTextViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwlTokenTextViewTests.swift; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616F0FE01CF8C11B00E6D683 /* HootUIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +71,7 @@
 		7386F4B01BEBDA3D006DB941 = {
 			isa = PBXGroup;
 			children = (
+				616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */,
 				7386F4D41BEBDB2D006DB941 /* Source */,
 				7386F4D51BEBDB3B006DB941 /* Tests */,
 				7386F4D81BEBDB45006DB941 /* SupportingFiles */,

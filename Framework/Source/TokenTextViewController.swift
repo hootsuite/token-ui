@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import HootUIKit
 
 protocol TokenTextViewControllerDelegate: class {
     func tokenTextViewDidChange(sender: TokenTextViewController) -> ()
@@ -48,7 +49,7 @@ class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayoutMan
         }
     }
 
-    private var currentFont = UIFont.hsc_messageline()
+    private var currentFont = TextStyle.Messageline.font
     private var tokenTapRecognizer: UITapGestureRecognizer?
     private var inputModeHandler: TokenTextViewControllerInputModeHandler!
     private var textTappedHandler: ((UITapGestureRecognizer) -> Void)?

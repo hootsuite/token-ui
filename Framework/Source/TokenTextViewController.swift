@@ -23,8 +23,8 @@ public protocol TokenTextViewControllerInputDelegate: class {
     func tokenTextViewInputTextWasCanceled(sender: TokenTextViewController)
 }
 
-struct TokenTextViewControllerConstants {
-    static let tokenAttributeName = "com.hootsuite.token"
+public struct TokenTextViewControllerConstants {
+    public static let tokenAttributeName = "com.hootsuite.token"
     static let inputTextAttributeName = "com.hootsuite.input"
     static let inputTextAttributeAnchorValue = "anchor"
     static let inputTextAttributeTextValue = "text"
@@ -33,15 +33,15 @@ struct TokenTextViewControllerConstants {
 public typealias TokenReference = String
 
 public struct TokenInformation {
-    var reference: TokenReference
-    var text: String
-    var range: NSRange
+    public var reference: TokenReference
+    public var text: String
+    public var range: NSRange
 }
 
 public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayoutManagerDelegate, TokenTextViewTextStorageDelegate, UIGestureRecognizerDelegate {
 
-    weak var delegate: TokenTextViewControllerDelegate?
-    weak var inputDelegate: TokenTextViewControllerInputDelegate? {
+    public weak var delegate: TokenTextViewControllerDelegate?
+    public weak var inputDelegate: TokenTextViewControllerInputDelegate? {
         didSet {
             if let (inputText, _) = tokenTextStorage.inputTextAndRange() {
                 inputDelegate?.tokenTextViewInputTextDidChange(self, inputText: inputText)
@@ -260,7 +260,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
         }
     }
 
-    func replaceCharactersInRange(range: NSRange, withString: String) {
+    public func replaceCharactersInRange(range: NSRange, withString: String) {
         if !rangeIntersectsToken(range) {
             viewAsTextView.textStorage.replaceCharactersInRange(range, withString: withString)
         }
@@ -352,7 +352,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
 
     // MARK: Input Mode
 
-    func switchToInputEditingMode(location: Int, text: String, initialInputLength: Int = 0) {
+    public func switchToInputEditingMode(location: Int, text: String, initialInputLength: Int = 0) {
         let attrString = NSAttributedString(string: text, attributes: [TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeAnchorValue])
         tokenTextStorage.insertAttributedString(attrString, atIndex: location)
         if initialInputLength > 0 {
@@ -367,7 +367,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
         tokenTextStorage.updateFormatting()
     }
 
-    func switchToNormalEditingMode() -> Int {
+    public func switchToNormalEditingMode() -> Int {
         var location = selectedRange.location
         if let (_, anchorRange) = tokenTextStorage.anchorTextAndRange() {
             location = anchorRange.location

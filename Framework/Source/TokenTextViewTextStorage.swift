@@ -14,11 +14,10 @@ protocol TokenTextViewTextStorageDelegate: class {
 
 class TokenTextViewTextStorage: NSTextStorage {
 
-    // These constants should be replaced by calls to HootUIKit when available
+    // FIXME: These constants should be replaced by calls to HootUIKit when available
     private struct Constants {
-        // FIXME: replace with correct values
-        static let PrimaryLinkColor = UIColor.blueColor()
-        static let PrimaryTextColor = UIColor.darkGrayColor()
+        static let PrimaryLinkColor = UIColor(red: 0.0, green: 174.0/255.0, blue: 239.0/255.0, alpha: 1.0)
+        static let PrimaryTextColor = UIColor(white: 36.0/255.0, alpha: 1.0)
     }
 
     private let backingStore = NSMutableAttributedString()

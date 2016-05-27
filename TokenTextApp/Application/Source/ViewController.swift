@@ -8,7 +8,17 @@
 
 import Foundation
 import UIKit
+import OwlTokenTextView
 
 class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let tokenTextVC = TokenTextViewController()
+        addChildViewController(tokenTextVC)
+        view.addSubview(tokenTextVC.view)
+        tokenTextVC.view.frame = self.view.bounds
+        tokenTextVC.didMoveToParentViewController(self)
+    }
 
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		616F0FD41CF8B6B400E6D683 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD31CF8B6B400E6D683 /* ViewController.swift */; };
+		616F0FE11CF8CFC900E6D683 /* OwlTokenTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 738790AE1C3F228200DA269D /* OwlTokenTextView.framework */; };
+		616F0FE21CF8D06400E6D683 /* OwlTokenTextView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 738790AE1C3F228200DA269D /* OwlTokenTextView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7386F5301BEBE430006DB941 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7386F5281BEBE430006DB941 /* Assets.xcassets */; };
 		7386F5311BEBE430006DB941 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7386F5291BEBE430006DB941 /* LaunchScreen.storyboard */; };
 		7386F5321BEBE430006DB941 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7386F52B1BEBE430006DB941 /* Main.storyboard */; };
@@ -54,6 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				616F0FE21CF8D06400E6D683 /* OwlTokenTextView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616F0FE11CF8CFC900E6D683 /* OwlTokenTextView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +430,7 @@
 			files = (
 			);
 			inputPaths = (
+				"$(PROJECT_DIR)/../Carthage/Build/iOS/HootUIKit.framework",
 			);
 			name = "Carthage Copy Frameworks";
 			outputPaths = (

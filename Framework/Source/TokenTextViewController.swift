@@ -20,7 +20,13 @@ public protocol TokenTextViewControllerDelegate: class {
 public protocol TokenTextViewControllerInputDelegate: class {
     func tokenTextViewInputTextDidChange(sender: TokenTextViewController, inputText: String)
     func tokenTextViewInputTextWasConfirmed(sender: TokenTextViewController)
-    func tokenTextViewInputTextWasCanceled(sender: TokenTextViewController)
+    func tokenTextViewInputTextWasCanceled(sender: TokenTextViewController, reason: CancellationReason)
+}
+
+public enum CancellationReason {
+    case DeleteInput
+    case TapOut
+    case Other
 }
 
 public struct TokenTextViewControllerConstants {
@@ -347,7 +353,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
 
     private func cancelEditingAndKeepText() {
         tokenTextStorage.clearEditingAttributes()
-        inputDelegate?.tokenTextViewInputTextWasCanceled(self)
+        inputDelegate?.tokenTextViewInputTextWasCanceled(self, reason: .TapOut)
     }
 
     // MARK: Input Mode
@@ -420,7 +426,6 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
             let charIndex = self.viewAsTextView.characterIndexAtLocation(location)
             if let (_, inputRange) = self.tokenTextStorage.inputTextAndRange(), (_, anchorRange) = self.tokenTextStorage.anchorTextAndRange()
                 where charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1 {
-                    // FIXME: Call delegate HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultTapOut])
                     self.cancelEditingAndKeepText()
             }
         }
@@ -591,7 +596,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
         if let (_, inputRange) = tokenTextViewController.tokenTextStorage.inputTextAndRange(), (_, anchorRange) = tokenTextViewController.tokenTextStorage.anchorTextAndRange() {
             if range.location >= anchorRange.location && range.location < anchorRange.location + anchorRange.length {
                 // The anchor ("@") is deleted, input is cancelled
-                tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController)
+                tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController, reason: .DeleteInput)
             } else if range.location >= inputRange.location && range.location < inputRange.location + inputRange.length {
                 // Do deletion
                 tokenTextViewController.viewAsTextView.textStorage.replaceCharactersInRange(range, withString: "")
@@ -602,8 +607,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             }
         } else {
             // Input fully deleted, input is cancelled
-            // FIXME: Call delegate HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultDelete])
-            tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController)
+            tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController, reason: .DeleteInput)
         }
     }
 }

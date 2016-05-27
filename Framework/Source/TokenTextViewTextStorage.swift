@@ -14,6 +14,13 @@ protocol TokenTextViewTextStorageDelegate: class {
 
 class TokenTextViewTextStorage: NSTextStorage {
 
+    // These constants should be replaced by calls to HootUIKit when available
+    private struct Constants {
+        // FIXME: replace with correct values
+        static let PrimaryLinkColor = UIColor.blueColor()
+        static let PrimaryTextColor = UIColor.darkGrayColor()
+    }
+
     private let backingStore = NSMutableAttributedString()
     private var dynamicTextNeedsUpdate = false
 
@@ -75,15 +82,15 @@ class TokenTextViewTextStorage: NSTextStorage {
     private func applyFormattingAttributesToRange(searchRange: NSRange) {
 
         // Set default attributes of edited range
-        addAttribute(NSForegroundColorAttributeName, value: UIColor.hsc_primaryTextColor(), range: searchRange)
+        addAttribute(NSForegroundColorAttributeName, value: Constants.PrimaryTextColor, range: searchRange)
         addAttribute(NSFontAttributeName, value: TextStyle.Messageline.font, range: searchRange)
         addAttribute(NSKernAttributeName, value: 0.0, range: searchRange)
 
         if let (_, range) = inputTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value:UIColor.hsc_primaryLinkColor(), range: range)
+            addAttribute(NSForegroundColorAttributeName, value:Constants.PrimaryLinkColor, range: range)
         }
         if let (_, range) = anchorTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value:UIColor.hsc_primaryLinkColor(), range: range)
+            addAttribute(NSForegroundColorAttributeName, value:Constants.PrimaryLinkColor, range: range)
         }
 
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in

@@ -420,7 +420,7 @@ class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayoutMan
             let charIndex = self.viewAsTextView.characterIndexAtLocation(location)
             if let (_, inputRange) = self.tokenTextStorage.inputTextAndRange(), (_, anchorRange) = self.tokenTextStorage.anchorTextAndRange()
                 where charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1 {
-                    HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultTapOut])
+                    // FIXME: Call delegate HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultTapOut])
                     self.cancelEditingAndKeepText()
             }
         }
@@ -602,8 +602,30 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             }
         } else {
             // Input fully deleted, input is cancelled
-            HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultDelete])
+            // FIXME: Call delegate HSMAnalyticsManager.tagEvent(kAnalyticsEventMentions, attributes: [kAnalyticsAttributeMentionsResult : kAnalyticsAttributeMentionsResultDelete])
             tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController)
+        }
+    }
+}
+
+extension UITextView {
+    func characterIndexAtLocation(location: CGPoint) -> Int? {
+        var point = location
+        point.x -= self.textContainerInset.left
+        point.y -= self.textContainerInset.top
+        return self.textContainer.layoutManager?.characterIndexForPoint(point, inTextContainer: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+    }
+}
+
+extension UITextView {
+    func textRangeFromNSRange(range: NSRange) -> UITextRange? {
+        let beginning = self.beginningOfDocument
+        if let start = self.positionFromPosition(beginning, offset: range.location),
+            let end = self.positionFromPosition(start, offset: range.length),
+            let textRange = self.textRangeFromPosition(start, toPosition: end) {
+            return textRange
+        } else {
+            return nil
         }
     }
 }

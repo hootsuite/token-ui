@@ -20,13 +20,12 @@ public protocol TokenTextViewControllerDelegate: class {
 public protocol TokenTextViewControllerInputDelegate: class {
     func tokenTextViewInputTextDidChange(sender: TokenTextViewController, inputText: String)
     func tokenTextViewInputTextWasConfirmed(sender: TokenTextViewController)
-    func tokenTextViewInputTextWasCanceled(sender: TokenTextViewController, reason: CancellationReason)
+    func tokenTextViewInputTextWasCanceled(sender: TokenTextViewController, reason: TokenTextInputCancellationReason)
 }
 
-public enum CancellationReason {
+public enum TokenTextInputCancellationReason {
     case DeleteInput
     case TapOut
-    case Other
 }
 
 public struct TokenTextViewControllerConstants {

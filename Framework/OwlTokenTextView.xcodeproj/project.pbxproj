@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		616F0FDA1CF8B8CA00E6D683 /* TokenTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD71CF8B8CA00E6D683 /* TokenTextViewController.swift */; };
+		616F0FDB1CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD81CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift */; };
+		616F0FDC1CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616F0FD91CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift */; };
+		616F0FE01CF8C11B00E6D683 /* HootUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */; };
+		619F9A261CF90D5800ACB590 /* HootUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */; };
+		619F9A281CF90EDF00ACB590 /* HootUIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		619F9A2A1CF9101500ACB590 /* TokenTextViewTextStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619F9A291CF9101500ACB590 /* TokenTextViewTextStorageTests.swift */; };
 		7386F4C51BEBDA3D006DB941 /* OwlTokenTextView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */; };
-		7386F4D71BEBDB3B006DB941 /* OwlTokenTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */; };
+		7386F4D71BEBDB3B006DB941 /* TokenTextViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7386F4D61BEBDB3B006DB941 /* TokenTextViewControllerTests.swift */; };
 		7386F4EB1BEBE1C0006DB941 /* OwlTokenTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -22,10 +29,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		619F9A271CF90ED200ACB590 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				619F9A281CF90EDF00ACB590 /* HootUIKit.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		616F0FD71CF8B8CA00E6D683 /* TokenTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewController.swift; sourceTree = "<group>"; };
+		616F0FD81CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewTextStorage.swift; sourceTree = "<group>"; };
+		616F0FD91CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewLayoutManager.swift; sourceTree = "<group>"; };
+		616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HootUIKit.framework; path = ../Carthage/Build/iOS/HootUIKit.framework; sourceTree = "<group>"; };
+		619F9A291CF9101500ACB590 /* TokenTextViewTextStorageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewTextStorageTests.swift; sourceTree = "<group>"; };
 		7386F4BA1BEBDA3D006DB941 /* OwlTokenTextView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OwlTokenTextView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7386F4C41BEBDA3D006DB941 /* OwlTokenTextViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OwlTokenTextViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwlTokenTextViewTests.swift; sourceTree = "<group>"; };
+		7386F4D61BEBDB3B006DB941 /* TokenTextViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTextViewControllerTests.swift; sourceTree = "<group>"; };
 		7386F4E01BEBDDCF006DB941 /* Framework_Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Framework_Info.plist; sourceTree = "<group>"; };
 		7386F4E11BEBDDCF006DB941 /* UnitTests_Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = UnitTests_Info.plist; sourceTree = "<group>"; };
 		7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwlTokenTextView.h; sourceTree = "<group>"; };
@@ -45,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616F0FE01CF8C11B00E6D683 /* HootUIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				619F9A261CF90D5800ACB590 /* HootUIKit.framework in Frameworks */,
 				7386F4C51BEBDA3D006DB941 /* OwlTokenTextView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,6 +89,7 @@
 		7386F4B01BEBDA3D006DB941 = {
 			isa = PBXGroup;
 			children = (
+				616F0FDF1CF8C11B00E6D683 /* HootUIKit.framework */,
 				7386F4D41BEBDB2D006DB941 /* Source */,
 				7386F4D51BEBDB3B006DB941 /* Tests */,
 				7386F4D81BEBDB45006DB941 /* SupportingFiles */,
@@ -81,6 +109,9 @@
 		7386F4D41BEBDB2D006DB941 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				616F0FD71CF8B8CA00E6D683 /* TokenTextViewController.swift */,
+				616F0FD81CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift */,
+				616F0FD91CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift */,
 				7386F4EA1BEBE1C0006DB941 /* OwlTokenTextView.h */,
 			);
 			path = Source;
@@ -89,7 +120,8 @@
 		7386F4D51BEBDB3B006DB941 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				7386F4D61BEBDB3B006DB941 /* OwlTokenTextViewTests.swift */,
+				7386F4D61BEBDB3B006DB941 /* TokenTextViewControllerTests.swift */,
+				619F9A291CF9101500ACB590 /* TokenTextViewTextStorageTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -191,6 +223,7 @@
 				7386F4C01BEBDA3D006DB941 /* Sources */,
 				7386F4C11BEBDA3D006DB941 /* Frameworks */,
 				7386F4C21BEBDA3D006DB941 /* Resources */,
+				619F9A271CF90ED200ACB590 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -260,6 +293,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				616F0FDC1CF8B8CA00E6D683 /* TokenTextViewLayoutManager.swift in Sources */,
+				616F0FDB1CF8B8CA00E6D683 /* TokenTextViewTextStorage.swift in Sources */,
+				616F0FDA1CF8B8CA00E6D683 /* TokenTextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +303,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7386F4D71BEBDB3B006DB941 /* OwlTokenTextViewTests.swift in Sources */,
+				619F9A2A1CF9101500ACB590 /* TokenTextViewTextStorageTests.swift in Sources */,
+				7386F4D71BEBDB3B006DB941 /* TokenTextViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +324,7 @@
 			baseConfigurationReference = 738790A21C3F17A100DA269D /* Project_Debug.xcconfig */;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -295,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 738790A31C3F17A100DA269D /* Project_Release.xcconfig */;
 			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 			};
 			name = Release;
 		};

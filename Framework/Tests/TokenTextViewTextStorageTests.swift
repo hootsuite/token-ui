@@ -18,7 +18,7 @@ class TokenTextViewTextStorageTests: XCTestCase {
 
     func testReplaceCharacters() {
         let mentionText = createMentionText()
-        mentionText.replaceCharactersInRange(NSMakeRange(6, 8), withString: "@kenbritton")
+        mentionText.replaceCharactersInRange(NSRange(location: 6, length: 8), withString: "@kenbritton")
         XCTAssertEqual(mentionText.string, "Hello @kenbritton how are you")
     }
 
@@ -37,25 +37,25 @@ class TokenTextViewTextStorageTests: XCTestCase {
 
     func testRangeNotIntersectingTokens() {
         let mentionText = createMentionText()
-        let intersection = mentionText.rangeIntersectsToken(NSMakeRange(0, 3))
+        let intersection = mentionText.rangeIntersectsToken(NSRange(location: 0, length: 3))
         XCTAssertFalse(intersection)
     }
 
     func testRangeIntersectingTokens() {
         let mentionText = createMentionText()
-        let intersection = mentionText.rangeIntersectsToken(NSMakeRange(3, 5))
+        let intersection = mentionText.rangeIntersectsToken(NSRange(location: 3, length: 5))
         XCTAssertTrue(intersection)
     }
 
     func testRangeNotIntersectingTokensRefs() {
         let mentionText = createMentionText()
-        let intersection = mentionText.tokensIntersectingRange(NSMakeRange(0, 3))
+        let intersection = mentionText.tokensIntersectingRange(NSRange(location: 0, length: 3))
         XCTAssertTrue(intersection.isEmpty)
     }
 
     func testRangeIntersectingTokensRefs() {
         let mentionText = createMentionText()
-        let intersection = mentionText.tokensIntersectingRange(NSMakeRange(3, 5))
+        let intersection = mentionText.tokensIntersectingRange(NSRange(location: 3, length: 5))
         XCTAssertTrue(intersection.count == 1)
         if let ref = intersection.first {
             XCTAssertEqual(ref, "token-reference")
@@ -66,27 +66,27 @@ class TokenTextViewTextStorageTests: XCTestCase {
 
     func testValidEditingRangeNoIntersection() {
         let mentionText = createMentionText()
-        XCTAssertTrue(mentionText.isValidEditingRange(NSMakeRange(0, 3)))
+        XCTAssertTrue(mentionText.isValidEditingRange(NSRange(location: 0, length: 3)))
     }
 
     func testValidEditingRangeEncloseMention() {
         let mentionText = createMentionText()
-        XCTAssertTrue(mentionText.isValidEditingRange(NSMakeRange(4, 12)))
+        XCTAssertTrue(mentionText.isValidEditingRange(NSRange(location: 4, length: 12)))
     }
 
     func testInvalidEditingRangeOverlapBefore() {
         let mentionText = createMentionText()
-        XCTAssertFalse(mentionText.isValidEditingRange(NSMakeRange(5, 4)))
+        XCTAssertFalse(mentionText.isValidEditingRange(NSRange(location: 5, length: 4)))
     }
 
     func testInvalidEditingRangeOverlapAfter() {
         let mentionText = createMentionText()
-        XCTAssertFalse(mentionText.isValidEditingRange(NSMakeRange(10, 8)))
+        XCTAssertFalse(mentionText.isValidEditingRange(NSRange(location: 10, length: 8)))
     }
 
     func testInvalidEditingRangeWithinToken() {
         let mentionText = createMentionText()
-        XCTAssertFalse(mentionText.isValidEditingRange(NSMakeRange(8, 4)))
+        XCTAssertFalse(mentionText.isValidEditingRange(NSRange(location: 8, length: 4)))
     }
 
     private func createMentionText() -> TokenTextViewTextStorage {

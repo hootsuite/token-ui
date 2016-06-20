@@ -56,7 +56,7 @@ class TokenTextViewTextStorage: NSTextStorage {
 
         fixDumQuotes()
 
-        if (dynamicTextNeedsUpdate) {
+        if dynamicTextNeedsUpdate {
             dynamicTextNeedsUpdate = false
             performReplacementsForCharacterChangeInRange(editedRange)
         }
@@ -65,7 +65,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     private func performReplacementsForCharacterChangeInRange(changedRange: NSRange) {
-        let lineRange = (backingStore.string as NSString).lineRangeForRange(NSMakeRange(NSMaxRange(changedRange), 0))
+        let lineRange = (backingStore.string as NSString).lineRangeForRange(NSRange(location: NSMaxRange(changedRange), length: 0))
         let extendedRange = NSUnionRange(changedRange, lineRange)
         applyFormattingAttributesToRange(extendedRange)
     }
@@ -120,15 +120,15 @@ class TokenTextViewTextStorage: NSTextStorage {
     // That class will be deleted when the Unified Mention feature is deployed
     private func fixDumQuotes() {
         let nsText = backingStore.string as NSString
-        nsText.enumerateSubstringsInRange(NSMakeRange(0, nsText.length),
+        nsText.enumerateSubstringsInRange(NSRange(location: 0, length: nsText.length),
                 options: NSStringEnumerationOptions.ByComposedCharacterSequences,
                 usingBlock: {
                     (substring: String?, substringRange: NSRange, _, _) -> () in
                     if substring == "\"" {
-                        if (substringRange.location == 0) {
+                        if substringRange.location == 0 {
                             self.backingStore.replaceCharactersInRange(substringRange, withString: "“")
                         } else {
-                            let previousCharacter = nsText.substringWithRange(NSMakeRange(substringRange.location - 1, 1))
+                            let previousCharacter = nsText.substringWithRange(NSRange(location: substringRange.location - 1, length: 1))
                             if previousCharacter == " " || previousCharacter == "\n" {
                                 self.backingStore.replaceCharactersInRange(substringRange, withString: "“")
                             } else {
@@ -136,10 +136,10 @@ class TokenTextViewTextStorage: NSTextStorage {
                             }
                         }
                     } else if substring == "'" {
-                        if (substringRange.location == 0) {
+                        if substringRange.location == 0 {
                             self.backingStore.replaceCharactersInRange(substringRange, withString: "‘")
                         } else {
-                            let previousCharacter = nsText.substringWithRange(NSMakeRange(substringRange.location - 1, 1))
+                            let previousCharacter = nsText.substringWithRange(NSRange(location: substringRange.location - 1, length: 1))
                             if previousCharacter == " " || previousCharacter == "\n" {
                                 self.backingStore.replaceCharactersInRange(substringRange, withString: "‘")
                             } else {
@@ -164,7 +164,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     func enumerateTokens(inRange range: NSRange? = nil, withAction action:(tokenRef: TokenReference, tokenRange: NSRange) -> ObjCBool) {
-        let searchRange = range ?? NSMakeRange(0, length)
+        let searchRange = range ?? NSRange(location: 0, length: length)
         enumerateAttribute(TokenTextViewControllerConstants.tokenAttributeName,
             inRange:searchRange,
             options:NSAttributedStringEnumerationOptions(rawValue: 0),
@@ -227,7 +227,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     private func displayRangeFromTokenRange(tokenRange: NSRange) -> NSRange {
-        return NSMakeRange(tokenRange.location + 1, tokenRange.length - 2)
+        return NSRange(location: tokenRange.location + 1, length: tokenRange.length - 2)
     }
 
     // MARK: Input mode
@@ -243,7 +243,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     private func attributeTextAndRange(attributeName: String, attributeValue: String) -> (String, NSRange)? {
         var result: (String, NSRange)? = nil
         enumerateAttribute(attributeName,
-            inRange:NSMakeRange(0, length),
+            inRange:NSRange(location: 0, length: length),
             options:NSAttributedStringEnumerationOptions(rawValue: 0),
             usingBlock: {
                 (value: AnyObject?, range: NSRange, stop) in
@@ -256,7 +256,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     func clearEditingAttributes() {
-        removeAttribute(TokenTextViewControllerConstants.inputTextAttributeName, range: NSMakeRange(0, length))
+        removeAttribute(TokenTextViewControllerConstants.inputTextAttributeName, range: NSRange(location: 0, length: length))
         updateFormatting()
     }
 

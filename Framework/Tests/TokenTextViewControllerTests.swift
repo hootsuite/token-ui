@@ -39,7 +39,7 @@ class TokenTextViewControllerTests: XCTestCase {
     func testSetGetSelectedRange() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "This is not a text."
-        let range = NSMakeRange(2, 3)
+        let range = NSRange(location: 2, length: 3)
         tokenVC.selectedRange = range
         XCTAssertEqual(tokenVC.selectedRange.location, range.location, "Selected range should be as set")
         XCTAssertEqual(tokenVC.selectedRange.length, range.length, "Selected range should be as set")
@@ -53,7 +53,7 @@ class TokenTextViewControllerTests: XCTestCase {
 
     func testSetGetTextContainerInset() {
         let tokenVC = TokenTextViewController()
-        let inset = UIEdgeInsetsMake(2, 3, 4, 5)
+        let inset = UIEdgeInsets(top: 2, left: 3, bottom: 4, right: 5)
         tokenVC.textContainerInset = inset
         XCTAssertEqual(tokenVC.textContainerInset.top, inset.top, "Insets should be as set")
         XCTAssertEqual(tokenVC.textContainerInset.left, inset.left, "Insets should be as set")
@@ -121,7 +121,7 @@ class TokenTextViewControllerTests: XCTestCase {
     func testCursorLocationForPrependTextToMessage() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "test text"
-        let range = NSMakeRange(1, 0)
+        let range = NSRange(location: 1, length: 0)
         tokenVC.selectedRange = range
         let prependText = "Prepend"
         tokenVC.prependText(prependText)
@@ -131,7 +131,7 @@ class TokenTextViewControllerTests: XCTestCase {
     func testCursorLocationForReplaceStringInTextCursorAfterText() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "Replace this text here, really"
-        tokenVC.selectedRange = NSMakeRange(24, 0) // Cursor before 'really'
+        tokenVC.selectedRange = NSRange(location: 24, length: 0) // Cursor before 'really'
         tokenVC.replaceFirstOccurrenceOfString("here", withString: "there")
         XCTAssertEqual(tokenVC.selectedRange.location, 25, "Cursor should be set according to added text")
     }
@@ -139,7 +139,7 @@ class TokenTextViewControllerTests: XCTestCase {
     func testCursorLocationForReplaceStringInTextCursorBeforeText() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "Replace this text here, really"
-        tokenVC.selectedRange = NSMakeRange(8, 0) // Cursor before 'this'
+        tokenVC.selectedRange = NSRange(location: 8, length: 0) // Cursor before 'this'
         tokenVC.replaceFirstOccurrenceOfString("here", withString: "there")
         XCTAssertEqual(tokenVC.selectedRange.location, 8, "Cursor should be set according to added text")
     }
@@ -182,8 +182,8 @@ class TokenTextViewControllerTests: XCTestCase {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "I talk to, hello"
         let _ = tokenVC.addToken(9, text: "davidby").reference
-        XCTAssertTrue(tokenVC.rangeIntersectsToken(NSMakeRange(5, 5)), "Range does intersect token")
-        XCTAssertFalse(tokenVC.rangeIntersectsToken(NSMakeRange(0, 5)), "Range does not intersect token")
+        XCTAssertTrue(tokenVC.rangeIntersectsToken(NSRange(location: 5, length: 5)), "Range does intersect token")
+        XCTAssertFalse(tokenVC.rangeIntersectsToken(NSRange(location: 0, length: 5)), "Range does not intersect token")
     }
 
     func testReplaceDoubleQuotes() {

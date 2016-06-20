@@ -249,7 +249,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
     public func prependText(text: String) {
         let cursorLocation = viewAsTextView.selectedRange.location
         viewAsTextView.textStorage.insertAttributedString(NSAttributedString(string: text), atIndex: 0)
-        viewAsTextView.selectedRange = NSMakeRange(cursorLocation + (text as NSString).length, 0)
+        viewAsTextView.selectedRange = NSRange(location: cursorLocation + (text as NSString).length, length: 0)
         repositionCursorAtEndOfRange()
     }
 
@@ -259,7 +259,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
         if searchRange.length > 0 {
             viewAsTextView.textStorage.mutableString.replaceCharactersInRange(searchRange, withString: replacement)
             if cursorLocation > searchRange.location {
-                viewAsTextView.selectedRange = NSMakeRange(min(cursorLocation + (replacement as NSString).length - (string as NSString).length, (text as NSString).length), 0)
+                viewAsTextView.selectedRange = NSRange(location: min(cursorLocation + (replacement as NSString).length - (string as NSString).length, (text as NSString).length), length: 0)
                 repositionCursorAtEndOfRange()
             }
         }
@@ -307,7 +307,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
 
     public func deleteToken(tokenRef: TokenReference) {
         replaceTokenText(tokenRef, newText: "")
-        viewAsTextView.selectedRange = NSMakeRange(viewAsTextView.selectedRange.location, 0)
+        viewAsTextView.selectedRange = NSRange(location: viewAsTextView.selectedRange.location, length: 0)
         self.delegate?.tokenTextViewDidChange(self)
         delegate?.tokenTextViewDidDeleteToken(self, tokenRef: tokenRef)
     }
@@ -325,7 +325,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
     private func repositionCursorAtEndOfRange() {
         let cursorLocation = viewAsTextView.selectedRange.location
         if let tokenInfo = tokenAtLocation(cursorLocation) {
-            viewAsTextView.selectedRange = NSMakeRange(tokenInfo.range.location + tokenInfo.range.length, 0)
+            viewAsTextView.selectedRange = NSRange(location: tokenInfo.range.location + tokenInfo.range.length, length: 0)
         }
     }
 
@@ -364,7 +364,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
             let inputRange = NSRange(location: location + (text as NSString).length, length: initialInputLength)
             tokenTextStorage.addAttributes([TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeTextValue], range: inputRange)
         }
-        viewAsTextView.selectedRange = NSMakeRange(location + (text as NSString).length + initialInputLength, 0)
+        viewAsTextView.selectedRange = NSRange(location: location + (text as NSString).length + initialInputLength, length: 0)
         viewAsTextView.autocorrectionType = .No
         viewAsTextView.delegate = inputModeHandler
         textTappedHandler = inputModeTapHandler
@@ -400,7 +400,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
                         if let textRange = self.viewAsTextView.textRangeFromNSRange(range) {
                             return self.view.convertRect(self.viewAsTextView.firstRectForRange(textRange), fromView: self.viewAsTextView.textInputView)
                         } else {
-                            return CGRectMake(location.x, location.y, 0, 0)
+                            return CGRect(origin: location, size: CGSize.zero)
                         }
                     }()
                     self.delegate?.tokenTextViewDidSelectToken(self, tokenRef: tokenRef, fromRect: rect)
@@ -409,7 +409,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
                         // Allow placing the cursor at the end of the text
                         charIndex = self.viewAsTextView.textStorage.length
                     }
-                    self.viewAsTextView.selectedRange = NSMakeRange(charIndex!, 0)
+                    self.viewAsTextView.selectedRange = NSRange(location: charIndex!, length: 0)
                 }
             }
         }
@@ -442,14 +442,14 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
             let cursorLocation = textView.selectedRange.location
             let newCursorLocation = clampCursorLocationToToken(cursorLocation)
             if newCursorLocation != cursorLocation {
-                viewAsTextView.selectedRange = NSMakeRange(newCursorLocation, 0)
+                viewAsTextView.selectedRange = NSRange(location: newCursorLocation, length: 0)
             }
         } else {
             // A selection range is being modified
             let adjustedSelectionStart = clampCursorLocationToToken(textView.selectedRange.location)
             let adjustedSelectionLength = max(adjustedSelectionStart, clampCursorLocationToToken(textView.selectedRange.location + textView.selectedRange.length)) - adjustedSelectionStart
             if (adjustedSelectionStart != textView.selectedRange.location) || (adjustedSelectionLength != textView.selectedRange.length) {
-                viewAsTextView.selectedRange = NSMakeRange(adjustedSelectionStart, adjustedSelectionLength)
+                viewAsTextView.selectedRange = NSRange(location: adjustedSelectionStart, length: adjustedSelectionLength)
             }
         }
     }
@@ -463,14 +463,14 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
     }
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText: String) -> Bool {
-        if (range.length == 1 && (replacementText as NSString).length == 0) {
+        if range.length == 1 && (replacementText as NSString).length == 0 {
             // Deleting one character, if it is part of a token the full token should be deleted
             if let tokenInfo = tokenAtLocation(range.location) {
                 deleteToken(tokenInfo.reference)
-                viewAsTextView.selectedRange = NSMakeRange(tokenInfo.range.location, 0)
+                viewAsTextView.selectedRange = NSRange(location: tokenInfo.range.location, length: 0)
                 return false
             }
-        } else if (range.length > 0) {
+        } else if range.length > 0 {
             // Check if partial overlap or editing range contained in a token, reject edit
             if !tokenTextStorage.isValidEditingRange(range) {
                 return false
@@ -494,7 +494,7 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
             }
             return false
         }
-        viewAsTextView.selectedRange = NSMakeRange(viewAsTextView.selectedRange.location, 0)
+        viewAsTextView.selectedRange = NSRange(location: viewAsTextView.selectedRange.location, length: 0)
         for tokenRef in intersectingTokenReferences {
             delegate?.tokenTextViewDidDeleteToken(self, tokenRef: tokenRef)
         }
@@ -542,12 +542,12 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             let cursorLocation = textView.selectedRange.location + textView.selectedRange.length
             let adjustedLocation = clampCursorLocationToInputRange(cursorLocation, inputRange: inputRange)
             if adjustedLocation != cursorLocation || textView.selectedRange.length > 0 {
-                tokenTextViewController.viewAsTextView.selectedRange = NSMakeRange(adjustedLocation, 0)
+                tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: adjustedLocation, length: 0)
             }
         } else if let (_, anchorRange) = tokenTextViewController.tokenTextStorage.anchorTextAndRange() {
             let adjustedLocation = anchorRange.location + 1
             if textView.selectedRange.location != adjustedLocation {
-                tokenTextViewController.viewAsTextView.selectedRange = NSMakeRange(adjustedLocation, 0)
+                tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: adjustedLocation, length: 0)
             }
         } else {
             tokenTextViewController.resignFirstResponder()
@@ -582,7 +582,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
         // Insert new text with token attribute
         let attrString = NSAttributedString(string: newText, attributes: [TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeTextValue])
         tokenTextViewController.viewAsTextView.textStorage.insertAttributedString(attrString, atIndex: range.location)
-        tokenTextViewController.viewAsTextView.selectedRange = NSMakeRange(range.location + (newText as NSString).length, 0)
+        tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: range.location + (newText as NSString).length, length: 0)
         if let (inputText, _) = tokenTextViewController.tokenTextStorage.inputTextAndRange() {
             tokenTextViewController.inputDelegate?.tokenTextViewInputTextDidChange(tokenTextViewController, inputText: inputText)
             if let delegate = tokenTextViewController.delegate where delegate.tokenTextViewShouldCancelEditingAtInsert(tokenTextViewController, newText: newText, inputText: inputText) {
@@ -599,7 +599,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             } else if range.location >= inputRange.location && range.location < inputRange.location + inputRange.length {
                 // Do deletion
                 tokenTextViewController.viewAsTextView.textStorage.replaceCharactersInRange(range, withString: "")
-                tokenTextViewController.viewAsTextView.selectedRange = NSMakeRange(range.location, 0)
+                tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: range.location, length: 0)
                 if let (inputText, _) = tokenTextViewController.tokenTextStorage.inputTextAndRange() {
                     tokenTextViewController.inputDelegate?.tokenTextViewInputTextDidChange(tokenTextViewController, inputText: inputText)
                 }

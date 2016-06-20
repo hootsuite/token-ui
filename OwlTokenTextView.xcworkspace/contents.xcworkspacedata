@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:TokenTextApp/../Framework/OwlTokenTextView.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:TokenTextApp/TokenTextApp.xcodeproj">
    </FileRef>
 </Workspace>

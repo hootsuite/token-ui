@@ -282,7 +282,7 @@
 				7386F4F21BEBE26B006DB941 /* Frameworks */,
 				7386F4F31BEBE26B006DB941 /* Resources */,
 				7399C3811BEC031800EF1A21 /* Embed Frameworks */,
-				CA887F371CC9AE810003DC54 /* SwiftLint Run Script */,
+				CA887F371CC9AE810003DC54 /* Run SwiftLint */,
 				CA7912E71CD15E86000505DF /* Carthage Copy Frameworks */,
 			);
 			buildRules = (
@@ -439,19 +439,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Add all of your frameworks to the Input Files section with the following format:\n# $(PROJECT_DIR)/../Carthage/Build/iOS/YOUR_FRAMEWORK_HERE.framework\n/usr/local/bin/carthage copy-frameworks";
 		};
-		CA887F371CC9AE810003DC54 /* SwiftLint Run Script */ = {
+		CA887F371CC9AE810003DC54 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "SwiftLint Run Script";
+			name = "Run SwiftLint";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint lint --config ../.swiftlint.yml\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

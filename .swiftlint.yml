@@ -1,4 +1,12 @@
-whitelist_rules:
+disabled_rules:
+  - conditional_binding_cascade
+  - cyclomatic_complexity
+  - force_cast
+  - force_try
+  - line_length
+  - variable_name
+
+opt_in_rules:
   - colon                           # Colons should be next to the identifier when specifying a type
   - comma                           # There should be no space before and one after any comma
   - conditional_binding_cascade     # Repeated `let` statements in conditional binding cascade should be avoided
@@ -14,6 +22,9 @@ whitelist_rules:
   - trailing_whitespace             # Lines should not have trailing whitespace
   - type_name                       # Type name should only contain alphanumeric characters, start with an uppercase character 
                                     # and span between 3 and 40 characters in length
+
+excluded: # paths to ignore during linting.
+  - Carthage
 
 # Rule Configuration
 type_name:

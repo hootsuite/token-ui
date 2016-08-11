@@ -202,6 +202,16 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
         }
     }
 
+    public var scrollEnabled: Bool {
+        get {
+            return viewAsTextView.scrollEnabled
+        }
+
+        set {
+            viewAsTextView.scrollEnabled = newValue
+        }
+    }
+
     public var lineFragmentPadding: CGFloat {
         get {
             return viewAsTextView.textContainer.lineFragmentPadding

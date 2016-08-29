@@ -222,6 +222,13 @@ public class TokenTextViewController: UIViewController, UITextViewDelegate, NSLa
         }
     }
 
+    public var cursorRect: CGRect? {
+        if let selectedTextRange = viewAsTextView.selectedTextRange {
+            return viewAsTextView.caretRectForPosition(selectedTextRange.start)
+        }
+        return nil
+    }
+
     override public var accessibilityLabel: String! {
         get {
             return viewAsTextView.accessibilityLabel

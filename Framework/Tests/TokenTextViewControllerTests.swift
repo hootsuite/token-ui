@@ -17,21 +17,21 @@ class TokenTextViewControllerTests: XCTestCase {
 
     func testSetGetFont() {
         let tokenVC = TokenTextViewController()
-        let font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         tokenVC.font = font
         XCTAssertEqual(tokenVC.font, font, "Font should be as set")
     }
 
     func testSetGetTextColor() {
         let tokenVC = TokenTextViewController()
-        let color = UIColor.purpleColor()
+        let color = UIColor.purple
         tokenVC.textColor = color
         XCTAssertEqual(tokenVC.textColor, color, "Color should be as set")
     }
 
     func testSetGetTextAlignment() {
         let tokenVC = TokenTextViewController()
-        let alignment = NSTextAlignment.Left
+        let alignment = NSTextAlignment.left
         tokenVC.textAlignment = alignment
         XCTAssertEqual(tokenVC.textAlignment, alignment, "Alignment should be as set")
     }
@@ -47,8 +47,8 @@ class TokenTextViewControllerTests: XCTestCase {
 
     func testSetGetKeyboardType() {
         let tokenVC = TokenTextViewController()
-        tokenVC.keyboardType = UIKeyboardType.Twitter
-        XCTAssertEqual(tokenVC.keyboardType, UIKeyboardType.Twitter, "Keyboard type should be as set")
+        tokenVC.keyboardType = UIKeyboardType.twitter
+        XCTAssertEqual(tokenVC.keyboardType, UIKeyboardType.twitter, "Keyboard type should be as set")
     }
 
     func testSetGetTextContainerInset() {

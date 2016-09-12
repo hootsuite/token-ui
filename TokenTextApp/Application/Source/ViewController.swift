@@ -13,7 +13,7 @@ import OwlTokenTextView
 class ViewController: UIViewController {
 
     @IBOutlet weak var textInputContainer: UIView!
-    private var tokenTextVC: TokenTextViewController!
+    fileprivate var tokenTextVC: TokenTextViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,56 +22,56 @@ class ViewController: UIViewController {
         addChildViewController(tokenTextVC)
         textInputContainer.addSubview(tokenTextVC.view)
         tokenTextVC.view.frame = textInputContainer.bounds
-        tokenTextVC.didMoveToParentViewController(self)
+        tokenTextVC.didMove(toParentViewController: self)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tokenTextVC.text = "Hello "
         tokenTextVC.addToken(6, text: "Team")
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tokenTextVC.becomeFirstResponder()
+        let _ = tokenTextVC.becomeFirstResponder()
     }
 
 }
 
 extension ViewController: TokenTextViewControllerDelegate {
 
-    func tokenTextViewDidChange(sender: TokenTextViewController) -> () {
+    func tokenTextViewDidChange(_ sender: TokenTextViewController) -> () {
     }
 
-    func tokenTextViewShouldChangeTextInRange(sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool {
+    func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool {
         return true
     }
 
-    func tokenTextViewDidSelectToken(sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> () {
-        let alert = UIAlertController(title: "Token Selected", message: nil, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .Default) { _ in
-            self.dismissViewControllerAnimated(true, completion: nil)
+    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> () {
+        let alert = UIAlertController(title: "Token Selected", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
+            self.dismiss(animated: true, completion: nil)
         })
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
-    func tokenTextViewDidDeleteToken(sender: TokenTextViewController, tokenRef: TokenReference) -> () {
-        let alert = UIAlertController(title: "Token Deleted", message: nil, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .Default) { _ in
-            self.dismissViewControllerAnimated(true, completion: nil)
+    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
+        let alert = UIAlertController(title: "Token Deleted", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
+            self.dismiss(animated: true, completion: nil)
             })
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
-    func tokenTextViewTextStorageIsUpdatingFormatting(sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)] {
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)] {
         return []
     }
 
-    func tokenTextViewBackgroundColourForTokenRef(sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
-        return UIColor.blueColor()
+    func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
+        return UIColor.blue
     }
 
-    func tokenTextViewShouldCancelEditingAtInsert(sender: TokenTextViewController, newText: String, inputText: String) -> Bool {
+    func tokenTextViewShouldCancelEditingAtInsert(_ sender: TokenTextViewController, newText: String, inputText: String) -> Bool {
         return true
     }
 }

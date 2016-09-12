@@ -337,18 +337,21 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Hootsuite;
 				TargetAttributes = {
 					7386F4F41BEBE26B006DB941 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 					7386F5081BEBE26C006DB941 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 7386F4F41BEBE26B006DB941;
 					};
 					7386F5131BEBE26C006DB941 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 7386F4F41BEBE26B006DB941;
 					};
 				};
@@ -521,7 +524,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7387908D1C3F151600DA269D /* Project_Debug.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				ENABLE_TESTABILITY = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -530,6 +536,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7387908E1C3F151600DA269D /* Project_Release.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -537,6 +547,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 738790891C3F151600DA269D /* App_Debug.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -544,6 +555,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7387908A1C3F151600DA269D /* App_Release.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -551,6 +563,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 738790921C3F151600DA269D /* UnitTests_Debug.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -558,6 +571,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 738790931C3F151600DA269D /* UnitTests_Release.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -565,6 +579,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7387908F1C3F151600DA269D /* UITests_Debug.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -572,6 +587,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 738790901C3F151600DA269D /* UITests_Release.xcconfig */;
 			buildSettings = {
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

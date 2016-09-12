@@ -8,20 +8,20 @@ import UIKit
 import HootUIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
-    func textStorageIsUpdatingFormatting(sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
-    func textStorageBackgroundColourForTokenRef(sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
+    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
+    func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
 }
 
 class TokenTextViewTextStorage: NSTextStorage {
 
     // FIXME: These constants should be replaced by calls to HootUIKit when available
-    private struct Constants {
+    fileprivate struct Constants {
         static let PrimaryLinkColor = UIColor(red: 0.0, green: 174.0/255.0, blue: 239.0/255.0, alpha: 1.0)
         static let PrimaryTextColor = UIColor(white: 36.0/255.0, alpha: 1.0)
     }
 
-    private let backingStore = NSMutableAttributedString()
-    private var dynamicTextNeedsUpdate = false
+    fileprivate let backingStore = NSMutableAttributedString()
+    fileprivate var dynamicTextNeedsUpdate = false
 
     weak var formattingDelegate: TokenTextViewTextStorageDelegate?
 
@@ -31,24 +31,24 @@ class TokenTextViewTextStorage: NSTextStorage {
         return backingStore.string
     }
 
-    override func attributesAtIndex(index: Int, effectiveRange range: NSRangePointer) -> [String:AnyObject] {
-        return backingStore.attributesAtIndex(index, effectiveRange: range)
+    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [String:Any] {
+        return backingStore.attributes(at: index, effectiveRange: range)
     }
 
     // MARK: Text Editing
 
-    override func replaceCharactersInRange(range: NSRange, withString str: String) {
+    override func replaceCharacters(in range: NSRange, with str: String) {
         beginEditing()
-        backingStore.replaceCharactersInRange(range, withString: str)
-        edited([.EditedCharacters, .EditedAttributes], range: range, changeInLength: (str as NSString).length - range.length)
+        backingStore.replaceCharacters(in: range, with: str)
+        edited([.editedCharacters, .editedAttributes], range: range, changeInLength: (str as NSString).length - range.length)
         dynamicTextNeedsUpdate = true
         endEditing()
     }
 
-    override func setAttributes(attrs: [String:AnyObject]!, range: NSRange) {
+    override func setAttributes(_ attrs: [String:Any]!, range: NSRange) {
         beginEditing()
         backingStore.setAttributes(attrs, range: range)
-        edited(.EditedAttributes, range: range, changeInLength: 0)
+        edited(.editedAttributes, range: range, changeInLength: 0)
         endEditing()
     }
 
@@ -64,8 +64,8 @@ class TokenTextViewTextStorage: NSTextStorage {
         super.processEditing()
     }
 
-    private func performReplacementsForCharacterChangeInRange(changedRange: NSRange) {
-        let lineRange = (backingStore.string as NSString).lineRangeForRange(NSRange(location: NSMaxRange(changedRange), length: 0))
+    fileprivate func performReplacementsForCharacterChangeInRange(_ changedRange: NSRange) {
+        let lineRange = (backingStore.string as NSString).lineRange(for: NSRange(location: NSMaxRange(changedRange), length: 0))
         let extendedRange = NSUnionRange(changedRange, lineRange)
         applyFormattingAttributesToRange(extendedRange)
     }
@@ -73,16 +73,16 @@ class TokenTextViewTextStorage: NSTextStorage {
     func updateFormatting() {
         // Dummy edit to trigger updating all attributes
         self.beginEditing()
-        self.edited(.EditedAttributes, range: NSRange(location: 0, length: 0), changeInLength: 0)
+        self.edited(.editedAttributes, range: NSRange(location: 0, length: 0), changeInLength: 0)
         self.dynamicTextNeedsUpdate = true
         self.endEditing()
     }
 
-    private func applyFormattingAttributesToRange(searchRange: NSRange) {
+    fileprivate func applyFormattingAttributesToRange(_ searchRange: NSRange) {
 
         // Set default attributes of edited range
         addAttribute(NSForegroundColorAttributeName, value: Constants.PrimaryTextColor, range: searchRange)
-        addAttribute(NSFontAttributeName, value: TextStyle.Messageline.font, range: searchRange)
+        addAttribute(NSFontAttributeName, value: TextStyle.messageline.font, range: searchRange)
         addAttribute(NSKernAttributeName, value: 0.0, range: searchRange)
 
         if let (_, range) = inputTextAndRange() {
@@ -95,7 +95,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in
             var tokenFormattingAttributes = [String:AnyObject]()
             if let backgroundColor = self.formattingDelegate?.textStorageBackgroundColourForTokenRef(self, tokenRef: tokenRef) {
-                tokenFormattingAttributes[NSForegroundColorAttributeName] = UIColor.whiteColor()
+                tokenFormattingAttributes[NSForegroundColorAttributeName] = UIColor.white
                 tokenFormattingAttributes[NSBackgroundColorAttributeName] = backgroundColor
             }
             let formattingRange = self.displayRangeFromTokenRange(tokenRange)
@@ -107,7 +107,7 @@ class TokenTextViewTextStorage: NSTextStorage {
             return false
         }
 
-        if let additionalFormats = formattingDelegate?.textStorageIsUpdatingFormatting(self, text: backingStore.string, searchRange: searchRange) where !additionalFormats.isEmpty {
+        if let additionalFormats = formattingDelegate?.textStorageIsUpdatingFormatting(self, text: backingStore.string, searchRange: searchRange), !additionalFormats.isEmpty {
             for (formatDict, range) in additionalFormats {
                 if !rangeIntersectsToken(range) {
                     addAttributes(formatDict, range: range)
@@ -118,32 +118,32 @@ class TokenTextViewTextStorage: NSTextStorage {
 
     // TODO: Currently a duplicate from HSTwitterTextColoringTextStorage
     // That class will be deleted when the Unified Mention feature is deployed
-    private func fixDumQuotes() {
+    fileprivate func fixDumQuotes() {
         let nsText = backingStore.string as NSString
-        nsText.enumerateSubstringsInRange(NSRange(location: 0, length: nsText.length),
-                options: NSStringEnumerationOptions.ByComposedCharacterSequences,
-                usingBlock: {
+        nsText.enumerateSubstrings(in: NSRange(location: 0, length: nsText.length),
+                options: NSString.EnumerationOptions.byComposedCharacterSequences,
+                using: {
                     (substring: String?, substringRange: NSRange, _, _) -> () in
                     if substring == "\"" {
                         if substringRange.location == 0 {
-                            self.backingStore.replaceCharactersInRange(substringRange, withString: "“")
+                            self.backingStore.replaceCharacters(in: substringRange, with: "“")
                         } else {
-                            let previousCharacter = nsText.substringWithRange(NSRange(location: substringRange.location - 1, length: 1))
+                            let previousCharacter = nsText.substring(with: NSRange(location: substringRange.location - 1, length: 1))
                             if previousCharacter == " " || previousCharacter == "\n" {
-                                self.backingStore.replaceCharactersInRange(substringRange, withString: "“")
+                                self.backingStore.replaceCharacters(in: substringRange, with: "“")
                             } else {
-                                self.backingStore.replaceCharactersInRange(substringRange, withString: "”")
+                                self.backingStore.replaceCharacters(in: substringRange, with: "”")
                             }
                         }
                     } else if substring == "'" {
                         if substringRange.location == 0 {
-                            self.backingStore.replaceCharactersInRange(substringRange, withString: "‘")
+                            self.backingStore.replaceCharacters(in: substringRange, with: "‘")
                         } else {
-                            let previousCharacter = nsText.substringWithRange(NSRange(location: substringRange.location - 1, length: 1))
+                            let previousCharacter = nsText.substring(with: NSRange(location: substringRange.location - 1, length: 1))
                             if previousCharacter == " " || previousCharacter == "\n" {
-                                self.backingStore.replaceCharactersInRange(substringRange, withString: "‘")
+                                self.backingStore.replaceCharacters(in: substringRange, with: "‘")
                             } else {
-                                self.backingStore.replaceCharactersInRange(substringRange, withString: "’")
+                                self.backingStore.replaceCharacters(in: substringRange, with: "’")
                             }
                         }
                     }
@@ -155,7 +155,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     var tokenList: [TokenInformation] {
         var tokenArray: [TokenInformation] = []
         enumerateTokens { (tokenRef, tokenRange) -> ObjCBool in
-            let tokenText = self.attributedSubstringFromRange(tokenRange).string
+            let tokenText = self.attributedSubstring(from: tokenRange).string
             let tokenInfo = TokenInformation(reference: tokenRef, text: tokenText, range: tokenRange)
             tokenArray.append(tokenInfo)
             return false
@@ -163,21 +163,20 @@ class TokenTextViewTextStorage: NSTextStorage {
         return tokenArray
     }
 
-    func enumerateTokens(inRange range: NSRange? = nil, withAction action:(tokenRef: TokenReference, tokenRange: NSRange) -> ObjCBool) {
+    func enumerateTokens(inRange range: NSRange? = nil, withAction action:@escaping (_ tokenRef: TokenReference, _ tokenRange: NSRange) -> ObjCBool) {
         let searchRange = range ?? NSRange(location: 0, length: length)
         enumerateAttribute(TokenTextViewControllerConstants.tokenAttributeName,
-            inRange:searchRange,
-            options:NSAttributedStringEnumerationOptions(rawValue: 0),
-            usingBlock: {
-                (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
+            in:searchRange,
+            options:NSAttributedString.EnumerationOptions(rawValue: 0),
+            using: { value, range, stop in
                 if let tokenRef = value as? TokenReference {
-                    let shouldStop = action(tokenRef: tokenRef, tokenRange: range)
-                    stop.memory = shouldStop
+                    let shouldStop = action(tokenRef, range)
+                    stop.pointee = shouldStop
                 }
         })
     }
 
-    func tokensIntersectingRange(range: NSRange) -> [TokenReference] {
+    func tokensIntersectingRange(_ range: NSRange) -> [TokenReference] {
         return tokenList.filter {
             NSIntersectionRange(range, $0.range).length > 0
         }.map {
@@ -185,7 +184,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         }
     }
 
-    func rangeIntersectsToken(range: NSRange) -> Bool {
+    func rangeIntersectsToken(_ range: NSRange) -> Bool {
         for tokenInfo in tokenList {
             if NSIntersectionRange(range, tokenInfo.range).length > 0 {
                 return true
@@ -194,17 +193,17 @@ class TokenTextViewTextStorage: NSTextStorage {
         return false
     }
 
-    func rangeIntersectsTokenInput(range: NSRange) -> Bool {
-        if let (_, anchorRange) = anchorTextAndRange() where NSIntersectionRange(range, anchorRange).length > 0 {
+    func rangeIntersectsTokenInput(_ range: NSRange) -> Bool {
+        if let (_, anchorRange) = anchorTextAndRange(), NSIntersectionRange(range, anchorRange).length > 0 {
             return true
         }
-        if let (_, inputRange) = inputTextAndRange() where NSIntersectionRange(range, inputRange).length > 0 {
+        if let (_, inputRange) = inputTextAndRange(), NSIntersectionRange(range, inputRange).length > 0 {
             return true
         }
         return false
     }
 
-    func isValidEditingRange(range: NSRange) -> Bool {
+    func isValidEditingRange(_ range: NSRange) -> Bool {
         // We don't allow editing parts of tokens (ranges that partially overlap a token or are contained within a token)
         if range.length == 0 {
             return true
@@ -222,11 +221,11 @@ class TokenTextViewTextStorage: NSTextStorage {
         return true
     }
 
-    func effectiveTokenDisplayText(originalText: String) -> String {
+    func effectiveTokenDisplayText(_ originalText: String) -> String {
         return " \(originalText) "
     }
 
-    private func displayRangeFromTokenRange(tokenRange: NSRange) -> NSRange {
+    fileprivate func displayRangeFromTokenRange(_ tokenRange: NSRange) -> NSRange {
         return NSRange(location: tokenRange.location + 1, length: tokenRange.length - 2)
     }
 
@@ -240,16 +239,15 @@ class TokenTextViewTextStorage: NSTextStorage {
         return attributeTextAndRange(TokenTextViewControllerConstants.inputTextAttributeName, attributeValue: TokenTextViewControllerConstants.inputTextAttributeTextValue)
     }
 
-    private func attributeTextAndRange(attributeName: String, attributeValue: String) -> (String, NSRange)? {
+    fileprivate func attributeTextAndRange(_ attributeName: String, attributeValue: String) -> (String, NSRange)? {
         var result: (String, NSRange)? = nil
         enumerateAttribute(attributeName,
-            inRange:NSRange(location: 0, length: length),
-            options:NSAttributedStringEnumerationOptions(rawValue: 0),
-            usingBlock: {
-                (value: AnyObject?, range: NSRange, stop) in
-                if let value = value as? String where value == attributeValue {
-                    result = (self.attributedSubstringFromRange(range).string, range)
-                    stop.memory = true
+            in:NSRange(location: 0, length: length),
+            options:NSAttributedString.EnumerationOptions(rawValue: 0),
+            using: { value, range, stop in
+                if let value = value as? String, value == attributeValue {
+                    result = (self.attributedSubstring(from: range).string, range)
+                    stop.pointee = true
                 }
         })
         return result

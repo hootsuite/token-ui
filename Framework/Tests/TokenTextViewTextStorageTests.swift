@@ -18,7 +18,7 @@ class TokenTextViewTextStorageTests: XCTestCase {
 
     func testReplaceCharacters() {
         let mentionText = createMentionText()
-        mentionText.replaceCharactersInRange(NSRange(location: 6, length: 8), withString: "@kenbritton")
+        mentionText.replaceCharacters(in: NSRange(location: 6, length: 8), with: "@kenbritton")
         XCTAssertEqual(mentionText.string, "Hello @kenbritton how are you")
     }
 
@@ -89,12 +89,12 @@ class TokenTextViewTextStorageTests: XCTestCase {
         XCTAssertFalse(mentionText.isValidEditingRange(NSRange(location: 8, length: 4)))
     }
 
-    private func createMentionText() -> TokenTextViewTextStorage {
+    fileprivate func createMentionText() -> TokenTextViewTextStorage {
         let textStorage = TokenTextViewTextStorage()
         let originalText = NSAttributedString(string: "Hello  how are you")
-        textStorage.insertAttributedString(originalText, atIndex: 0)
+        textStorage.insert(originalText, at: 0)
         let mentionText = NSAttributedString(string: "@davidby", attributes: [TokenTextViewControllerConstants.tokenAttributeName: "token-reference"])
-        textStorage.insertAttributedString(mentionText, atIndex: 6)
+        textStorage.insert(mentionText, at: 6)
         return textStorage
     }
 

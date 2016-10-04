@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 import HootUIKit
+
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -26,15 +27,38 @@ fileprivate func >= <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
+/// TokenTextViewController delegate
 public protocol TokenTextViewControllerDelegate: class {
+    /// Called when text changes
     func tokenTextViewDidChange(_ sender: TokenTextViewController) -> ()
+    /// Whether an edit should be accepted
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool
+    /// Called when a token was tapped
     func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> ()
+    /// Called when a token was deleted
     func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
+    /// Called when the formatting is being updated
     func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
+    /// Allows to customize the background color for a token
     func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
+    /// Whether the last edit should cancel token editing
     func tokenTextViewShouldCancelEditingAtInsert(_ sender: TokenTextViewController, newText: String, inputText: String) -> Bool
+    /// Whether content of type type can be pasted in the text view.
+    /// This method is called every time some content may be pasted.
+    func tokenTextView(_: TokenTextViewController, shouldAcceptContentOfType type: PasteboardItemType) -> Bool
+    /// Called when media items have been pasted.
+    func tokenTextView(_: TokenTextViewController, didReceive items: [PasteboardItem])
+}
+
+/// Default implementation of some delegate methods
+public extension TokenTextViewControllerDelegate {
+    func tokenTextView(_: TokenTextViewController, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
+        return false
+    }
+
+    func tokenTextView(_: TokenTextViewController, didReceive items: [PasteboardItem]) {
+        // Empty default implementation
+    }
 }
 
 public protocol TokenTextViewControllerInputDelegate: class {
@@ -99,8 +123,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         container.widthTracksTextView = true
         layoutManager.addTextContainer(container)
         textStorage.addLayoutManager(layoutManager)
-        let textView = UITextView(frame: CGRect.zero, textContainer: container)
+        let textView = PasteMediaTextView(frame: CGRect.zero, textContainer: container)
         textView.delegate = self
+        textView.pasteDelegate = self
         textView.isScrollEnabled = true
         tokenTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(TokenTextViewController.textTapped(_:)))
         tokenTapRecognizer!.numberOfTapsRequired = 1
@@ -667,5 +692,15 @@ extension UITextView {
         } else {
             return nil
         }
+    }
+}
+
+extension TokenTextViewController: PasteMediaTextViewPasteDelegate {
+    func pasteMediaTextView(_: PasteMediaTextView, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
+        return delegate?.tokenTextView(self, shouldAcceptContentOfType: type) ?? false
+    }
+
+    func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem]) {
+        delegate?.tokenTextView(self, didReceive: items)
     }
 }

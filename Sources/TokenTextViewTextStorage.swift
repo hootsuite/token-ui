@@ -5,7 +5,6 @@
 
 import Foundation
 import UIKit
-import HootUIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
     func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
@@ -14,15 +13,18 @@ protocol TokenTextViewTextStorageDelegate: class {
 
 class TokenTextViewTextStorage: NSTextStorage {
 
-    // FIXME: These constants should be replaced by calls to HootUIKit when available
-    fileprivate struct Constants {
-        static let PrimaryLinkColor = UIColor(red: 0.0, green: 174.0/255.0, blue: 239.0/255.0, alpha: 1.0)
-        static let PrimaryTextColor = UIColor(white: 36.0/255.0, alpha: 1.0)
+    private struct Defaults {
+        static let font = UIFont.preferredFont(forTextStyle: .body)
+        static let linkColor = UIColor(red: 0.0, green: 174.0/255.0, blue: 239.0/255.0, alpha: 1.0)
+        static let textColor = UIColor(white: 36.0/255.0, alpha: 1.0)
     }
 
     fileprivate let backingStore = NSMutableAttributedString()
     fileprivate var dynamicTextNeedsUpdate = false
 
+    var font = Defaults.font
+    var linkColor = Defaults.linkColor
+    var textColor = Defaults.textColor
     weak var formattingDelegate: TokenTextViewTextStorageDelegate?
 
     // MARK: Reading Text
@@ -81,15 +83,15 @@ class TokenTextViewTextStorage: NSTextStorage {
     fileprivate func applyFormattingAttributesToRange(_ searchRange: NSRange) {
 
         // Set default attributes of edited range
-        addAttribute(NSForegroundColorAttributeName, value: Constants.PrimaryTextColor, range: searchRange)
-        addAttribute(NSFontAttributeName, value: TextStyle.messageline.font, range: searchRange)
+        addAttribute(NSForegroundColorAttributeName, value: textColor, range: searchRange)
+        addAttribute(NSFontAttributeName, value: font, range: searchRange)
         addAttribute(NSKernAttributeName, value: 0.0, range: searchRange)
 
         if let (_, range) = inputTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value:Constants.PrimaryLinkColor, range: range)
+            addAttribute(NSForegroundColorAttributeName, value: linkColor, range: range)
         }
         if let (_, range) = anchorTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value:Constants.PrimaryLinkColor, range: range)
+            addAttribute(NSForegroundColorAttributeName, value: linkColor, range: range)
         }
 
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in

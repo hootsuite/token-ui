@@ -5,27 +5,6 @@
 
 import Foundation
 import UIKit
-import HootUIKit
-
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func >= <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
-}
 
 /// TokenTextViewController delegate
 public protocol TokenTextViewControllerDelegate: class {
@@ -98,7 +77,12 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
-    fileprivate var currentFont = TextStyle.messageline.font
+    open var font = UIFont.preferredFont(forTextStyle: .body) {
+        didSet {
+            viewAsTextView.font = font
+        }
+    }
+
     fileprivate var tokenTapRecognizer: UITapGestureRecognizer?
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
@@ -144,7 +128,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewAsTextView.font = currentFont
+        viewAsTextView.font = font
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(TokenTextViewController.preferredContentSizeChanged(_:)),
@@ -183,17 +167,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
         set {
             viewAsTextView.text = newValue
-        }
-    }
-
-    open var font: UIFont! {
-        get {
-            return viewAsTextView.font
-        }
-
-        set {
-            viewAsTextView.font = newValue
-            currentFont = newValue
         }
     }
 
@@ -455,7 +428,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             self.viewAsTextView.becomeFirstResponder()
             let location: CGPoint = recognizer.location(in: self.viewAsTextView)
             var charIndex = self.viewAsTextView.characterIndexAtLocation(location)
-            if charIndex < self.viewAsTextView.textStorage.length - 1 {
+            if charIndex != nil && charIndex! < self.viewAsTextView.textStorage.length - 1 {
                 var range = NSRange(location: 0, length: 0)
                 if let tokenRef = self.viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex!, effectiveRange: &range) as? TokenReference {
                     let _ = self.resignFirstResponder()
@@ -485,8 +458,13 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
                 return
             }
             let location: CGPoint = recognizer.location(in: self.viewAsTextView)
-            let charIndex = self.viewAsTextView.characterIndexAtLocation(location)
-            if let (_, inputRange) = self.tokenTextStorage.inputTextAndRange(), let (_, anchorRange) = self.tokenTextStorage.anchorTextAndRange(), charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1 {
+
+            if
+                let charIndex = self.viewAsTextView.characterIndexAtLocation(location),
+                let (_, inputRange) = self.tokenTextStorage.inputTextAndRange(),
+                let (_, anchorRange) = self.tokenTextStorage.anchorTextAndRange(),
+                charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1
+            {
                     self.cancelEditingAndKeepText()
             }
         }

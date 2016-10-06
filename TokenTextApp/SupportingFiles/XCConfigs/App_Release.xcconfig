@@ -1,6 +1,0 @@
-//
-//  App_Release.xcconfig
-//  Copyright © 2015 Hootsuite. All rights reserved.
-//
-
-#include "App_Base.xcconfig"

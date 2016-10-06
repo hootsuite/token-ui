@@ -1,6 +1,0 @@
-//
-//  UITests_Release.xcconfig
-//  Copyright © 2015 Hootsuite. All rights reserved.
-//
-
-#include "UITests_Base.xcconfig"

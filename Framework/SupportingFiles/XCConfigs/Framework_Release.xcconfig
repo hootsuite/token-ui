@@ -1,6 +1,0 @@
-//
-//  Framework_Release.xcconfig
-//  Copyright © 2015 Hootsuite. All rights reserved.
-//
-
-#include "Framework_Base.xcconfig"

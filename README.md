@@ -5,8 +5,9 @@ Text input components that allows to add 'tokens' rendered as pills.
 ## Getting Started
 
 1. Install [fastlane](https://fastlane.tools): `sudo gem install fastlane --verbose`
-2. Run the unit tests: `fastlane test`
-3. Open the Xcode project and run the demo app.
+2. Install [SwiftLint](https://github.com/realm/SwiftLint): `brew install swiftlint`
+3. Run the unit tests: `fastlane test`
+4. Open the Xcode project and run the demo app.
 
 
 ## Releases

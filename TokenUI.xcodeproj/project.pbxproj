@@ -207,6 +207,7 @@
 				A8C860971DA5B1EF00F4B309 /* Frameworks */,
 				A8C860981DA5B1EF00F4B309 /* Headers */,
 				A8C860991DA5B1EF00F4B309 /* Resources */,
+				A81982F61DB003030086BAB1 /* Set version number */,
 			);
 			buildRules = (
 			);
@@ -224,6 +225,7 @@
 				A8C860A01DA5B1EF00F4B309 /* Sources */,
 				A8C860A11DA5B1EF00F4B309 /* Frameworks */,
 				A8C860A21DA5B1EF00F4B309 /* Resources */,
+				A81982F71DB003100086BAB1 /* Set version number */,
 			);
 			buildRules = (
 			);
@@ -243,6 +245,7 @@
 				A8C8610C1DA5B71700F4B309 /* Frameworks */,
 				A8C8610D1DA5B71700F4B309 /* Resources */,
 				A8AC409D1DA5D94F00D644CA /* Embed Frameworks */,
+				A81982F81DB003210086BAB1 /* Set version number */,
 			);
 			buildRules = (
 			);
@@ -327,6 +330,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A81982F61DB003030086BAB1 /* Set version number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set version number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Get the version number from the tag in git and the number of commits as the build number\nGIT_VERSION=$(git describe --long --tags | cut -f 1 -d \"-\" | cut -c 2-)\nGIT_BUILD=$(git describe --long --tags | cut -f 2 -d \"-\")\nGIT_HASH=$(git describe --long --tags | cut -f 3 -d \"-\")\necho \"Setting version to $GIT_VERSION, build $GIT_BUILD\"\n\n# Set the version info in plist file\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $GIT_VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $GIT_BUILD\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A81982F71DB003100086BAB1 /* Set version number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set version number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Get the version number from the tag in git and the number of commits as the build number\nGIT_VERSION=$(git describe --long --tags | cut -f 1 -d \"-\" | cut -c 2-)\nGIT_BUILD=$(git describe --long --tags | cut -f 2 -d \"-\")\nGIT_HASH=$(git describe --long --tags | cut -f 3 -d \"-\")\necho \"Setting version to $GIT_VERSION, build $GIT_BUILD\"\n\n# Set the version info in plist file\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $GIT_VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $GIT_BUILD\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A81982F81DB003210086BAB1 /* Set version number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set version number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Get the version number from the tag in git and the number of commits as the build number\nGIT_VERSION=$(git describe --long --tags | cut -f 1 -d \"-\" | cut -c 2-)\nGIT_BUILD=$(git describe --long --tags | cut -f 2 -d \"-\")\nGIT_HASH=$(git describe --long --tags | cut -f 3 -d \"-\")\necho \"Setting version to $GIT_VERSION, build $GIT_BUILD\"\n\n# Set the version info in plist file\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $GIT_VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $GIT_BUILD\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A8C860961DA5B1EF00F4B309 /* Sources */ = {

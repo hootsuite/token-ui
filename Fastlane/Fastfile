@@ -1,36 +1,24 @@
-fastlane_version "1.82.0"
+fastlane_version "1.104.0"
 default_platform :ios
 
 desc "Run all tests on both an iPhone and an iPad"
 lane :test do
-    scan(
-      scheme: "TokenUI"
-    )
+  scan(
+    scheme: "TokenUI"
+  )
 end
 
 desc "Tests, increases the version number and tags. By default it will increase the patch, use type:minor or type:major to increase the respective option"
 lane :release do |options|
-    project = "TokenUI.xcodeproj"
-    type = options[:type] || 'patch'
+  type = options[:type] || 'patch'
 
-    ensure_git_status_clean
-    ensure_git_branch
-    test
+  ensure_git_status_clean
+  ensure_git_branch
+  test
 
-    increment_version_number(
-        xcodeproj: project,
-        bump_type: type
-    )
-    increment_build_number(
-        xcodeproj: project
-    )
-    commit_version_bump(
-        message: 'Version bump',
-        xcodeproj: project
-    )
-
-    new_version = get_version_number(xcodeproj: project)
-    tag_name = "v#{new_version}"
-    add_git_tag(tag: tag_name)
-    push_to_git_remote
+  new_version = increase_version(bump_type: type)
+  tag_name = "v#{new_version}"
+  add_git_tag(tag: tag_name)
+  FastlaneCore::CommandExecutor.execute(command: "git push origin #{tag_name}",
+                                      print_all: true)
 end

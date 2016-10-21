@@ -423,50 +423,58 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return location
     }
 
-    var normalModeTapHandler: ((UITapGestureRecognizer) -> Void) {
-        return { [unowned self] (recognizer: UITapGestureRecognizer) in
-            self.viewAsTextView.becomeFirstResponder()
-            let location: CGPoint = recognizer.location(in: self.viewAsTextView)
-            var charIndex = self.viewAsTextView.characterIndexAtLocation(location)
-            if charIndex != nil && charIndex! < self.viewAsTextView.textStorage.length - 1 {
-                var range = NSRange(location: 0, length: 0)
-                if let tokenRef = self.viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex!, effectiveRange: &range) as? TokenReference {
-                    let _ = self.resignFirstResponder()
-                    let rect: CGRect = {
-                        if let textRange = self.viewAsTextView.textRangeFromNSRange(range) {
-                            return self.view.convert(self.viewAsTextView.firstRect(for: textRange), from: self.viewAsTextView.textInputView)
-                        } else {
-                            return CGRect(origin: location, size: CGSize.zero)
-                        }
-                    }()
-                    self.delegate?.tokenTextViewDidSelectToken(self, tokenRef: tokenRef, fromRect: rect)
-                } else {
-                    if charIndex == self.viewAsTextView.textStorage.length - 1 {
-                        // Allow placing the cursor at the end of the text
-                        charIndex = self.viewAsTextView.textStorage.length
+    fileprivate var normalModeTapHandler: ((UITapGestureRecognizer) -> Void) {
+        return { [weak self] recognizer in
+            self?.normalModeTap(recognizer: recognizer)
+        }
+    }
+
+    fileprivate var inputModeTapHandler: ((UITapGestureRecognizer) -> Void) {
+        return { [weak self] recognizer in
+            self?.inputModeTap(recognizer: recognizer)
+        }
+    }
+
+    fileprivate func normalModeTap(recognizer: UITapGestureRecognizer) {
+        viewAsTextView.becomeFirstResponder()
+        let location: CGPoint = recognizer.location(in: viewAsTextView)
+        var charIndex = viewAsTextView.characterIndexAtLocation(location)
+        if charIndex != nil && charIndex! < viewAsTextView.textStorage.length - 1 {
+            var range = NSRange(location: 0, length: 0)
+            if let tokenRef = viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex!, effectiveRange: &range) as? TokenReference {
+                let _ = resignFirstResponder()
+                let rect: CGRect = {
+                    if let textRange = viewAsTextView.textRangeFromNSRange(range) {
+                        return view.convert(viewAsTextView.firstRect(for: textRange), from: viewAsTextView.textInputView)
+                    } else {
+                        return CGRect(origin: location, size: CGSize.zero)
                     }
-                    self.viewAsTextView.selectedRange = NSRange(location: charIndex!, length: 0)
+                }()
+                delegate?.tokenTextViewDidSelectToken(self, tokenRef: tokenRef, fromRect: rect)
+            } else {
+                if charIndex == viewAsTextView.textStorage.length - 1 {
+                    // Allow placing the cursor at the end of the text
+                    charIndex = viewAsTextView.textStorage.length
                 }
+                viewAsTextView.selectedRange = NSRange(location: charIndex!, length: 0)
             }
         }
     }
 
-    var inputModeTapHandler: ((UITapGestureRecognizer) -> Void) {
-        return { [unowned self] (recognizer: UITapGestureRecognizer) in
-            guard !self.inputIsSuspended else {
-                self.inputIsSuspended = false
-                return
-            }
-            let location: CGPoint = recognizer.location(in: self.viewAsTextView)
+    fileprivate func inputModeTap(recognizer: UITapGestureRecognizer) {
+        guard !inputIsSuspended else {
+            inputIsSuspended = false
+            return
+        }
+        let location: CGPoint = recognizer.location(in: viewAsTextView)
 
-            if
-                let charIndex = self.viewAsTextView.characterIndexAtLocation(location),
-                let (_, inputRange) = self.tokenTextStorage.inputTextAndRange(),
-                let (_, anchorRange) = self.tokenTextStorage.anchorTextAndRange(),
-                charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1
-            {
-                    self.cancelEditingAndKeepText()
-            }
+        if
+            let charIndex = viewAsTextView.characterIndexAtLocation(location),
+            let (_, inputRange) = tokenTextStorage.inputTextAndRange(),
+            let (_, anchorRange) = tokenTextStorage.anchorTextAndRange(),
+            charIndex < anchorRange.location || charIndex >= inputRange.location + inputRange.length - 1
+        {
+            cancelEditingAndKeepText()
         }
     }
 

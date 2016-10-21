@@ -423,19 +423,19 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return location
     }
 
-    var normalModeTapHandler: ((UITapGestureRecognizer) -> Void) {
+    fileprivate var normalModeTapHandler: ((UITapGestureRecognizer) -> Void) {
         return { [weak self] recognizer in
             self?.normalModeTap(recognizer: recognizer)
         }
     }
 
-    var inputModeTapHandler: ((UITapGestureRecognizer) -> Void) {
+    fileprivate var inputModeTapHandler: ((UITapGestureRecognizer) -> Void) {
         return { [weak self] recognizer in
             self?.inputModeTap(recognizer: recognizer)
         }
     }
 
-    func normalModeTap(recognizer: UITapGestureRecognizer) {
+    fileprivate func normalModeTap(recognizer: UITapGestureRecognizer) {
         viewAsTextView.becomeFirstResponder()
         let location: CGPoint = recognizer.location(in: viewAsTextView)
         var charIndex = viewAsTextView.characterIndexAtLocation(location)
@@ -461,7 +461,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
-    func inputModeTap(recognizer: UITapGestureRecognizer) {
+    fileprivate func inputModeTap(recognizer: UITapGestureRecognizer) {
         guard !inputIsSuspended else {
             inputIsSuspended = false
             return

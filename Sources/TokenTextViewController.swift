@@ -115,6 +115,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         tokenTapRecognizer!.numberOfTapsRequired = 1
         tokenTapRecognizer!.delegate = self
         textView.addGestureRecognizer(tokenTapRecognizer!)
+        textView.keyboardType = UIKeyboardType.asciiCapable
         self.view = textView
     }
 

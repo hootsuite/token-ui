@@ -391,6 +391,71 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         inputDelegate?.tokenTextViewInputTextWasCanceled(self, reason: .tapOut)
     }
 
+    // MARK: Token List editing
+    
+    // creates a token out of editable text contained in the input field
+    fileprivate func tokenizeEditableText(atIndex: Int, toIndex: Int) {
+        let startIndex = text.index(text.startIndex, offsetBy: atIndex)
+        let endIndex = text.index(text.startIndex, offsetBy: toIndex)
+        let newRange = startIndex..<endIndex
+        let newString = text.substring(with: newRange)
+        
+        let nsNewRange = NSRange(location: atIndex, length: (toIndex-atIndex))
+        replaceCharactersInRange(nsNewRange, withString: "")
+        
+        addToken(atIndex, text: newString)
+    }
+    
+    // creates a token out of all editable text contained in the input field
+    // aka: chipifyAll
+    open func tokenizeAllEditableText(_ moveCursor: Bool) {
+        switch tokenList.count {
+        case 0:
+            tokenizeEditableText(atIndex: 0, toIndex: text.characters.count)
+        default:
+            // find text discontinuities
+            var discontinuityLength: [Int] = []
+            var discontinuityIndex: [Int] = []
+            
+            // find text discontinuities before token list
+            if tokenList.first?.range.location != 0 {
+                discontinuityLength.append((tokenList.first?.range.location)!)
+                discontinuityIndex.append(0)
+            }
+
+            // find text discontinuities within token list
+            for i in 1..<tokenList.count {
+                let endPositionPrevious = tokenList[i-1].range.length + tokenList[i-1].range.location
+                let startPositionCurrent = tokenList[i].range.location
+                
+                if startPositionCurrent != endPositionPrevious {
+                    // found discontinuity
+                    discontinuityLength.append(startPositionCurrent - endPositionPrevious)
+                    discontinuityIndex.append(endPositionPrevious)
+                }
+            }
+
+            // find discontinuities after token list
+            let lastToken = tokenList.last!
+            let lengthAfterTokenList = lastToken.range.location + lastToken.range.length - text.characters.count
+            if lengthAfterTokenList != 0 {
+                let lastToken = tokenList.last!
+                discontinuityLength.append(text.characters.count-lastToken.range.length - lastToken.range.location)
+                discontinuityIndex.append(lastToken.range.length + lastToken.range.location)
+            }
+            
+            // apply tokens to discontinuities
+            for i in (0..<discontinuityLength.count).reversed() {
+                // insert all new chips
+                tokenizeEditableText(atIndex: discontinuityIndex[i], toIndex: discontinuityIndex[i]+discontinuityLength[i])
+            }
+            // move cursor to the end
+            if moveCursor {
+                selectedRange = NSRange(location: text.characters.count, length: 0)
+            }
+        }
+    }
+    
     // MARK: Input Mode
 
     open func switchToInputEditingMode(_ location: Int, text: String, initialInputLength: Int = 0) {

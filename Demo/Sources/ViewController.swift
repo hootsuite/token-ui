@@ -44,7 +44,12 @@ extension ViewController: TokenTextViewControllerDelegate {
     }
 
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool {
-        return true
+        if text == "\n" {
+            sender.tokenizeAllEditableText(true)
+            return false
+        } else {
+            return true
+        }
     }
 
     func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> () {

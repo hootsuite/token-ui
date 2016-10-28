@@ -476,6 +476,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
                 
                 clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
                 removeTokenAndAppendText(tokenRef: tokenRef, textToAppend: clickedTokenText)
+                delegate?.tokenTextViewDidChange(self)
                 break
             }
         }

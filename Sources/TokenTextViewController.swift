@@ -417,7 +417,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     
     // creates a token out of all editable text contained in the input field
     // aka: chipifyAll
-    open func tokenizeAllEditableText(_ moveCursor: Bool) {
+    public func tokenizeAllEditableText(_ moveCursor: Bool) {
         switch tokenList.count {
         case 0:
             tokenizeEditableText(atIndex: 0, toIndex: text.characters.count)
@@ -467,7 +467,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     
     // creates editable text from exisitng token
     // this method will tokenize all current editable text prior to making token editable
-    open func makeTokenEditableAndMoveToFront(tokenRef: TokenReference) {
+    public func makeTokenEditableAndMoveToFront(tokenRef: TokenReference) {
         var clickedTokenText = ""
         
         for i in 0..<tokenList.count {

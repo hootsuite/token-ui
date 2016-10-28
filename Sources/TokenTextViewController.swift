@@ -417,7 +417,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     
     // creates a token out of all editable text contained in the input field
     // aka: chipifyAll
-    public func tokenizeAllEditableText(_ moveCursor: Bool) {
+    public func tokenizeAllEditableText() {
         switch tokenList.count {
         case 0:
             tokenizeEditableText(atIndex: 0, toIndex: text.characters.count)
@@ -458,10 +458,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
                 // insert all new chips
                 tokenizeEditableText(atIndex: discontinuityIndex[i], toIndex: discontinuityIndex[i]+discontinuityLength[i])
             }
+            
             // move cursor to the end
-            if moveCursor {
-                selectedRange = NSRange(location: text.characters.count, length: 0)
-            }
+            selectedRange = NSRange(location: text.characters.count, length: 0)
         }
     }
     
@@ -472,7 +471,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         
         for i in 0..<tokenList.count {
             if tokenList[i].reference == tokenRef {
-                tokenizeAllEditableText(false)
+                tokenizeAllEditableText()
                 
                 clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
                 removeTokenAndAppendText(tokenRef: tokenRef, textToAppend: clickedTokenText)

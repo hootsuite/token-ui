@@ -406,6 +406,15 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         addToken(atIndex, text: newString)
     }
     
+    // deletes a token out of editable text contained in the input field
+    fileprivate func removeTokenAndAppendText(tokenRef: TokenReference, textToAppend: String) {
+        deleteToken(tokenRef)
+        appendText(textToAppend)
+        
+        selectedRange = NSRange(location: text.characters.count, length: 0)
+        _ = becomeFirstResponder()
+    }
+    
     // creates a token out of all editable text contained in the input field
     // aka: chipifyAll
     open func tokenizeAllEditableText(_ moveCursor: Bool) {
@@ -452,6 +461,22 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             // move cursor to the end
             if moveCursor {
                 selectedRange = NSRange(location: text.characters.count, length: 0)
+            }
+        }
+    }
+    
+    // creates editable text from exisitng token
+    // this method will tokenize all current editable text prior to making token editable
+    open func makeTokenEditableAndMoveToFront(tokenRef: TokenReference) {
+        var clickedTokenText = ""
+        
+        for i in 0..<tokenList.count {
+            if tokenList[i].reference == tokenRef {
+                tokenizeAllEditableText(false)
+                
+                clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
+                removeTokenAndAppendText(tokenRef: tokenRef, textToAppend: clickedTokenText)
+                break
             }
         }
     }

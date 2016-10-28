@@ -398,12 +398,13 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         let startIndex = text.index(text.startIndex, offsetBy: atIndex)
         let endIndex = text.index(text.startIndex, offsetBy: toIndex)
         let newRange = startIndex..<endIndex
-        let newString = text.substring(with: newRange)
         
-        let nsNewRange = NSRange(location: atIndex, length: (toIndex-atIndex))
-        replaceCharactersInRange(nsNewRange, withString: "")
-        
-        addToken(atIndex, text: newString)
+        if !newRange.isEmpty {
+            let newString = text.substring(with: newRange)
+            let nsNewRange = NSRange(location: atIndex, length: (toIndex-atIndex))
+            replaceCharactersInRange(nsNewRange, withString: "")
+            addToken(atIndex, text: newString)
+        }
     }
     
     // deletes a token out of editable text contained in the input field

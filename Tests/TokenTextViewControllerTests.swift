@@ -197,5 +197,93 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.text = "Hello 'friend' how are you"
         XCTAssertEqual(tokenVC.text, "Hello ‘friend’ how are you", "Dumb quotes should have been replaced by smart quotes")
     }
+    
+    func testTokenizeAllEditableTextEmpty() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = ""
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertTrue(tokenVC.tokenList.isEmpty)
+    }
 
+    func testTokenizeAllEditableTextWithText() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = "This is awesome"
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This is awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithTextToken() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = "This"
+        tokenVC.addToken(4, text: "is awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 2)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "is awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithTextTokenText() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = "This"
+        tokenVC.addToken(4, text: "is")
+        tokenVC.appendText("awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 3)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "is")
+        XCTAssertEqual(tokenVC.tokenList[2].text.trimmingCharacters(in: CharacterSet.whitespaces), "awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithTextTokenToken() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = "This"
+        tokenVC.addToken(4, text: "is")
+        tokenVC.addToken(8, text: "awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 3)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "is")
+        XCTAssertEqual(tokenVC.tokenList[2].text.trimmingCharacters(in: CharacterSet.whitespaces), "awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithToken() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.addToken(0, text: "This is awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 1)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This is awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithTokenText() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.addToken(0, text: "This")
+        tokenVC.appendText("is awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 2)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "is awesome")
+    }
+    
+    func testTokenizeAllEditableTextWithTokenTextToken() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.addToken(0, text: "This")
+        tokenVC.appendText("is")
+        tokenVC.addToken(8, text: "awesome")
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 3)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "is")
+        XCTAssertEqual(tokenVC.tokenList[2].text.trimmingCharacters(in: CharacterSet.whitespaces), "awesome")
+    }
+    
+    func testTokenizeAllEditableTextWith50Tokens() {
+        let tokenQuantity = 50
+        let tokenVC = TokenTextViewController()
+        for _ in 0..<tokenQuantity {
+            tokenVC.addToken(0, text: "some text")
+        }
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, tokenQuantity)
+    }
+    
 }

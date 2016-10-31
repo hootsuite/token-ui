@@ -394,7 +394,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     // MARK: Token List editing
     
-    // creates a token out of editable text contained in the input field
+    // Create a token from editable text contained from atIndex to toIndex (excluded)
     fileprivate func tokenizeEditableText(atIndex: Int, toIndex: Int) {
         let startIndex = text.index(text.startIndex, offsetBy: atIndex)
         let endIndex = text.index(text.startIndex, offsetBy: toIndex)
@@ -408,7 +408,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
     
-    // deletes a token out of editable text contained in the input field
+    // Delete a token and append editable text
     fileprivate func removeTokenAndAppendText(tokenRef: TokenReference, textToAppend: String) {
         deleteToken(tokenRef)
         appendText(textToAppend)
@@ -417,24 +417,23 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         _ = becomeFirstResponder()
     }
     
-    // creates a token out of all editable text contained in the input field
-    // aka: chipifyAll
+    // Create tokens from all editable text contained in the input field
     public func tokenizeAllEditableText() {
         switch tokenList.count {
         case 0:
             tokenizeEditableText(atIndex: 0, toIndex: text.characters.count)
         default:
-            // find text discontinuities
+            // find text discontinuities, characters that do not belong to a token
             var discontinuityLength: [Int] = []
             var discontinuityIndex: [Int] = []
             
-            // find text discontinuities before token list
+            // find discontinuities before token list
             if tokenList.first?.range.location != 0 {
                 discontinuityLength.append((tokenList.first?.range.location)!)
                 discontinuityIndex.append(0)
             }
 
-            // find text discontinuities within token list
+            // find discontinuities within token list
             for i in 1..<tokenList.count {
                 let endPositionPrevious = tokenList[i-1].range.length + tokenList[i-1].range.location
                 let startPositionCurrent = tokenList[i].range.location
@@ -455,7 +454,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
                 discontinuityIndex.append(lastToken.range.length + lastToken.range.location)
             }
             
-            // apply tokens to discontinuities
+            // apply tokens at discontinuities
             for i in (0..<discontinuityLength.count).reversed() {
                 // insert all new chips
                 tokenizeEditableText(atIndex: discontinuityIndex[i], toIndex: discontinuityIndex[i]+discontinuityLength[i])
@@ -466,8 +465,8 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
     
-    // creates editable text from exisitng token
-    // this method will tokenize all current editable text prior to making token editable
+    // Create editable text from exisitng token, appended to end of input field
+    // This method tokenizes all current editable text prior to making token editable
     public func makeTokenEditableAndMoveToFront(tokenRef: TokenReference) {
         var clickedTokenText = ""
         

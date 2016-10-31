@@ -286,4 +286,61 @@ class TokenTextViewControllerTests: XCTestCase {
         XCTAssertEqual(tokenVC.tokenList.count, tokenQuantity)
     }
     
+    func testMakeTokenEditableAndMoveToFrontToken() {
+        let tokenVC = TokenTextViewController()
+        let addedToken = tokenVC.addToken(0, text: "How are you?")
+        tokenVC.makeTokenEditableAndMoveToFront(tokenRef: addedToken.reference)
+        XCTAssertEqual(tokenVC.tokenList.count, 0)
+        XCTAssertEqual(tokenVC.text, "How are you?")
+    }
+    
+    func testMakeTokenEditableAndMoveToFrontTokenText() {
+        let tokenVC = TokenTextViewController()
+        let addedToken = tokenVC.addToken(0, text: "Blue")
+        tokenVC.appendText("Red")
+        tokenVC.makeTokenEditableAndMoveToFront(tokenRef: addedToken.reference)
+        XCTAssertEqual(tokenVC.tokenList.count, 1)
+        XCTAssertNotEqual(tokenVC.tokenList[0].reference, addedToken.reference)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "Red")
+        XCTAssertTrue(tokenVC.text.hasSuffix("Blue"))
+    }
+    
+    func testMakeTokenEditableAndMoveToFrontTokenTokenText() {
+        let tokenVC = TokenTextViewController()
+        let firstToken = tokenVC.addToken(0, text: "Blue")
+        let secondToken = tokenVC.addToken(6, text: "Red")
+        tokenVC.appendText("Green")
+        tokenVC.makeTokenEditableAndMoveToFront(tokenRef: secondToken.reference)
+        XCTAssertEqual(tokenVC.tokenList.count, 2)
+        XCTAssertEqual(tokenVC.tokenList[0].reference, firstToken.reference)
+        XCTAssertNotEqual(tokenVC.tokenList[1].reference, secondToken.reference)
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "Green")
+        XCTAssertTrue(tokenVC.text.hasSuffix("Red"))
+    }
+    
+    func testMakeTokenEditableAndMoveToFrontTokenTextToken() {
+        let tokenVC = TokenTextViewController()
+        let firstToken = tokenVC.addToken(0, text: "Blue")
+        tokenVC.appendText("Green")
+        let secondToken = tokenVC.addToken(11, text: "Red")
+        tokenVC.makeTokenEditableAndMoveToFront(tokenRef: firstToken.reference)
+        XCTAssertEqual(tokenVC.tokenList.count, 2)
+        XCTAssertEqual(tokenVC.tokenList[1].reference, secondToken.reference)
+        XCTAssertNotEqual(tokenVC.tokenList[0].reference, firstToken.reference)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "Green")
+        XCTAssertTrue(tokenVC.text.hasSuffix("Blue"))
+    }
+    
+    func testMakeTokenEditableAndMoveToFrontTextTokenText() {
+        let tokenVC = TokenTextViewController()
+        tokenVC.text = "Blue"
+        let firstToken = tokenVC.addToken(4, text: "Red")
+        tokenVC.appendText("Green")
+        tokenVC.makeTokenEditableAndMoveToFront(tokenRef: firstToken.reference)
+        
+        XCTAssertEqual(tokenVC.tokenList.count, 2)
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "Blue")
+        XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "Green")
+        XCTAssertTrue(tokenVC.text.hasSuffix("Red"))
+    }
 }

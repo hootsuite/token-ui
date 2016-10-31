@@ -473,9 +473,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         
         for i in 0..<tokenList.count {
             if tokenList[i].reference == tokenRef {
+                clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
                 tokenizeAllEditableText()
                 
-                clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
                 removeTokenAndAppendText(tokenRef: tokenRef, textToAppend: clickedTokenText)
                 delegate?.tokenTextViewDidChange(self)
                 break

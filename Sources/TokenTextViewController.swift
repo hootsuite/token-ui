@@ -449,7 +449,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             let lastToken = tokenList.last!
             let lengthAfterTokenList = lastToken.range.location + lastToken.range.length - text.characters.count
             if lengthAfterTokenList != 0 {
-                let lastToken = tokenList.last!
                 discontinuityLength.append(text.characters.count-lastToken.range.length - lastToken.range.location)
                 discontinuityIndex.append(lastToken.range.length + lastToken.range.location)
             }

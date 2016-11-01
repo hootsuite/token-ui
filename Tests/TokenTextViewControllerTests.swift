@@ -277,13 +277,14 @@ class TokenTextViewControllerTests: XCTestCase {
     }
     
     func testTokenizeAllEditableTextWith50Tokens() {
-        let tokenQuantity = 50
+        let tokenQuantity = 25
         let tokenVC = TokenTextViewController()
         for _ in 0..<tokenQuantity {
+            tokenVC.insertString("plus some more", atIndex: 0)
             tokenVC.addToken(0, text: "some text")
         }
         tokenVC.tokenizeAllEditableText()
-        XCTAssertEqual(tokenVC.tokenList.count, tokenQuantity)
+        XCTAssertEqual(tokenVC.tokenList.count, 2 * tokenQuantity)
     }
     
     func testMakeTokenEditableAndMoveToFrontToken() {

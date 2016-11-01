@@ -408,15 +408,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
     
-    // Delete a token and append editable text
-    fileprivate func removeTokenAndAppendText(tokenRef: TokenReference, textToAppend: String) {
-        deleteToken(tokenRef)
-        appendText(textToAppend)
-        
-        selectedRange = NSRange(location: text.characters.count, length: 0)
-        _ = becomeFirstResponder()
-    }
-    
     // Create tokens from all editable text contained in the input field
     public func tokenizeAllEditableText() {
         switch tokenList.count {
@@ -466,15 +457,19 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     
     // Create editable text from exisitng token, appended to end of input field
     // This method tokenizes all current editable text prior to making token editable
-    public func makeTokenEditableAndMoveToFront(tokenRef: TokenReference) {
+    public func makeTokenEditableAndMoveToFront(tokenReference: TokenReference) {
         var clickedTokenText = ""
         
         for i in 0..<tokenList.count {
-            if tokenList[i].reference == tokenRef {
+            if tokenList[i].reference == tokenReference {
                 clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
-                tokenizeAllEditableText()
                 
-                removeTokenAndAppendText(tokenRef: tokenRef, textToAppend: clickedTokenText)
+                tokenizeAllEditableText()
+                deleteToken(tokenReference)
+                appendText(clickedTokenText)
+                
+                selectedRange = NSRange(location: self.text.characters.count, length: 0)
+                _ = becomeFirstResponder()
                 delegate?.tokenTextViewDidChange(self)
                 break
             }

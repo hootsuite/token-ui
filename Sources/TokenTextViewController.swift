@@ -87,6 +87,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
     fileprivate var inputIsSuspended = false
+    fileprivate var tokenizeOnLostFocusEnabled = false
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -274,6 +275,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return viewAsTextView.textStorage
     }
 
+    open func tokenizeOnLostFocus() {
+        tokenizeOnLostFocusEnabled = true
+    }
+    
     // MARK: text manipulation
 
     open func appendText(_ text: String) {
@@ -623,6 +628,12 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         viewAsTextView.selectedRange = NSRange(location: viewAsTextView.selectedRange.location, length: 0)
         for tokenRef in intersectingTokenReferences {
             delegate?.tokenTextViewDidDeleteToken(self, tokenRef: tokenRef)
+        }
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        if self.tokenizeOnLostFocusEnabled {
+            self.tokenizeAllEditableText()
         }
     }
 

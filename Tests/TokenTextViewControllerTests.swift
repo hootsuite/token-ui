@@ -287,6 +287,16 @@ class TokenTextViewControllerTests: XCTestCase {
         XCTAssertEqual(tokenVC.tokenList.count, 2 * tokenQuantity)
     }
     
+    func testTokenizeAllEditableTextWithEmojiText() {
+        let tokenVC = TokenTextViewController()
+        let emoji = "😀"
+        tokenVC.text = emoji
+        tokenVC.tokenizeAllEditableText()
+        XCTAssertEqual(tokenVC.tokenList.count, 1)
+        XCTAssertEqual(tokenVC.text, " 😀 ")
+        XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), emoji)
+    }
+    
     func testMakeTokenEditableAndMoveToFrontToken() {
         let tokenVC = TokenTextViewController()
         let addedToken = tokenVC.addToken(0, text: "How are you?")
@@ -343,5 +353,15 @@ class TokenTextViewControllerTests: XCTestCase {
         XCTAssertEqual(tokenVC.tokenList[0].text.trimmingCharacters(in: CharacterSet.whitespaces), "Blue")
         XCTAssertEqual(tokenVC.tokenList[1].text.trimmingCharacters(in: CharacterSet.whitespaces), "Green")
         XCTAssertTrue(tokenVC.text.hasSuffix("Red"))
+    }
+    
+    func testMakeTokenEditableAndMoveToFrontWithEmojiText() {
+        let tokenVC = TokenTextViewController()
+        let emoji = "😀"
+        let firstToken = tokenVC.addToken(0, text: emoji)
+        tokenVC.makeTokenEditableAndMoveToFront(tokenReference: firstToken.reference)
+        
+        XCTAssertEqual(tokenVC.tokenList.count, 0)
+        XCTAssertEqual(tokenVC.text, emoji)
     }
 }

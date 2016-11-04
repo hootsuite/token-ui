@@ -390,24 +390,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         tokenTextStorage.clearEditingAttributes()
         inputDelegate?.tokenTextViewInputTextWasCanceled(self, reason: .tapOut)
     }
-    
-    fileprivate func sortedTokenList() -> [TokenInformation] {
-        guard tokenList.count > 1 else { return tokenList }
-        
-        // insertion sort
-        var result = tokenList
-
-        for i in 1..<result.count {
-            var y = i
-            let temp = result[y]
-            while y > 0 && temp.range.location < result[y - 1].range.location {
-                result[y] = result[y - 1]
-                y -= 1
-            }
-            result[y] = temp
-        }
-        return result
-    }
 
     // MARK: Token List editing
     
@@ -429,8 +411,8 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         case 0:
             tokenizeEditableText(atIndex: 0, toIndex: nsText.length)
         default:
-            // ensure we use a sorted tokenlist
-            var orderedTokenList: [TokenInformation] = sortedTokenList()
+            // ensure we use a sorted tokenlist (by location)
+            let orderedTokenList: [TokenInformation] = tokenList.sorted(by: { $0.range.location < $1.range.location })
             
             // find text discontinuities, characters that do not belong to a token
             var discontinuityLength: [Int] = []

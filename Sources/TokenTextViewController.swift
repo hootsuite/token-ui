@@ -411,48 +411,47 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         if tokenList.isEmpty {
             tokenizeEditableText(atIndex: 0, toIndex: nsText.length)
             return
-        } else {
-            // ensure we use a sorted tokenlist (by location)
-            let orderedTokenList: [TokenInformation] = tokenList.sorted(by: { $0.range.location < $1.range.location })
-            
-            // find text discontinuities, characters that do not belong to a token
-            var discontinuities: [NSRange] = []
-            
-            // find discontinuities before token list
-            guard let firstToken = orderedTokenList.first else { return }
-            if firstToken.range.location != 0 {
-                discontinuities.append(NSRange(location: 0, length: firstToken.range.location))
-            }
-
-            // find discontinuities within token list
-            for i in 1..<orderedTokenList.count {
-                let endPositionPrevious = orderedTokenList[i-1].range.length + orderedTokenList[i-1].range.location
-                let startPositionCurrent = orderedTokenList[i].range.location
-                
-                if startPositionCurrent != endPositionPrevious {
-                    // found discontinuity
-                    discontinuities.append(NSRange(location: endPositionPrevious, length: (startPositionCurrent - endPositionPrevious)))
-                }
-            }
-
-            // find discontinuities after token list
-            guard let lastToken = orderedTokenList.last else { return }
-            let lengthAfterTokenList = lastToken.range.location + lastToken.range.length - nsText.length
-            if lengthAfterTokenList != 0 {
-                discontinuities.append(NSRange(location: (lastToken.range.length + lastToken.range.location), length: (nsText.length - lastToken.range.length - lastToken.range.location)))
-            }
-            
-            // apply tokens at discontinuities
-            for i in (0..<discontinuities.count).reversed() {
-                // insert all new chips
-                tokenizeEditableText(atIndex: discontinuities[i].location, toIndex: discontinuities[i].location + discontinuities[i].length)
-            }
-            
-            // move cursor to the end
-            nsText = text as NSString
-            selectedRange = NSRange(location: nsText.length, length: 0)
-            return
         }
+        
+        // ensure we use a sorted tokenlist (by location)
+        let orderedTokenList: [TokenInformation] = tokenList.sorted(by: { $0.range.location < $1.range.location })
+        
+        // find text discontinuities, characters that do not belong to a token
+        var discontinuities: [NSRange] = []
+        
+        // find discontinuities before token list
+        guard let firstToken = orderedTokenList.first else { return }
+        if firstToken.range.location != 0 {
+            discontinuities.append(NSRange(location: 0, length: firstToken.range.location))
+        }
+        
+        // find discontinuities within token list
+        for i in 1..<orderedTokenList.count {
+            let endPositionPrevious = orderedTokenList[i-1].range.length + orderedTokenList[i-1].range.location
+            let startPositionCurrent = orderedTokenList[i].range.location
+            
+            if startPositionCurrent != endPositionPrevious {
+                // found discontinuity
+                discontinuities.append(NSRange(location: endPositionPrevious, length: (startPositionCurrent - endPositionPrevious)))
+            }
+        }
+        
+        // find discontinuities after token list
+        guard let lastToken = orderedTokenList.last else { return }
+        let lengthAfterTokenList = lastToken.range.location + lastToken.range.length - nsText.length
+        if lengthAfterTokenList != 0 {
+            discontinuities.append(NSRange(location: (lastToken.range.length + lastToken.range.location), length: (nsText.length - lastToken.range.length - lastToken.range.location)))
+        }
+        
+        // apply tokens at discontinuities
+        for i in (0..<discontinuities.count).reversed() {
+            // insert all new chips
+            tokenizeEditableText(atIndex: discontinuities[i].location, toIndex: discontinuities[i].location + discontinuities[i].length)
+        }
+        
+        // move cursor to the end
+        nsText = text as NSString
+        selectedRange = NSRange(location: nsText.length, length: 0)
     }
     
     // Create editable text from exisitng token, appended to end of input field
@@ -460,19 +459,16 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     public func makeTokenEditableAndMoveToFront(tokenReference: TokenReference) {
         var clickedTokenText = ""
         
-        let foundToken = tokenList.first(where: {$0.reference == tokenReference})
+        guard let foundToken = tokenList.first(where: {$0.reference == tokenReference}) else { return }
+        clickedTokenText = foundToken.text.trimmingCharacters(in: CharacterSet.whitespaces)
+        tokenizeAllEditableText()
+        deleteToken(tokenReference)
+        appendText(clickedTokenText)
         
-        if let foundToken = foundToken {
-            clickedTokenText = foundToken.text.trimmingCharacters(in: CharacterSet.whitespaces)
-            tokenizeAllEditableText()
-            deleteToken(tokenReference)
-            appendText(clickedTokenText)
-            
-            let nsText = self.text as NSString
-            selectedRange = NSRange(location: nsText.length, length: 0)
-            _ = becomeFirstResponder()
-            delegate?.tokenTextViewDidChange(self)
-        }
+        let nsText = self.text as NSString
+        selectedRange = NSRange(location: nsText.length, length: 0)
+        _ = becomeFirstResponder()
+        delegate?.tokenTextViewDidChange(self)
     }
     
     // MARK: Input Mode

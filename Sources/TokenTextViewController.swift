@@ -460,20 +460,18 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     public func makeTokenEditableAndMoveToFront(tokenReference: TokenReference) {
         var clickedTokenText = ""
         
-        for i in 0..<tokenList.count {
-            if tokenList[i].reference == tokenReference {
-                clickedTokenText = tokenList[i].text.trimmingCharacters(in: CharacterSet.whitespaces)
-                
-                tokenizeAllEditableText()
-                deleteToken(tokenReference)
-                appendText(clickedTokenText)
-                
-                let nsText = self.text as NSString
-                selectedRange = NSRange(location: nsText.length, length: 0)
-                _ = becomeFirstResponder()
-                delegate?.tokenTextViewDidChange(self)
-                break
-            }
+        let foundToken = tokenList.first(where: {$0.reference == tokenReference})
+        
+        if let foundToken = foundToken {
+            clickedTokenText = foundToken.text.trimmingCharacters(in: CharacterSet.whitespaces)
+            tokenizeAllEditableText()
+            deleteToken(tokenReference)
+            appendText(clickedTokenText)
+            
+            let nsText = self.text as NSString
+            selectedRange = NSRange(location: nsText.length, length: 0)
+            _ = becomeFirstResponder()
+            delegate?.tokenTextViewDidChange(self)
         }
     }
     

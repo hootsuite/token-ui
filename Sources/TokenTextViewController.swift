@@ -394,13 +394,11 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     // MARK: Token List editing
     
     // Create a token from editable text contained from atIndex to toIndex (excluded)
-    fileprivate func tokenizeEditableText(atIndex: Int, toIndex: Int) {
-        let nsNewRange = NSRange(location: atIndex, length: (toIndex-atIndex))
-        
-        if nsNewRange.length != 0 {
+    fileprivate func tokenizeEditableText(at range: NSRange) {
+        if range.length != 0 {
             let nsText = text as NSString
-            replaceCharactersInRange(nsNewRange, withString: "")
-            addToken(atIndex, text: nsText.substring(with: nsNewRange))
+            replaceCharactersInRange(range, withString: "")
+            addToken(range.location, text: nsText.substring(with: range))
         }
     }
     
@@ -409,7 +407,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         var nsText = text as NSString
         
         if tokenList.isEmpty {
-            tokenizeEditableText(atIndex: 0, toIndex: nsText.length)
+            tokenizeEditableText(at: NSRange(location: 0, length: nsText.length))
             return
         }
         
@@ -446,7 +444,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         // apply tokens at discontinuities
         for i in (0..<discontinuities.count).reversed() {
             // insert all new chips
-            tokenizeEditableText(atIndex: discontinuities[i].location, toIndex: discontinuities[i].location + discontinuities[i].length)
+            tokenizeEditableText(at: discontinuities[i])
         }
         
         // move cursor to the end

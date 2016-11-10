@@ -82,12 +82,14 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             viewAsTextView.font = font
         }
     }
-
+    
+    /// Flag for text tokenization when input field loses focus
+    public var tokenizeOnLostFocusEnabled = false
+    
     fileprivate var tokenTapRecognizer: UITapGestureRecognizer?
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
     fileprivate var inputIsSuspended = false
-    fileprivate var tokenizeOnLostFocusEnabled = false
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -273,17 +275,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     open var attributedString: NSAttributedString {
         return viewAsTextView.textStorage
-    }
-
-    /// Provides access to control flag for tokenization when input field loses focus
-    open var tokenizeOnLostFocus: Bool {
-        get {
-            return tokenizeOnLostFocusEnabled
-        }
-
-        set {
-            tokenizeOnLostFocusEnabled = newValue
-        }
     }
     
     // MARK: text manipulation

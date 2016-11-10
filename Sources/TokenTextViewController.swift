@@ -275,8 +275,15 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return viewAsTextView.textStorage
     }
 
-    open func tokenizeOnLostFocus() {
-        tokenizeOnLostFocusEnabled = true
+    /// Provides access to control flag for tokenization when input field loses focus
+    open var tokenizeOnLostFocus: Bool {
+        get {
+            return tokenizeOnLostFocusEnabled
+        }
+
+        set {
+            tokenizeOnLostFocusEnabled = newValue
+        }
     }
     
     // MARK: text manipulation
@@ -632,8 +639,8 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {
-        if self.tokenizeOnLostFocusEnabled {
-            self.tokenizeAllEditableText()
+        if tokenizeOnLostFocusEnabled {
+            tokenizeAllEditableText()
         }
     }
 

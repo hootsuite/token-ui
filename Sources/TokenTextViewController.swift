@@ -84,7 +84,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
     
     /// Flag for text tokenization when input field loses focus
-    public var tokenizeOnLostFocusEnabled = false
+    public var tokenizeOnLostFocus = false
     
     fileprivate var tokenTapRecognizer: UITapGestureRecognizer?
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
@@ -276,7 +276,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     open var attributedString: NSAttributedString {
         return viewAsTextView.textStorage
     }
-    
+
     // MARK: text manipulation
 
     open func appendText(_ text: String) {
@@ -630,7 +630,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {
-        if tokenizeOnLostFocusEnabled {
+        if tokenizeOnLostFocus {
             tokenizeAllEditableText()
         }
     }

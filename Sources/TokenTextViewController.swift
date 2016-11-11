@@ -82,7 +82,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             viewAsTextView.font = font
         }
     }
-
+    
+    /// Flag for text tokenization when input field loses focus
+    public var tokenizeOnLostFocus = false
+    
     fileprivate var tokenTapRecognizer: UITapGestureRecognizer?
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
@@ -623,6 +626,12 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         viewAsTextView.selectedRange = NSRange(location: viewAsTextView.selectedRange.location, length: 0)
         for tokenRef in intersectingTokenReferences {
             delegate?.tokenTextViewDidDeleteToken(self, tokenRef: tokenRef)
+        }
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        if tokenizeOnLostFocus {
+            tokenizeAllEditableText()
         }
     }
 

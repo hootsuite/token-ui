@@ -2,15 +2,13 @@
 
 Text input components that allows to add 'tokens' rendered as pills.
 
+
 ## Development process
 
 ### Tools
 
 Before you start you will need to install these tools:
 
-* [Homebrew](http://brew.sh): `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-* [Xcode](https://developer.apple.com/xcode/) and the command-line tools: `xcode-select --install`
-* [Carthage](https://github.com/Carthage/Carthage): `brew install carthage`
 * [Fastlane](https://fastlane.tools): `gem install fastlane --verbose`
 * [SwiftLint](https://github.com/realm/SwiftLint): `brew install swiftlint`
 

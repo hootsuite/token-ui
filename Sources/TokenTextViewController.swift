@@ -16,6 +16,8 @@ public protocol TokenTextViewControllerDelegate: class {
     func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> ()
     /// Called when a token was deleted
     func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
+    /// Called when a token was added
+    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
     /// Called when the formatting is being updated
     func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
     /// Allows to customize the background color for a token
@@ -36,6 +38,10 @@ public extension TokenTextViewControllerDelegate {
     }
 
     func tokenTextView(_: TokenTextViewController, didReceive items: [PasteboardItem]) {
+        // Empty default implementation
+    }
+    
+    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
         // Empty default implementation
     }
 }
@@ -326,6 +332,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         let tokenRef = attrs[TokenTextViewControllerConstants.tokenAttributeName] as! TokenReference
         let tokenInfo = TokenInformation(reference: tokenRef, text: effectiveText, range: tokenRange)
         delegate?.tokenTextViewDidChange(self)
+        delegate?.tokenTextViewDidAddToken(self, tokenRef: tokenRef)
         return tokenInfo
     }
 

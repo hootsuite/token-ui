@@ -9,6 +9,7 @@ import UIKit
 protocol TokenTextViewTextStorageDelegate: class {
     func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
+    func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
 }
 
 class TokenTextViewTextStorage: NSTextStorage {
@@ -97,9 +98,12 @@ class TokenTextViewTextStorage: NSTextStorage {
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in
             var tokenFormattingAttributes = [String:AnyObject]()
             if let backgroundColor = self.formattingDelegate?.textStorageBackgroundColourForTokenRef(self, tokenRef: tokenRef) {
-                tokenFormattingAttributes[NSForegroundColorAttributeName] = UIColor.white
                 tokenFormattingAttributes[NSBackgroundColorAttributeName] = backgroundColor
             }
+            if let foregroundColor = self.formattingDelegate?.textStorageForegroundColourForTokenRef(self, tokenRef: tokenRef) {
+                tokenFormattingAttributes[NSForegroundColorAttributeName] = foregroundColor
+            }
+            
             let formattingRange = self.displayRangeFromTokenRange(tokenRange)
             self.addAttributes(tokenFormattingAttributes, range: formattingRange)
 

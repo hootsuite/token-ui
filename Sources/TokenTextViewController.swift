@@ -22,6 +22,8 @@ public protocol TokenTextViewControllerDelegate: class {
     func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
     /// Allows to customize the background color for a token
     func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
+    /// Allows to customize the foreground color for a token
+    func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
     /// Whether the last edit should cancel token editing
     func tokenTextViewShouldCancelEditingAtInsert(_ sender: TokenTextViewController, newText: String, inputText: String) -> Bool
     /// Whether content of type type can be pasted in the text view.
@@ -43,6 +45,10 @@ public extension TokenTextViewControllerDelegate {
     
     func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
         // Empty default implementation
+    }
+    
+    func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
+        return UIColor.white
     }
 }
 
@@ -662,6 +668,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor? {
         return delegate?.tokenTextViewBackgroundColourForTokenRef(self, tokenRef: tokenRef)
+    }
+    
+    func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor? {
+        return delegate?.tokenTextViewForegroundColourForTokenRef(self, tokenRef: tokenRef)
     }
 
     // MARK: Token text management

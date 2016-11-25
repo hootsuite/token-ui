@@ -92,6 +92,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     open var font = UIFont.preferredFont(forTextStyle: .body) {
         didSet {
             viewAsTextView.font = font
+            tokenTextStorage.font = font
         }
     }
     

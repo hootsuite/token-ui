@@ -1,5 +1,4 @@
 //
-// Created by David Bonnefoy on 15-07-16.
 // Copyright (c) 2015 Hootsuite Media Inc. All rights reserved.
 //
 
@@ -7,9 +6,11 @@ import Foundation
 import UIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
+
     func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
     func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
+
 }
 
 class TokenTextViewTextStorage: NSTextStorage {

@@ -1,5 +1,4 @@
 //
-// Created by David Bonnefoy on 15-07-16.
 // Copyright (c) 2015 Hootsuite Media Inc. All rights reserved.
 //
 
@@ -18,4 +17,5 @@ class TokenTextViewLayoutManager: NSLayoutManager {
         }
         color.set()
     }
+    
 }

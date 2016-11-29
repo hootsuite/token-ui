@@ -1,86 +1,129 @@
 //
-// Created by David Bonnefoy on 15-07-16.
 // Copyright (c) 2015 Hootsuite Media Inc. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-/// TokenTextViewController delegate
+/// The delegate used to handle user interaction and enable/disable customization to a `TokenTextViewController`.
 public protocol TokenTextViewControllerDelegate: class {
-    /// Called when text changes
+
+    /// Called when text changes.
     func tokenTextViewDidChange(_ sender: TokenTextViewController) -> ()
-    /// Whether an edit should be accepted
+
+    /// Whether an edit should be accepted.
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool
-    /// Called when a token was tapped
+
+    /// Called when a token was tapped.
     func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> ()
-    /// Called when a token was deleted
+
+    /// Called when a token was deleted.
     func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
-    /// Called when a token was added
+
+    /// Called when a token was added.
     func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
-    /// Called when the formatting is being updated
+
+    /// Called when the formatting is being updated.
     func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
-    /// Allows to customize the background color for a token
+
+    /// Allows to customize the background color for a token.
     func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
+
     /// Allows to customize the foreground color for a token
     func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
-    /// Whether the last edit should cancel token editing
+
+    /// Whether the last edit should cancel token editing.
     func tokenTextViewShouldCancelEditingAtInsert(_ sender: TokenTextViewController, newText: String, inputText: String) -> Bool
+
     /// Whether content of type type can be pasted in the text view.
     /// This method is called every time some content may be pasted.
     func tokenTextView(_: TokenTextViewController, shouldAcceptContentOfType type: PasteboardItemType) -> Bool
+
     /// Called when media items have been pasted.
     func tokenTextView(_: TokenTextViewController, didReceive items: [PasteboardItem])
+
 }
 
-/// Default implementation of some delegate methods
+/// Default implementation for some `TokenTextViewControllerDelegate` methods.
 public extension TokenTextViewControllerDelegate {
+
+    /// Default value of `false`.
     func tokenTextView(_: TokenTextViewController, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
         return false
     }
 
+    /// Empty default implementation.
     func tokenTextView(_: TokenTextViewController, didReceive items: [PasteboardItem]) {
-        // Empty default implementation
+
     }
-    
-    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
-        // Empty default implementation
+
+    /// Empty default implementation
+	func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
+
     }
-    
+
+    /// Default color of white.
     func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
-        return UIColor.white
+        return .white
     }
+
 }
 
+/// The delegate used to handle text input in a `TokenTextViewController`.
 public protocol TokenTextViewControllerInputDelegate: class {
+
+    /// Called whenever the text is updated.
     func tokenTextViewInputTextDidChange(_ sender: TokenTextViewController, inputText: String)
+
+    /// Called when the text is confirmed by the user.
     func tokenTextViewInputTextWasConfirmed(_ sender: TokenTextViewController)
+
+    /// Called when teh text is cancelled by the user.
     func tokenTextViewInputTextWasCanceled(_ sender: TokenTextViewController, reason: TokenTextInputCancellationReason)
+
 }
 
+/// Determines different input cancellation reasons for a `TokenTextViewController`.
 public enum TokenTextInputCancellationReason {
+
     case deleteInput
     case tapOut
+
 }
 
+/// A data structure to hold constants for the `TokenTextViewController`.
 public struct TokenTextViewControllerConstants {
+
     public static let tokenAttributeName = "com.hootsuite.token"
     static let inputTextAttributeName = "com.hootsuite.input"
     static let inputTextAttributeAnchorValue = "anchor"
     static let inputTextAttributeTextValue = "text"
+
 }
 
 public typealias TokenReference = String
 
+/// A data structure used to identify a `Token` inside some text.
 public struct TokenInformation {
+
+    /// The `Token` identifier.
     public var reference: TokenReference
+
+    /// The text that contains the `Token`.
     public var text: String
+
+    /// The range of text that contains the `Token`.
     public var range: NSRange
+
 }
 
+/// Used to display a `UITextView` that creates and responds to `Token`'s as the user types and taps.
 open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayoutManagerDelegate, TokenTextViewTextStorageDelegate, UIGestureRecognizerDelegate {
 
+    /// The delegate used to handle user interaction and enable/disable customization.
     open weak var delegate: TokenTextViewControllerDelegate?
+
+    /// The delegate used to handle text input.
     open weak var inputDelegate: TokenTextViewControllerInputDelegate? {
         didSet {
             if let (inputText, _) = tokenTextStorage.inputTextAndRange() {
@@ -89,6 +132,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The font for the textView.
     open var font = UIFont.preferredFont(forTextStyle: .body) {
         didSet {
             viewAsTextView.font = font
@@ -104,16 +148,19 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
     fileprivate var inputIsSuspended = false
 
+    /// Initializer for `self`.
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
+    /// Initializer for `self`.
     public init() {
         super.init(nibName: nil, bundle: nil)
         inputModeHandler = TokenTextViewControllerInputModeHandler(tokenTextViewController: self)
         textTappedHandler = normalModeTapHandler
     }
 
+    /// Loads a `PasteMediaTextView` as the base view of `self`.
     override open func loadView() {
         let textStorage = TokenTextViewTextStorage()
         textStorage.formattingDelegate = self
@@ -167,6 +214,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     // MARK: UIGestureRecognizerDelegate
 
+    /// Enables/disables some gestures to be recognized simultaneously.
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == tokenTapRecognizer {
             return true
@@ -174,8 +222,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return false
     }
 
-    // MARK: UITextView vars and funcs
+    // MARK: UITextView variables and functions.
 
+    /// The text contained in the textView.
     open var text: String! {
         get {
             return viewAsTextView.text
@@ -186,6 +235,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The color of the text in the textView.
     open var textColor: UIColor! {
         get {
             return viewAsTextView.textColor
@@ -196,6 +246,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The style of the text alignment for the textView.
     open var textAlignment: NSTextAlignment {
         get {
             return viewAsTextView.textAlignment
@@ -206,6 +257,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The selected range of text in the textView.
     open var selectedRange: NSRange {
         get {
             return viewAsTextView.selectedRange
@@ -216,6 +268,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The type of keyboard displayed when the user interacts with the textView.
     open var keyboardType: UIKeyboardType {
         get {
             return viewAsTextView.keyboardType
@@ -226,6 +279,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The edge insets of the textView.
     open var textContainerInset: UIEdgeInsets {
         get {
             return viewAsTextView.textContainerInset
@@ -236,6 +290,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// Sets the scrolling enabled/disabled state of the textView.
     open var scrollEnabled: Bool {
         get {
             return viewAsTextView.isScrollEnabled
@@ -246,6 +301,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// The line fragment padding for the textView.
     open var lineFragmentPadding: CGFloat {
         get {
             return viewAsTextView.textContainer.lineFragmentPadding
@@ -256,6 +312,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// A rectangle that defines the area for drawing the caret in the textView.
     public var cursorRect: CGRect? {
         if let selectedTextRange = viewAsTextView.selectedTextRange {
             return viewAsTextView.caretRect(for: selectedTextRange.start)
@@ -263,6 +320,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return nil
     }
 
+    /// The accessibility label string for the text view.
     override open var accessibilityLabel: String! {
         get {
             return viewAsTextView.accessibilityLabel
@@ -273,30 +331,36 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// Assigns the first responder to the textView.
     override open func becomeFirstResponder() -> Bool {
         return viewAsTextView.becomeFirstResponder()
     }
 
+    /// Resigns the first responder from the textView.
     override open func resignFirstResponder() -> Bool {
         return viewAsTextView.resignFirstResponder()
     }
 
+    /// Resigns as first responder.
     open func suspendInput() {
         let _ = resignFirstResponder()
         inputIsSuspended = true
     }
 
+    /// The text storage object holding the text displayed in this text view.
     open var attributedString: NSAttributedString {
         return viewAsTextView.textStorage
     }
 
-    // MARK: text manipulation
+    // MARK: Text manipulation.
 
+    /// Appends the given text to the textView and repositions the cursor at the end.
     open func appendText(_ text: String) {
         viewAsTextView.textStorage.append(NSAttributedString(string: text))
         repositionCursorAtEndOfRange()
     }
 
+    /// Adds text to the beginning of the textView and repositions the cursor at the end.
     open func prependText(_ text: String) {
         let cursorLocation = viewAsTextView.selectedRange.location
         viewAsTextView.textStorage.insert(NSAttributedString(string: text), at: 0)
@@ -304,6 +368,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         repositionCursorAtEndOfRange()
     }
 
+    /// Replaces the first occurrence of the given string in the textView with another string.
     open func replaceFirstOccurrenceOfString(_ string: String, withString replacement: String) {
         let cursorLocation = viewAsTextView.selectedRange.location
         let searchRange = viewAsTextView.textStorage.mutableString.range(of: string)
@@ -316,18 +381,21 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// Replaces the characters in the given range in the textView with the provided string.
     open func replaceCharactersInRange(_ range: NSRange, withString: String) {
         if !rangeIntersectsToken(range) {
             viewAsTextView.textStorage.replaceCharacters(in: range, with: withString)
         }
     }
 
+    /// Inserts the given string at the provided index location of the textView.
     open func insertString(_ string: String, atIndex index: Int) {
         viewAsTextView.textStorage.insert(NSAttributedString(string: string), at: index)
     }
 
     // MARK: token editing
 
+    /// Adds a token to the textView at the given index and informs the delegate.
     @discardableResult
     open func addToken(_ startIndex: Int, text: String) -> TokenInformation {
         let effectiveText = effectiveTokenDisplayText(text)
@@ -343,6 +411,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return tokenInfo
     }
 
+    /// Updates the formatting of the textView.
     open func updateTokenFormatting() {
         tokenTextStorage.updateFormatting()
     }
@@ -351,6 +420,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return [TokenTextViewControllerConstants.tokenAttributeName: UUID().uuidString as TokenReference as AnyObject]
     }
 
+    /// Updates the given `Token`'s text with the provided text and informs the delegate of the change.
     open func updateTokenText(_ tokenRef: TokenReference, newText: String) {
         let effectiveText = effectiveTokenDisplayText(newText)
         replaceTokenText(tokenRef, newText: effectiveText)
@@ -358,6 +428,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         self.delegate?.tokenTextViewDidChange(self)
     }
 
+    /// Delegates the given `Token` and informs the delegate of the change.
     open func deleteToken(_ tokenRef: TokenReference) {
         replaceTokenText(tokenRef, newText: "")
         viewAsTextView.selectedRange = NSRange(location: viewAsTextView.selectedRange.location, length: 0)
@@ -382,6 +453,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    /// An array of all the `Token`'s currently in the textView.
     open var tokenList: [TokenInformation] {
         return tokenTextStorage.tokenList
     }
@@ -395,10 +467,12 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return nil
     }
 
+    /// Determines whether the given range intersects with a `Token` currently in the textView.
     open func rangeIntersectsToken(_ range: NSRange) -> Bool {
         return tokenTextStorage.rangeIntersectsToken(range)
     }
 
+    /// Determines whether the given range intersects with a `Token` that is currently being input by the user.
     open func rangeIntersectsTokenInput(_ range: NSRange) -> Bool {
         return tokenTextStorage.rangeIntersectsTokenInput(range)
     }
@@ -488,6 +562,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     
     // MARK: Input Mode
 
+    ///
     open func switchToInputEditingMode(_ location: Int, text: String, initialInputLength: Int = 0) {
         let attrString = NSAttributedString(string: text, attributes: [TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeAnchorValue])
         tokenTextStorage.insert(attrString, at: location)
@@ -503,6 +578,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         tokenTextStorage.updateFormatting()
     }
 
+    /// Sets the text tap handler with the `normalModeTapHandler` and returns the location of the cursor.
     open func switchToNormalEditingMode() -> Int {
         var location = selectedRange.location
         if let (_, anchorRange) = tokenTextStorage.anchorTextAndRange() {
@@ -605,6 +681,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return cursorLocation
     }
 
+    /// Determines whether the text in the given range should be replaced by the provided string.
+    /// Deleting one character, if it is part of a token, should delete the full token.
+    /// If the editing range intersects tokens, make sure tokens are fully deleted and delegate called.
     open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText: String) -> Bool {
         if range.length == 1 && (replacementText as NSString).length == 0 {
             // Deleting one character, if it is part of a token the full token should be deleted
@@ -762,18 +841,22 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             tokenTextViewController.inputDelegate?.tokenTextViewInputTextWasCanceled(tokenTextViewController, reason: .deleteInput)
         }
     }
+
 }
 
 extension UITextView {
+
     func characterIndexAtLocation(_ location: CGPoint) -> Int? {
         var point = location
         point.x -= self.textContainerInset.left
         point.y -= self.textContainerInset.top
         return self.textContainer.layoutManager?.characterIndex(for: point, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
     }
+
 }
 
 extension UITextView {
+
     func textRangeFromNSRange(_ range: NSRange) -> UITextRange? {
         let beginning = self.beginningOfDocument
         if let start = self.position(from: beginning, offset: range.location),
@@ -784,9 +867,11 @@ extension UITextView {
             return nil
         }
     }
+
 }
 
 extension TokenTextViewController: PasteMediaTextViewPasteDelegate {
+
     func pasteMediaTextView(_: PasteMediaTextView, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
         return delegate?.tokenTextView(self, shouldAcceptContentOfType: type) ?? false
     }
@@ -794,4 +879,5 @@ extension TokenTextViewController: PasteMediaTextViewPasteDelegate {
     func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem]) {
         delegate?.tokenTextView(self, didReceive: items)
     }
+    
 }

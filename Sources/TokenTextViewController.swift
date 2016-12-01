@@ -489,7 +489,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         if range.length != 0 {
             let nsText = text as NSString
             replaceCharactersInRange(range, withString: "")
-            addToken(range.location, text: nsText.substring(with: range))
+            let textSubstring = nsText.substring(with: range).trimmingCharacters(in: .whitespaces)
+            if !textSubstring.isEmpty {
+                addToken(range.location, text: textSubstring)
+            }
         }
     }
     

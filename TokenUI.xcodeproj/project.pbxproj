@@ -208,6 +208,7 @@
 				A8C860981DA5B1EF00F4B309 /* Headers */,
 				A8C860991DA5B1EF00F4B309 /* Resources */,
 				A81982F61DB003030086BAB1 /* Set version number */,
+				A8B7678C1E5B9D0C006A2670 /* Run SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -375,6 +376,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Get the version number from the tag in git and the number of commits as the build number\nGIT_VERSION=$(git describe --long --tags | cut -f 1 -d \"-\" | cut -c 2-)\nGIT_BUILD=$(git describe --long --tags | cut -f 2 -d \"-\")\nGIT_HASH=$(git describe --long --tags | cut -f 3 -d \"-\")\necho \"Setting version to $GIT_VERSION, build $GIT_BUILD\"\n\n# Set the version info in plist file\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $GIT_VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $GIT_BUILD\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8B7678C1E5B9D0C006A2670 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

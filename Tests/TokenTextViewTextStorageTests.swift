@@ -1,4 +1,4 @@
-//  Copyright © 2016 Hootsuite. All rights reserved.
+// Copyright © 2017 Hootsuite. All rights reserved.
 
 @testable import TokenUI
 import XCTest

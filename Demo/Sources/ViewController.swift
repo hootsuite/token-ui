@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  TokenTextApp
-//
-//  Created by David Bonnefoy on 2016-05-27.
-//  Copyright © 2016 Hootsuite. All rights reserved.
-//
+// Copyright © 2017 Hootsuite. All rights reserved.
 
 import Foundation
 import UIKit
@@ -41,7 +35,7 @@ class ViewController: UIViewController {
 
 extension ViewController: TokenTextViewControllerDelegate {
 
-    func tokenTextViewDidChange(_ sender: TokenTextViewController) -> () {
+    func tokenTextViewDidChange(_ sender: TokenTextViewController) {
     }
 
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool {
@@ -53,7 +47,7 @@ extension ViewController: TokenTextViewControllerDelegate {
         }
     }
 
-    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> () {
+    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) {
         let alert = UIAlertController(title: "Token Selected", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
             self.dismiss(animated: true, completion: nil)
@@ -61,7 +55,7 @@ extension ViewController: TokenTextViewControllerDelegate {
         present(alert, animated: true, completion: nil)
     }
 
-    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
+    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) {
         let alert = UIAlertController(title: "Token Deleted", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
             self.dismiss(animated: true, completion: nil)

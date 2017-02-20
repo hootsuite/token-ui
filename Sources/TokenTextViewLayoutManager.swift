@@ -1,6 +1,4 @@
-//
-// Copyright (c) 2015 Hootsuite Media Inc. All rights reserved.
-//
+// Copyright © 2017 Hootsuite. All rights reserved.
 
 import Foundation
 import UIKit
@@ -17,5 +15,5 @@ class TokenTextViewLayoutManager: NSLayoutManager {
         }
         color.set()
     }
-    
+
 }

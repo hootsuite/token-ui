@@ -9,19 +9,19 @@ import UIKit
 public protocol TokenTextViewControllerDelegate: class {
 
     /// Called when text changes.
-    func tokenTextViewDidChange(_ sender: TokenTextViewController) -> ()
+    func tokenTextViewDidChange(_ sender: TokenTextViewController)
 
     /// Whether an edit should be accepted.
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool
 
     /// Called when a token was tapped.
-    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) -> ()
+    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect)
 
     /// Called when a token was deleted.
-    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
+    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference)
 
     /// Called when a token was added.
-    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> ()
+    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference)
 
     /// Called when the formatting is being updated.
     func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
@@ -58,7 +58,7 @@ public extension TokenTextViewControllerDelegate {
     }
 
     /// Empty default implementation
-	func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) -> () {
+	func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) {
 
     }
 
@@ -567,11 +567,11 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     ///
     open func switchToInputEditingMode(_ location: Int, text: String, initialInputLength: Int = 0) {
-        let attrString = NSAttributedString(string: text, attributes: [TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeAnchorValue])
+        let attrString = NSAttributedString(string: text, attributes: [TokenTextViewControllerConstants.inputTextAttributeName: TokenTextViewControllerConstants.inputTextAttributeAnchorValue])
         tokenTextStorage.insert(attrString, at: location)
         if initialInputLength > 0 {
             let inputRange = NSRange(location: location + (text as NSString).length, length: initialInputLength)
-            tokenTextStorage.addAttributes([TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeTextValue], range: inputRange)
+            tokenTextStorage.addAttributes([TokenTextViewControllerConstants.inputTextAttributeName: TokenTextViewControllerConstants.inputTextAttributeTextValue], range: inputRange)
         }
         viewAsTextView.selectedRange = NSRange(location: location + (text as NSString).length + initialInputLength, length: 0)
         viewAsTextView.autocorrectionType = .no
@@ -815,7 +815,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
             return
         }
         // Insert new text with token attribute
-        let attrString = NSAttributedString(string: newText, attributes: [TokenTextViewControllerConstants.inputTextAttributeName : TokenTextViewControllerConstants.inputTextAttributeTextValue])
+        let attrString = NSAttributedString(string: newText, attributes: [TokenTextViewControllerConstants.inputTextAttributeName: TokenTextViewControllerConstants.inputTextAttributeTextValue])
         tokenTextViewController.viewAsTextView.textStorage.insert(attrString, at: range.location)
         tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: range.location + (newText as NSString).length, length: 0)
         if let (inputText, _) = tokenTextViewController.tokenTextStorage.inputTextAndRange() {

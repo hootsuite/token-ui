@@ -97,7 +97,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         }
 
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in
-            var tokenFormattingAttributes = [String:AnyObject]()
+            var tokenFormattingAttributes = [String: AnyObject]()
             if let backgroundColor = self.formattingDelegate?.textStorageBackgroundColourForTokenRef(self, tokenRef: tokenRef) {
                 tokenFormattingAttributes[NSBackgroundColorAttributeName] = backgroundColor
             }
@@ -109,8 +109,8 @@ class TokenTextViewTextStorage: NSTextStorage {
             self.addAttributes(tokenFormattingAttributes, range: formattingRange)
 
             // Add kerning to the leading and trailing space to prevent overlap
-            self.addAttributes([NSKernAttributeName:3.0], range: NSRange(location: tokenRange.location, length: 1))
-            self.addAttributes([NSKernAttributeName:3.0], range: NSRange(location: tokenRange.location + tokenRange.length - 1, length: 1))
+            self.addAttributes([NSKernAttributeName: 3.0], range: NSRange(location: tokenRange.location, length: 1))
+            self.addAttributes([NSKernAttributeName: 3.0], range: NSRange(location: tokenRange.location + tokenRange.length - 1, length: 1))
             return false
         }
 
@@ -129,8 +129,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         let nsText = backingStore.string as NSString
         nsText.enumerateSubstrings(in: NSRange(location: 0, length: nsText.length),
                 options: NSString.EnumerationOptions.byComposedCharacterSequences,
-                using: {
-                    (substring: String?, substringRange: NSRange, _, _) -> () in
+                using: { (substring: String?, substringRange: NSRange, _, _) in
                     if substring == "\"" {
                         if substringRange.location == 0 {
                             self.backingStore.replaceCharacters(in: substringRange, with: "“")

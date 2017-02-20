@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  TokenTextApp
-//
-//  Created by David Bonnefoy on 2016-05-27.
-//  Copyright © 2016 Hootsuite. All rights reserved.
-//
+// Copyright © 2017 Hootsuite. All rights reserved.
 
 import Foundation
 import UIKit

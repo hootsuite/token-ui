@@ -1,7 +1,4 @@
-//
-//  TokenTextViewControllerTests.swift
-//  Copyright © 2015 Hootsuite. All rights reserved.
-//
+// Copyright © 2017 Hootsuite. All rights reserved.
 
 @testable import TokenUI
 import XCTest

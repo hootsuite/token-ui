@@ -104,7 +104,7 @@ class TokenTextViewTextStorage: NSTextStorage {
             if let foregroundColor = self.formattingDelegate?.textStorageForegroundColourForTokenRef(self, tokenRef: tokenRef) {
                 tokenFormattingAttributes[NSForegroundColorAttributeName] = foregroundColor
             }
-            
+
             let formattingRange = self.displayRangeFromTokenRange(tokenRange)
             self.addAttributes(tokenFormattingAttributes, range: formattingRange)
 

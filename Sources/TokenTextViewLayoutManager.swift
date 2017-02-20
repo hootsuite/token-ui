@@ -17,5 +17,5 @@ class TokenTextViewLayoutManager: NSLayoutManager {
         }
         color.set()
     }
-    
+
 }

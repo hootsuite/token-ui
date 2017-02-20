@@ -139,10 +139,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             tokenTextStorage.font = font
         }
     }
-    
+
     /// Flag for text tokenization when input field loses focus
     public var tokenizeOnLostFocus = false
-    
+
     fileprivate var tokenTapRecognizer: UITapGestureRecognizer?
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
@@ -483,7 +483,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
 
     // MARK: Token List editing
-    
+
     // Create a token from editable text contained from atIndex to toIndex (excluded)
     fileprivate func tokenizeEditableText(at range: NSRange) {
         if range.length != 0 {
@@ -495,74 +495,74 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             }
         }
     }
-    
+
     // Create tokens from all editable text contained in the input field
     public func tokenizeAllEditableText() {
         var nsText = text as NSString
-        
+
         if tokenList.isEmpty {
             tokenizeEditableText(at: NSRange(location: 0, length: nsText.length))
             return
         }
-        
+
         // ensure we use a sorted tokenlist (by location)
         let orderedTokenList: [TokenInformation] = tokenList.sorted(by: { $0.range.location < $1.range.location })
-        
+
         // find text discontinuities, characters that do not belong to a token
         var discontinuities: [NSRange] = []
-        
+
         // find discontinuities before token list
         guard let firstToken = orderedTokenList.first else { return }
         if firstToken.range.location != 0 {
             discontinuities.append(NSRange(location: 0, length: firstToken.range.location))
         }
-        
+
         // find discontinuities within token list
         for i in 1..<orderedTokenList.count {
             let endPositionPrevious = orderedTokenList[i-1].range.length + orderedTokenList[i-1].range.location
             let startPositionCurrent = orderedTokenList[i].range.location
-            
+
             if startPositionCurrent != endPositionPrevious {
                 // found discontinuity
                 discontinuities.append(NSRange(location: endPositionPrevious, length: (startPositionCurrent - endPositionPrevious)))
             }
         }
-        
+
         // find discontinuities after token list
         guard let lastToken = orderedTokenList.last else { return }
         let lengthAfterTokenList = lastToken.range.location + lastToken.range.length - nsText.length
         if lengthAfterTokenList != 0 {
             discontinuities.append(NSRange(location: (lastToken.range.length + lastToken.range.location), length: (nsText.length - lastToken.range.length - lastToken.range.location)))
         }
-        
+
         // apply tokens at discontinuities
         for i in (0..<discontinuities.count).reversed() {
             // insert all new chips
             tokenizeEditableText(at: discontinuities[i])
         }
-        
+
         // move cursor to the end
         nsText = text as NSString
         selectedRange = NSRange(location: nsText.length, length: 0)
     }
-    
+
     // Create editable text from exisitng token, appended to end of input field
     // This method tokenizes all current editable text prior to making token editable
     public func makeTokenEditableAndMoveToFront(tokenReference: TokenReference) {
         var clickedTokenText = ""
-        
-        guard let foundToken = tokenList.first(where: {$0.reference == tokenReference}) else { return }
+
+        guard let foundToken = tokenList.first(where: { $0.reference == tokenReference }) else { return }
         clickedTokenText = foundToken.text.trimmingCharacters(in: CharacterSet.whitespaces)
         tokenizeAllEditableText()
         deleteToken(tokenReference)
         appendText(clickedTokenText)
-        
+
         let nsText = self.text as NSString
         selectedRange = NSRange(location: nsText.length, length: 0)
         _ = becomeFirstResponder()
         delegate?.tokenTextViewDidChange(self)
     }
-    
+
     // MARK: Input Mode
 
     ///
@@ -724,7 +724,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             delegate?.tokenTextViewDidDeleteToken(self, tokenRef: tokenRef)
         }
     }
-    
+
     public func textViewDidEndEditing(_ textView: UITextView) {
         if tokenizeOnLostFocus {
             tokenizeAllEditableText()
@@ -751,7 +751,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor? {
         return delegate?.tokenTextViewBackgroundColourForTokenRef(self, tokenRef: tokenRef)
     }
-    
+
     func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor? {
         return delegate?.tokenTextViewForegroundColourForTokenRef(self, tokenRef: tokenRef)
     }
@@ -882,5 +882,5 @@ extension TokenTextViewController: PasteMediaTextViewPasteDelegate {
     func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem]) {
         delegate?.tokenTextView(self, didReceive: items)
     }
-    
+
 }

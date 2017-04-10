@@ -341,7 +341,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     /// Resigns as first responder.
     open func suspendInput() {
-        let _ = resignFirstResponder()
+        _ = resignFirstResponder()
         inputIsSuspended = true
     }
 
@@ -614,7 +614,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         if charIndex != nil && charIndex! < viewAsTextView.textStorage.length - 1 {
             var range = NSRange(location: 0, length: 0)
             if let tokenRef = viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex!, effectiveRange: &range) as? TokenReference {
-                let _ = resignFirstResponder()
+                _ = resignFirstResponder()
                 let rect: CGRect = {
                     if let textRange = viewAsTextView.textRangeFromNSRange(range) {
                         return view.convert(viewAsTextView.firstRect(for: textRange), from: viewAsTextView.textInputView)
@@ -734,7 +734,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     open func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var effectiveRange = NSRange(location: 0, length: 0)
-        if let _ = (view as! UITextView).attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex, effectiveRange: &effectiveRange) as? TokenReference {
+        if (view as! UITextView).attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex, effectiveRange: &effectiveRange) is TokenReference {
             return false
         }
         return true
@@ -783,7 +783,7 @@ class TokenTextViewControllerInputModeHandler: NSObject, UITextViewDelegate {
                 tokenTextViewController.viewAsTextView.selectedRange = NSRange(location: adjustedLocation, length: 0)
             }
         } else {
-            let _ = tokenTextViewController.resignFirstResponder()
+            _ = tokenTextViewController.resignFirstResponder()
         }
     }
 

@@ -28,7 +28,7 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let _ = tokenTextVC.becomeFirstResponder()
+        _ = tokenTextVC.becomeFirstResponder()
     }
 
 }

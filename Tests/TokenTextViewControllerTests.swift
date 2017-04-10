@@ -178,7 +178,7 @@ class TokenTextViewControllerTests: XCTestCase {
     func testIntersectToken() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "I talk to, hello"
-        let _ = tokenVC.addToken(9, text: "davidby").reference
+        _ = tokenVC.addToken(9, text: "davidby").reference
         XCTAssertTrue(tokenVC.rangeIntersectsToken(NSRange(location: 5, length: 5)), "Range does intersect token")
         XCTAssertFalse(tokenVC.rangeIntersectsToken(NSRange(location: 0, length: 5)), "Range does not intersect token")
     }

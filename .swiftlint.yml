@@ -53,7 +53,7 @@ type_name:
 custom_rules:
   extra_header_comments:
     name: "File header comments"
-    regex: "(^//[ ]*$)|(^//[ ]*[A-Za-z]+\.swift$)|(^//[ ]*Created by.*)"
+    regex: (^//[ ]*$)|(^//[ ]*[A-Za-z]+\.swift$)|(^//[ ]*Created by.*)
     match_kinds:
       - comment
     message: "Clean up file header comments."

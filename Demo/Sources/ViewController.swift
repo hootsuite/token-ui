@@ -63,7 +63,7 @@ extension ViewController: TokenTextViewControllerDelegate {
         present(alert, animated: true, completion: nil)
     }
 
-    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)] {
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)] {
         return []
     }
 

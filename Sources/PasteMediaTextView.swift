@@ -34,11 +34,11 @@ public struct PasteboardItem {
 /// A custom `UITextView` subclass used to accept specific `PasteboardItemType`'s.
 public class PasteMediaTextView: UITextView {
 
-    weak var pasteDelegate: PasteMediaTextViewPasteDelegate?
+    weak var mediaPasteDelegate: PasteMediaTextViewPasteDelegate?
 
     /// Determines whether the instance of `self` can perform the given action.
     override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        if action == #selector(paste(_:)), pasteDelegate != nil, let acceptedTypes = acceptedTypes {
+        if action == #selector(paste(_:)), mediaPasteDelegate != nil, let acceptedTypes = acceptedTypes {
             if UIPasteboard.general.contains(pasteboardTypes: acceptedTypes.map { $0.rawValue }, inItemSet: nil) {
                 return true
             }
@@ -46,10 +46,10 @@ public class PasteMediaTextView: UITextView {
         return super.canPerformAction(action, withSender: sender)
     }
 
-    /// Will attempt to send the pasteDelegate the available `PasteboardItem`'s.
+    /// Will attempt to send the mediaPasteDelegate the available `PasteboardItem`'s.
     override public func paste(_ sender: Any?) {
         super.paste(sender)
-        if let pasteDelegate = pasteDelegate, let acceptedTypes = acceptedTypes {
+        if let mediaPasteDelegate = mediaPasteDelegate, let acceptedTypes = acceptedTypes {
             var results: [PasteboardItem] = []
             for (index, item) in UIPasteboard.general.items.enumerated() {
                 if let type = acceptedTypes.filter({ item[$0.rawValue] != nil }).first,
@@ -58,14 +58,14 @@ public class PasteMediaTextView: UITextView {
                 }
             }
             if !results.isEmpty {
-                pasteDelegate.pasteMediaTextView(self, didReceive: results)
+                mediaPasteDelegate.pasteMediaTextView(self, didReceive: results)
             }
         }
     }
 
     fileprivate var acceptedTypes: [PasteboardItemType]? {
-        if let pasteDelegate = pasteDelegate {
-            return PasteboardItemType.allValues.filter { pasteDelegate.pasteMediaTextView(self, shouldAcceptContentOfType: $0) }
+        if let mediaPasteDelegate = mediaPasteDelegate {
+            return PasteboardItemType.allValues.filter { mediaPasteDelegate.pasteMediaTextView(self, shouldAcceptContentOfType: $0) }
         }
         return nil
     }

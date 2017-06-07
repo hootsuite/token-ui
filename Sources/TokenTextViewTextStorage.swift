@@ -5,7 +5,7 @@ import UIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
 
-    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]?
+    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]?
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
     func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
 
@@ -33,7 +33,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         return backingStore.string
     }
 
-    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [String:Any] {
+    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey:Any] {
         return backingStore.attributes(at: index, effectiveRange: range)
     }
 
@@ -47,7 +47,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         endEditing()
     }
 
-    override func setAttributes(_ attrs: [String:Any]!, range: NSRange) {
+    override func setAttributes(_ attrs: [NSAttributedStringKey:Any]!, range: NSRange) {
         beginEditing()
         backingStore.setAttributes(attrs, range: range)
         edited(.editedAttributes, range: range, changeInLength: 0)
@@ -83,32 +83,32 @@ class TokenTextViewTextStorage: NSTextStorage {
     fileprivate func applyFormattingAttributesToRange(_ searchRange: NSRange) {
 
         // Set default attributes of edited range
-        addAttribute(NSForegroundColorAttributeName, value: textColor, range: searchRange)
-        addAttribute(NSFontAttributeName, value: font, range: searchRange)
-        addAttribute(NSKernAttributeName, value: 0.0, range: searchRange)
+        addAttribute(.foregroundColor, value: textColor, range: searchRange)
+        addAttribute(.font, value: font, range: searchRange)
+        addAttribute(.kern, value: 0.0, range: searchRange)
 
         if let (_, range) = inputTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value: linkColor, range: range)
+            addAttribute(.foregroundColor, value: linkColor, range: range)
         }
         if let (_, range) = anchorTextAndRange() {
-            addAttribute(NSForegroundColorAttributeName, value: linkColor, range: range)
+            addAttribute(.foregroundColor, value: linkColor, range: range)
         }
 
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in
-            var tokenFormattingAttributes = [String: AnyObject]()
+            var tokenFormattingAttributes = [NSAttributedStringKey: Any]()
             if let backgroundColor = self.formattingDelegate?.textStorageBackgroundColourForTokenRef(self, tokenRef: tokenRef) {
-                tokenFormattingAttributes[NSBackgroundColorAttributeName] = backgroundColor
+                tokenFormattingAttributes[.backgroundColor] = backgroundColor
             }
             if let foregroundColor = self.formattingDelegate?.textStorageForegroundColourForTokenRef(self, tokenRef: tokenRef) {
-                tokenFormattingAttributes[NSForegroundColorAttributeName] = foregroundColor
+                tokenFormattingAttributes[.foregroundColor] = foregroundColor
             }
 
             let formattingRange = self.displayRangeFromTokenRange(tokenRange)
             self.addAttributes(tokenFormattingAttributes, range: formattingRange)
 
             // Add kerning to the leading and trailing space to prevent overlap
-            self.addAttributes([NSKernAttributeName: 3.0], range: NSRange(location: tokenRange.location, length: 1))
-            self.addAttributes([NSKernAttributeName: 3.0], range: NSRange(location: tokenRange.location + tokenRange.length - 1, length: 1))
+            self.addAttributes([.kern: 3.0], range: NSRange(location: tokenRange.location, length: 1))
+            self.addAttributes([.kern: 3.0], range: NSRange(location: tokenRange.location + tokenRange.length - 1, length: 1))
             return false
         }
 
@@ -243,7 +243,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         return attributeTextAndRange(TokenTextViewControllerConstants.inputTextAttributeName, attributeValue: TokenTextViewControllerConstants.inputTextAttributeTextValue)
     }
 
-    fileprivate func attributeTextAndRange(_ attributeName: String, attributeValue: String) -> (String, NSRange)? {
+    fileprivate func attributeTextAndRange(_ attributeName: NSAttributedStringKey, attributeValue: String) -> (String, NSRange)? {
         var result: (String, NSRange)? = nil
         enumerateAttribute(attributeName,
             in:NSRange(location: 0, length: length),

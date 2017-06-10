@@ -170,7 +170,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         textStorage.addLayoutManager(layoutManager)
         let textView = PasteMediaTextView(frame: CGRect.zero, textContainer: container)
         textView.delegate = self
-        textView.pasteDelegate = self
+        textView.pasteViewDelegate = self
         textView.isScrollEnabled = true
         tokenTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(TokenTextViewController.textTapped(_:)))
         tokenTapRecognizer!.numberOfTapsRequired = 1
@@ -873,11 +873,11 @@ extension UITextView {
 
 extension TokenTextViewController: PasteMediaTextViewPasteDelegate {
 
-    func pasteMediaTextView(_: PasteMediaTextView, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
+    public func pasteMediaTextView(_: PasteMediaTextView, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
         return delegate?.tokenTextView(self, shouldAcceptContentOfType: type) ?? false
     }
 
-    func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem]) {
+    public func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem]) {
         delegate?.tokenTextView(self, didReceive: items)
     }
 

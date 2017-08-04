@@ -121,8 +121,6 @@ class TokenTextViewTextStorage: NSTextStorage {
         }
     }
 
-    // TODO: Currently a duplicate from HSTwitterTextColoringTextStorage
-    // That class will be deleted when the Unified Mention feature is deployed
     fileprivate func fixDumQuotes() {
         let nsText = backingStore.string as NSString
         nsText.enumerateSubstrings(in: NSRange(location: 0, length: nsText.length),

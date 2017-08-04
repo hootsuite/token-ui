@@ -9,7 +9,7 @@ public protocol TokenTextViewControllerDelegate: class {
     /// Called when text changes.
     func tokenTextViewDidChange(_ sender: TokenTextViewController)
 
-    /// Whether an edit should be accepted.
+    /// Returns a `Bool` whether an edit should be accepted.
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool
 
     /// Called when a token was tapped.
@@ -92,8 +92,8 @@ public enum TokenTextInputCancellationReason {
 /// A data structure to hold constants for the `TokenTextViewController`.
 public struct TokenTextViewControllerConstants {
 
-    public static let tokenAttributeName = "com.hootsuite.token"
-    static let inputTextAttributeName = "com.hootsuite.input"
+    public static let tokenAttributeName = "com.tokenUI"
+    static let inputTextAttributeName = "com.tokenUI.input"
     static let inputTextAttributeAnchorValue = "anchor"
     static let inputTextAttributeTextValue = "text"
 
@@ -482,7 +482,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     // MARK: Token List editing
 
-    // Create a token from editable text contained from atIndex to toIndex (excluded)
+    /// Create a token from editable text contained from atIndex to toIndex (excluded)
     fileprivate func tokenizeEditableText(at range: NSRange) {
         if range.length != 0 {
             let nsText = text as NSString
@@ -494,7 +494,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
-    // Create tokens from all editable text contained in the input field
+    /// Create tokens from all editable text contained in the input field
     public func tokenizeAllEditableText() {
         var nsText = text as NSString
 

@@ -63,7 +63,7 @@ public class PasteMediaTextView: UITextView {
         }
     }
 
-    fileprivate var acceptedTypes: [PasteboardItemType]? {
+    private var acceptedTypes: [PasteboardItemType]? {
         if let pasteDelegate = pasteDelegate {
             return PasteboardItemType.allValues.filter { pasteDelegate.pasteMediaTextView(self, shouldAcceptContentOfType: $0) }
         }

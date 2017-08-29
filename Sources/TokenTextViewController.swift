@@ -22,7 +22,7 @@ public protocol TokenTextViewControllerDelegate: class {
     func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference)
 
     /// Called when the formatting is being updated.
-    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]
 
     /// Allows to customize the background color for a token.
     func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
@@ -56,7 +56,7 @@ public extension TokenTextViewControllerDelegate {
     }
 
     /// Empty default implementation
-	func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) {
+    func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference) {
 
     }
 
@@ -92,8 +92,8 @@ public enum TokenTextInputCancellationReason {
 /// A data structure to hold constants for the `TokenTextViewController`.
 public struct TokenTextViewControllerConstants {
 
-    public static let tokenAttributeName = "com.hootsuite.token"
-    static let inputTextAttributeName = "com.hootsuite.input"
+    public static let tokenAttributeName = NSAttributedStringKey(rawValue: "com.hootsuite.token")
+    static let inputTextAttributeName = NSAttributedStringKey(rawValue: "com.hootsuite.input")
     static let inputTextAttributeAnchorValue = "anchor"
     static let inputTextAttributeTextValue = "text"
 
@@ -170,7 +170,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         textStorage.addLayoutManager(layoutManager)
         let textView = PasteMediaTextView(frame: CGRect.zero, textContainer: container)
         textView.delegate = self
-        textView.pasteDelegate = self
+        textView.mediaPasteDelegate = self
         textView.isScrollEnabled = true
         tokenTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(TokenTextViewController.textTapped(_:)))
         tokenTapRecognizer!.numberOfTapsRequired = 1
@@ -202,11 +202,11 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
     }
 
-    func preferredContentSizeChanged(_ notification: Notification) {
+    @objc func preferredContentSizeChanged(_ notification: Notification) {
         tokenTextStorage.updateFormatting()
     }
 
-    func textTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc func textTapped(_ recognizer: UITapGestureRecognizer) {
         textTappedHandler?(recognizer)
     }
 
@@ -414,8 +414,10 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         tokenTextStorage.updateFormatting()
     }
 
-    fileprivate func createNewTokenAttributes() -> [String: Any] {
-        return [TokenTextViewControllerConstants.tokenAttributeName: UUID().uuidString as TokenReference as AnyObject]
+    fileprivate func createNewTokenAttributes() -> [NSAttributedStringKey: Any] {
+        return [
+            TokenTextViewControllerConstants.tokenAttributeName: UUID().uuidString as TokenReference
+        ]
     }
 
     /// Updates the given `Token`'s text with the provided text and informs the delegate of the change.
@@ -742,7 +744,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     // MARK: TokenTextViewTextStorageDelegate
 
-    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [String:AnyObject], forRange: NSRange)]? {
+    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]? {
         return delegate?.tokenTextViewTextStorageIsUpdatingFormatting(self, text: text, searchRange: searchRange)
     }
 

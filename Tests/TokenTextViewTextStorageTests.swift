@@ -25,7 +25,7 @@ class TokenTextViewTextStorageTests: XCTestCase {
             XCTAssertEqual(tokenInfo.range.location, 6)
             XCTAssertEqual(tokenInfo.range.length, 8)
         } else {
-            XCTFail()
+            XCTFail("Expected a token info, got nil")
         }
     }
 
@@ -54,7 +54,7 @@ class TokenTextViewTextStorageTests: XCTestCase {
         if let ref = intersection.first {
             XCTAssertEqual(ref, "token-reference")
         } else {
-            XCTFail()
+            XCTFail("Expected an intersecting token, got nil")
         }
     }
 

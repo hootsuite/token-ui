@@ -59,7 +59,7 @@ extension ViewController: TokenTextViewControllerDelegate {
         let alert = UIAlertController(title: "Token Deleted", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default) { _ in
             self.dismiss(animated: true, completion: nil)
-            })
+        })
         present(alert, animated: true, completion: nil)
     }
 

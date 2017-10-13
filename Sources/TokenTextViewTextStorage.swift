@@ -33,7 +33,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         return backingStore.string
     }
 
-    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey:Any] {
+    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey: Any] {
         return backingStore.attributes(at: index, effectiveRange: range)
     }
 
@@ -47,7 +47,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         endEditing()
     }
 
-    override func setAttributes(_ attrs: [NSAttributedStringKey:Any]!, range: NSRange) {
+    override func setAttributes(_ attrs: [NSAttributedStringKey: Any]!, range: NSRange) {
         beginEditing()
         backingStore.setAttributes(attrs, range: range)
         edited(.editedAttributes, range: range, changeInLength: 0)
@@ -170,8 +170,8 @@ class TokenTextViewTextStorage: NSTextStorage {
     func enumerateTokens(inRange range: NSRange? = nil, withAction action:@escaping (_ tokenRef: TokenReference, _ tokenRange: NSRange) -> ObjCBool) {
         let searchRange = range ?? NSRange(location: 0, length: length)
         enumerateAttribute(TokenTextViewControllerConstants.tokenAttributeName,
-            in:searchRange,
-            options:NSAttributedString.EnumerationOptions(rawValue: 0),
+            in: searchRange,
+            options: NSAttributedString.EnumerationOptions(rawValue: 0),
             using: { value, range, stop in
                 if let tokenRef = value as? TokenReference {
                     let shouldStop = action(tokenRef, range)
@@ -246,8 +246,8 @@ class TokenTextViewTextStorage: NSTextStorage {
     fileprivate func attributeTextAndRange(_ attributeName: NSAttributedStringKey, attributeValue: String) -> (String, NSRange)? {
         var result: (String, NSRange)? = nil
         enumerateAttribute(attributeName,
-            in:NSRange(location: 0, length: length),
-            options:NSAttributedString.EnumerationOptions(rawValue: 0),
+            in: NSRange(location: 0, length: length),
+            options: NSAttributedString.EnumerationOptions(rawValue: 0),
             using: { value, range, stop in
                 if let value = value as? String, value == attributeValue {
                     result = (self.attributedSubstring(from: range).string, range)

@@ -393,7 +393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "# Don't lint when building for Carthage\nif [ ! -z \"$CARTHAGE\" ]; then exit 0; fi\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

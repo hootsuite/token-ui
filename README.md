@@ -1,31 +1,29 @@
 # TokenUI
 
-
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-lightgrey.svg)](https://raw.githubusercontent.com/Carthage/Carthage/master/LICENSE.md)
 [![GitHub release](https://img.shields.io/github/release/carthage/carthage.svg)](https://github.com/Carthage/Carthage/releases)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/Alamofire.svg)](https://img.shields.io/cocoapods/v/Alamofire.svg)
 
-TokenUI is a swift Framework for creating and managing a text input component  that allows to add 'tokens' rendered as pills.
-
+TokenUI is a swift Framework for creating and managing a text input component that allows to add 'tokens' rendered as pills.
 
 TokenUI has been developed for use in the Hootsuite iOS app.
 
 ## Features
 
 - TokenUI provides a layer on top of a `UITextView` that creates and responds to Tokens as the user types and taps.
-- Keeps the same functionalities as a regular `UITextView` so the user can insert, delete and manipulate text even without any added tokens.
+- It keeps the same functionalities as a regular `UITextView` so the user can insert, delete and manipulate text even without any added tokens.
 
 ![TokenUI Demo](https://github.com/hootsuite/token-ui/tree/master/Demo/Resources/TokenUIDemo.gif)
 
 ## Requirements
 
-- iOS 9.3+
-- Xcode 7.3+
+- iOS 10.3+
+- Xcode 8.0+
 
 ## Demo Projects
 
-See the  demo project provided for example usage of the TokenUI framework.
+See the demo project provided for example usage of the TokenUI framework.
 
 
 ## Installation
@@ -57,7 +55,7 @@ pod install
 
 ## Initialization
 
-A TokenUI component is handled by its own controller called `TokenTextViewController` . In order to use it create and instance of `TokenTextViewController`
+A TokenUI component is handled by its own controller called `TokenTextViewController` . In order to use it create an instance of `TokenTextViewController`
 
 ```
 let tokenTextViewController = TokenTextViewController()
@@ -103,7 +101,7 @@ public var range: NSRange
 
 ### Add/Delete/Update tokens
 
-You can easily add/update/delete tokens to your TokenUIViewController using the API methods:
+You can easily add/update/delete tokens to your TokenUIViewController using the following API methods:
 
 ```
 open func addToken(_ startIndex: Int, text: String) -> TokenInformation
@@ -163,7 +161,7 @@ For example, if we want to have blue color for the pill around the tokens:
 
 ```
 func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
-return UIColor.blue
+	return UIColor.blue
 }
 ```
 

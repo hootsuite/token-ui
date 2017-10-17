@@ -56,7 +56,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6736FB0E1F96A405004215F6 /* TokenUIDemo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = TokenUIDemo.gif; sourceTree = "<group>"; };
+		67B914721F96C1B500ECB28E /* TokenUIDemo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = TokenUIDemo.gif; sourceTree = "<group>"; };
 		A8AC40831DA5D8C500D644CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8AC40851DA5D8C500D644CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8AC40871DA5D8C500D644CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		A8AC40821DA5D8C500D644CA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6736FB0E1F96A405004215F6 /* TokenUIDemo.gif */,
+				67B914721F96C1B500ECB28E /* TokenUIDemo.gif */,
 				A8AC40831DA5D8C500D644CA /* Assets.xcassets */,
 				A8AC40841DA5D8C500D644CA /* LaunchScreen.storyboard */,
 				A8AC40861DA5D8C500D644CA /* Main.storyboard */,

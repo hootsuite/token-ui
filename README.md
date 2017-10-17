@@ -57,13 +57,13 @@ pod install
 
 A TokenUI component is handled by its own controller called `TokenTextViewController` . In order to use it create an instance of `TokenTextViewController`
 
-```
+```swift
 let tokenTextViewController = TokenTextViewController()
 ```
 
 If needed set the initial properties such as font type, initial text, etc...
 
-```
+```swift
 tokenTextViewController.scrollEnabled = true
 tokenTextViewController.keyboardType = .default
 tokenTextViewController.text = "initialText"
@@ -72,7 +72,7 @@ tokenTextViewController.text = "initialText"
 
 Next step is to add it as a child of your own viewController and add the `TokenTextViewController` view to the container view. That is the view that is going to display the TokenText UI component.
 
-```
+```swift
 addChildViewController(tokenTextViewController)
 view.addSubview(tokenTextViewController.view)
 tokenTextViewController.didMove(toParentViewController: self)
@@ -84,7 +84,7 @@ tokenTextViewController.didMove(toParentViewController: self)
 
 A token information is represented using the `TokenInformation` struct.
 
-```
+```swift
 public struct TokenInformation {
 
 /// The `Token` identifier.
@@ -103,7 +103,7 @@ public var range: NSRange
 
 You can easily add/update/delete tokens to your TokenUIViewController using the following API methods:
 
-```
+```swift
 open func addToken(_ startIndex: Int, text: String) -> TokenInformation
 open func updateTokenText(_ tokenRef: TokenReference, newText: String)
 open func deleteToken(_ tokenRef: TokenReference)
@@ -112,14 +112,14 @@ open func deleteToken(_ tokenRef: TokenReference)
 
 Example of usage:
 
-```
+```swift
 tokenTextViewController.addToken(6, text: "Team")
 ```
 
 
 You can access a list of all the tokens in the view using the property:
 
-```
+```swift
 var tokenList: [TokenInformation]
 ```
 
@@ -129,7 +129,7 @@ var tokenList: [TokenInformation]
 
 As many other UI components, TokenUI uses the delegate pattern to notify changes to the view controller. Conform to `TokenTextViewControllerDelegate` to access these methods and set the delegate.
 
-```
+```swift
 extension MessageEditorViewController: TokenTextViewControllerDelegate
 ...
 
@@ -140,7 +140,7 @@ tokenTextViewController.delegate = self
 
 TokenTextViewControllerDelegate provides a set of methods to detect changes on the text in a similar way as `UITextViewDelegate`. Also provides methods to detect user interaction with the tokens.
 
-```
+```swift
 func tokenTextViewDidChange(_ sender: TokenTextViewController)
 func textViewDidChangeSelection(_ textView: UITextView)
 func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect)
@@ -152,14 +152,14 @@ func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: To
 
 Tokens can easily be customize using TokenTextViewControllerDelegate methods.
 
-```
+```swift
 func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
 func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
 ```
 
 For example, if we want to have blue color for the pill around the tokens:
 
-```
+```swift
 func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? {
 	return UIColor.blue
 }
@@ -169,7 +169,7 @@ func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController,
 
 You can manipulate text in a TokenUI view the same way you may do it with a UITextView. The API provides several methods for adding text, replacing characters, etc.
 
-```
+```swift
 func appendText(_ text: String)
 func prependText(_ text: String)
 func replaceFirstOccurrenceOfString(_ string: String, withString replacement: String)
@@ -180,7 +180,7 @@ func replaceCharactersInRange(_ range: NSRange, withString: String)
 
 To get notified for changes on the Token Text, we use `TokenTextViewControllerInputDelegate`
 
-```
+```swift
 func tokenTextViewInputTextDidChange(_ sender: TokenTextViewController, inputText: String)
 func tokenTextViewInputTextWasConfirmed(_ sender: TokenTextViewController)
 func tokenTextViewInputTextWasCanceled(_ sender: TokenTextViewController, reason: TokenTextInputCancellationReason)

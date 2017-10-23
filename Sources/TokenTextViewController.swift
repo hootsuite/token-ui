@@ -612,10 +612,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     fileprivate func normalModeTap(recognizer: UITapGestureRecognizer) {
         viewAsTextView.becomeFirstResponder()
         let location: CGPoint = recognizer.location(in: viewAsTextView)
-        let charIndex = viewAsTextView.characterIndexAtLocation(location)
-        if charIndex != nil && charIndex! < viewAsTextView.textStorage.length - 1 {
+        if let charIndex = viewAsTextView.characterIndexAtLocation(location), charIndex < viewAsTextView.textStorage.length - 1 {
             var range = NSRange(location: 0, length: 0)
-            if let tokenRef = viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex!, effectiveRange: &range) as? TokenReference {
+            if let tokenRef = viewAsTextView.attributedText?.attribute(TokenTextViewControllerConstants.tokenAttributeName, at: charIndex, effectiveRange: &range) as? TokenReference {
                 _ = resignFirstResponder()
                 let rect: CGRect = {
                     if let textRange = viewAsTextView.textRangeFromNSRange(range) {

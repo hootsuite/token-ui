@@ -18,7 +18,7 @@ TokenUI has been developed for use in the Hootsuite iOS app.
 
 ## Requirements
 
-- iOS 10.3+
+- iOS 10.0+
 - Xcode 8.0+
 
 ## Demo Projects

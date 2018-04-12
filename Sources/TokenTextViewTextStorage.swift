@@ -47,7 +47,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         endEditing()
     }
 
-    override func setAttributes(_ attrs: [NSAttributedStringKey: Any]!, range: NSRange) {
+    override func setAttributes(_ attrs: [NSAttributedStringKey: Any]?, range: NSRange) {
         beginEditing()
         backingStore.setAttributes(attrs, range: range)
         edited(.editedAttributes, range: range, changeInLength: 0)

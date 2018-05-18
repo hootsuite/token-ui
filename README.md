@@ -14,7 +14,7 @@ TokenUI has been developed for use in the Hootsuite iOS app.
 - TokenUI provides a layer on top of a `UITextView` that creates and responds to Tokens as the user types and taps.
 - It keeps the same functionalities as a regular `UITextView` so the user can insert, delete and manipulate text even without any added tokens.
 
-![TokenUI Demo](https://github.com/hootsuite/token-ui/tree/master/Demo/Resources/TokenUIDemo.gif)
+![TokenUI Demo](https://github.com/hootsuite/token-ui/blob/master/Demo/Resources/TokenUIDemo.gif?raw=true)
 
 ## Requirements
 

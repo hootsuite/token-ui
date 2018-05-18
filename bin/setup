@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-if ! command -v fastlane > /dev/null; then
-  printf 'Fastlane is not installed.\n'
-  exit 1
-fi
-
-bundle install
-bundle exec fastlane update_plugins

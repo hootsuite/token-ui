@@ -25,12 +25,13 @@ public enum PasteboardItemType: String {
 
 /// A data structure used to hold pasteboard data and it's `PasteboardItemType`.
 public struct PasteboardItem {
+    public let type: PasteboardItemType
+    public let data: Data
+
     public init( type: PasteboardItemType, data: Data ) {
         self.type = type
         self.data = data
     }
-    public let type: PasteboardItemType
-    public let data: Data
 }
 
 /// A custom `UITextView` subclass used to accept specific `PasteboardItemType`'s.

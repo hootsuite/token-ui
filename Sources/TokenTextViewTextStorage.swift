@@ -244,7 +244,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     fileprivate func attributeTextAndRange(_ attributeName: NSAttributedStringKey, attributeValue: String) -> (String, NSRange)? {
-        var result: (String, NSRange)? = nil
+        var result: (String, NSRange)?
         enumerateAttribute(attributeName,
             in: NSRange(location: 0, length: length),
             options: NSAttributedString.EnumerationOptions(rawValue: 0),

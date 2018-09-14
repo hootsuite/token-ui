@@ -180,7 +180,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
 
     fileprivate var viewAsTextView: UITextView! {
-        return view as! UITextView
+        return (view as! UITextView)
     }
 
     fileprivate var tokenTextStorage: TokenTextViewTextStorage {

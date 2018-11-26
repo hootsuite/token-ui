@@ -56,7 +56,7 @@ public class PasteMediaTextView: UITextView {
             var results: [PasteboardItem] = []
             for (index, item) in UIPasteboard.general.items.enumerated() {
                 if let type = acceptedTypes.filter({ item[$0.rawValue] != nil }).first,
-                    let data = UIPasteboard.general.data(forPasteboardType: type.rawValue, inItemSet: IndexSet([index]))?.first as? Data {
+                    let data = UIPasteboard.general.data(forPasteboardType: type.rawValue, inItemSet: IndexSet([index]))?.first {
                     results.append(PasteboardItem(type: type, data: data))
                 }
             }

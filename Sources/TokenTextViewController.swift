@@ -22,7 +22,7 @@ public protocol TokenTextViewControllerDelegate: class {
     func tokenTextViewDidAddToken(_ sender: TokenTextViewController, tokenRef: TokenReference)
 
     /// Called when the formatting is being updated.
-    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)]
 
     /// Allows to customize the background color for a token.
     func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor?
@@ -92,8 +92,8 @@ public enum TokenTextInputCancellationReason {
 /// A data structure to hold constants for the `TokenTextViewController`.
 public struct TokenTextViewControllerConstants {
 
-    public static let tokenAttributeName = NSAttributedStringKey(rawValue: "com.hootsuite.token")
-    static let inputTextAttributeName = NSAttributedStringKey(rawValue: "com.hootsuite.input")
+    public static let tokenAttributeName = NSAttributedString.Key(rawValue: "com.hootsuite.token")
+    static let inputTextAttributeName = NSAttributedString.Key(rawValue: "com.hootsuite.input")
     static let inputTextAttributeAnchorValue = "anchor"
     static let inputTextAttributeTextValue = "text"
 
@@ -193,13 +193,13 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(TokenTextViewController.preferredContentSizeChanged(_:)),
-            name: NSNotification.Name.UIContentSizeCategoryDidChange,
+            name: UIContentSizeCategory.didChangeNotification,
             object: nil)
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
     @objc func preferredContentSizeChanged(_ notification: Notification) {
@@ -414,7 +414,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         tokenTextStorage.updateFormatting()
     }
 
-    fileprivate func createNewTokenAttributes() -> [NSAttributedStringKey: Any] {
+    fileprivate func createNewTokenAttributes() -> [NSAttributedString.Key: Any] {
         return [
             TokenTextViewControllerConstants.tokenAttributeName: UUID().uuidString as TokenReference
         ]
@@ -737,7 +737,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     // MARK: TokenTextViewTextStorageDelegate
 
-    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]? {
+    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)]? {
         return delegate?.tokenTextViewTextStorageIsUpdatingFormatting(self, text: text, searchRange: searchRange)
     }
 

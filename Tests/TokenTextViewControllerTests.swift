@@ -14,7 +14,7 @@ class TokenTextViewControllerTests: XCTestCase {
 
     func testSetGetFont() {
         let tokenVC = TokenTextViewController()
-        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        let font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         tokenVC.font = font
         XCTAssertEqual(tokenVC.font, font, "Font should be as set")
     }

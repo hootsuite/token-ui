@@ -5,7 +5,7 @@ import UIKit
 
 protocol TokenTextViewTextStorageDelegate: class {
 
-    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)]?
+    func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)]?
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
     func textStorageForegroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?
 
@@ -33,7 +33,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         return backingStore.string
     }
 
-    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedStringKey: Any] {
+    override func attributes(at index: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedString.Key: Any] {
         return backingStore.attributes(at: index, effectiveRange: range)
     }
 
@@ -47,7 +47,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         endEditing()
     }
 
-    override func setAttributes(_ attrs: [NSAttributedStringKey: Any]?, range: NSRange) {
+    override func setAttributes(_ attrs: [NSAttributedString.Key: Any]?, range: NSRange) {
         beginEditing()
         backingStore.setAttributes(attrs, range: range)
         edited(.editedAttributes, range: range, changeInLength: 0)
@@ -95,7 +95,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         }
 
         enumerateTokens(inRange: searchRange) { (tokenRef, tokenRange) -> ObjCBool in
-            var tokenFormattingAttributes = [NSAttributedStringKey: Any]()
+            var tokenFormattingAttributes = [NSAttributedString.Key: Any]()
             if let backgroundColor = self.formattingDelegate?.textStorageBackgroundColourForTokenRef(self, tokenRef: tokenRef) {
                 tokenFormattingAttributes[.backgroundColor] = backgroundColor
             }
@@ -243,7 +243,7 @@ class TokenTextViewTextStorage: NSTextStorage {
         return attributeTextAndRange(TokenTextViewControllerConstants.inputTextAttributeName, attributeValue: TokenTextViewControllerConstants.inputTextAttributeTextValue)
     }
 
-    fileprivate func attributeTextAndRange(_ attributeName: NSAttributedStringKey, attributeValue: String) -> (String, NSRange)? {
+    fileprivate func attributeTextAndRange(_ attributeName: NSAttributedString.Key, attributeValue: String) -> (String, NSRange)? {
         var result: (String, NSRange)?
         enumerateAttribute(attributeName,
             in: NSRange(location: 0, length: length),

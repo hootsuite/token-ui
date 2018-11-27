@@ -13,10 +13,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         tokenTextVC = TokenTextViewController()
         tokenTextVC.delegate = self
-        addChildViewController(tokenTextVC)
+        addChild(tokenTextVC)
         textInputContainer.addSubview(tokenTextVC.view)
         tokenTextVC.view.frame = textInputContainer.bounds
-        tokenTextVC.didMove(toParentViewController: self)
+        tokenTextVC.didMove(toParent: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +63,7 @@ extension ViewController: TokenTextViewControllerDelegate {
         present(alert, animated: true, completion: nil)
     }
 
-    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedStringKey: Any], forRange: NSRange)] {
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)] {
         return []
     }
 

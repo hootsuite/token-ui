@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tokenTextVC.font = UIFont(name: "HelveticaNeue", size: 19)!
-        tokenTextVC.text = "Hola! "
+        tokenTextVC.text = "Hila! "
         tokenTextVC.addToken(6, text: "Team")
     }
 

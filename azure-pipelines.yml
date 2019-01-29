@@ -17,7 +17,7 @@ steps:
   displayName: 'Xcode debug build'
   inputs:
     actions: 'build'
-    scheme: '$(scheme)'
+    scheme: 'TokenUIDemo'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'

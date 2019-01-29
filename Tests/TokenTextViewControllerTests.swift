@@ -9,7 +9,7 @@ class TokenTextViewControllerTests: XCTestCase {
         let tokenVC = TokenTextViewController()
         let text = "This is not a text."
         tokenVC.text = text
-        XCTAssertEqual(tokenVC.text, "text", "Text should be as set")
+        XCTAssertEqual(tokenVC.text, text, "Text should be as set")
     }
 
     func testSetGetFont() {

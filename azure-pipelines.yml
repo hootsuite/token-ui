@@ -9,11 +9,15 @@ trigger:
 pool:
   vmImage: 'macOS-10.13'
 
+variables:
+  scheme: 'TokenUI'
+
 steps:
 - task: Xcode@5
+  displayName: 'Xcode debug build'
   inputs:
     actions: 'build'
-    scheme: 'TokenUIDemo'
+    scheme: '$(scheme)'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
@@ -21,14 +25,15 @@ steps:
 
 
 - task: Xcode@5
+  displayName: 'Running XCTest/XCUITest'
   inputs:
     actions: 'test'
-    scheme: 'TokenUI'
-    sdk: 'iphoneos'
+    scheme: '$(scheme)'
+    sdk: 'iphonesimulator'
     configuration: 'Debug'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
     xcodeVersion: '10' # Options: 8, 9, 10, default, specifyPath
-    destinationSimulators: 'iPhone 7'
+    destinationSimulators: 'iPhone XS'
     destinationTypeOption: 'simulators'
     destinationPlatformOption: 'iOS'
     useXcpretty: true

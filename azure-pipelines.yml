@@ -25,6 +25,6 @@ steps:
     actions: 'test'
     scheme: 'TokenUI'
     sdk: 'iphoneos'
-    configuration: 'Release'
+    configuration: 'Debug'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
     xcodeVersion: '10' # Options: 8, 9, 10, default, specifyPath

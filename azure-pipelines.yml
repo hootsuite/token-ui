@@ -37,3 +37,4 @@ steps:
     destinationTypeOption: 'simulators'
     destinationPlatformOption: 'iOS'
     useXcpretty: true
+    publishJUnitResults: 'build/reports/junit.xml'

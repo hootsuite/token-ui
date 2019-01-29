@@ -23,7 +23,7 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'test'
-    scheme: 'TokenTests'
+    scheme: 'TokenUI'
     sdk: 'iphoneos'
     configuration: 'Debug'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'

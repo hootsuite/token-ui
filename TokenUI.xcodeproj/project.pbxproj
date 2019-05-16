@@ -210,7 +210,6 @@
 				A8C860981DA5B1EF00F4B309 /* Headers */,
 				A8C860991DA5B1EF00F4B309 /* Resources */,
 				A81982F61DB003030086BAB1 /* Set version number */,
-				A8B7678C1E5B9D0C006A2670 /* Run SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -292,7 +291,7 @@
 			};
 			buildConfigurationList = A8C860951DA5B1EF00F4B309 /* Build configuration list for PBXProject "TokenUI" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -381,21 +380,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Get the version number from the tag in git and the number of commits as the build number\nGIT_VERSION=$(git describe --long --tags | cut -f 1 -d \"-\" | cut -c 2-)\nGIT_BUILD=$(git describe --long --tags | cut -f 2 -d \"-\")\nGIT_HASH=$(git describe --long --tags | cut -f 3 -d \"-\")\necho \"Setting version to $GIT_VERSION, build $GIT_BUILD\"\n\n# Set the version info in plist file\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $GIT_VERSION\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $GIT_BUILD\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A8B7678C1E5B9D0C006A2670 /* Run SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftLint";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Don't lint when building for Carthage\nif [ ! -z \"$CARTHAGE\" ]; then exit 0; fi\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -524,7 +508,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -582,7 +566,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

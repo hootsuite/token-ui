@@ -241,6 +241,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
         set {
             viewAsTextView.textColor = newValue
+            tokenTextStorage.textColor = newValue
         }
     }
 

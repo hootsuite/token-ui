@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         tokenTextVC.font = UIFont(name: "HelveticaNeue", size: 19)!
         tokenTextVC.text = "Hello "
+        tokenTextVC.textColor = .black
         tokenTextVC.addToken(6, text: "Team")
     }
 

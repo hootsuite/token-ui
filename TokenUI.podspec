@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TokenUI"
-  s.version      = "5.0.1"
+  s.version      = "6.0"
   s.ios.deployment_target = "12.0"
   s.summary      = "TokenUI is a swift Framework for creating and managing a text input component that allows to add 'tokens' rendered as pills."
   s.homepage     = "https://github.com/hootsuite/TokenUI"

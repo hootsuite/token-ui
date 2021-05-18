@@ -3,7 +3,7 @@
 import Foundation
 import UIKit
 
-protocol TokenTextViewTextStorageDelegate: class {
+protocol TokenTextViewTextStorageDelegate: AnyObject {
 
     func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)]?
     func textStorageBackgroundColourForTokenRef(_ sender: TokenTextViewTextStorage, tokenRef: TokenReference) -> UIColor?

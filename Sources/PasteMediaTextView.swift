@@ -5,7 +5,7 @@ import UIKit
 import MobileCoreServices
 
 /// A delegate used to receive `PasteboardItem`'s of different `PasteboardItemType`'s.
-protocol PasteMediaTextViewPasteDelegate: class {
+protocol PasteMediaTextViewPasteDelegate: AnyObject {
 
     func pasteMediaTextView(_: PasteMediaTextView, shouldAcceptContentOfType type: PasteboardItemType) -> Bool
     func pasteMediaTextView(_: PasteMediaTextView, didReceive items: [PasteboardItem])

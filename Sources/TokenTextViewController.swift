@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 
 /// The delegate used to handle user interaction and enable/disable customization to a `TokenTextViewController`.
-public protocol TokenTextViewControllerDelegate: class {
+public protocol TokenTextViewControllerDelegate: AnyObject {
 
     /// Called when text changes.
     func tokenTextViewDidChange(_ sender: TokenTextViewController)
@@ -68,7 +68,7 @@ public extension TokenTextViewControllerDelegate {
 }
 
 /// The delegate used to handle text input in a `TokenTextViewController`.
-public protocol TokenTextViewControllerInputDelegate: class {
+public protocol TokenTextViewControllerInputDelegate: AnyObject {
 
     /// Called whenever the text is updated.
     func tokenTextViewInputTextDidChange(_ sender: TokenTextViewController, inputText: String)

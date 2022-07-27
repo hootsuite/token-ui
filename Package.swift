@@ -11,6 +11,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "TokenUI", path: "Sources"),
-        .testTarget(name: "TokenUITests", dependencies: ["TokenUI"], path: "Tests")
+        .testTarget(name: "TokenTests", dependencies: ["TokenUI"], path: "Tests")
     ]
 )

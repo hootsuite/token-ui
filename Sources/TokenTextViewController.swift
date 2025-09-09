@@ -195,11 +195,35 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             selector: #selector(TokenTextViewController.preferredContentSizeChanged(_:)),
             name: UIContentSizeCategory.didChangeNotification,
             object: nil)
+
+        // ADD THESE NEW OBSERVERS for automatic formatting refresh
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(TokenTextViewController.refreshFormattingAutomatically),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(TokenTextViewController.refreshFormattingAutomatically),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
+    @objc func refreshFormattingAutomatically() {
+        // Small delay to ensure view hierarchy is stable
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.forceRefreshFormatting()
+        }
     }
 
     @objc func preferredContentSizeChanged(_ notification: Notification) {
@@ -754,6 +778,17 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     fileprivate func effectiveTokenDisplayText(_ originalText: String) -> String {
         return tokenTextStorage.effectiveTokenDisplayText(originalText)
+    }
+
+    private func forceRefreshFormatting() {
+        guard let textView = self.view as? UITextView else { return }
+
+        let textStorage = textView.textStorage
+
+        textStorage.beginEditing()
+        let fullRange = NSRange(location: 0, length: textStorage.length)
+        textStorage.edited(.editedAttributes, range: fullRange, changeInLength: 0)
+        textStorage.endEditing()
     }
 
 }

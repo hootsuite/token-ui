@@ -268,21 +268,31 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
         let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
         var hasFormatting = false
+        var colorInfo: [(String, NSRange)] = []
 
         attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
             if let color = value as? UIColor {
-                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-                color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                // Get color description and check if it's different from default
+                let colorDesc = color.description
+                colorInfo.append((colorDesc, range))
 
-                // Check if it's a link color (typically blue-ish)
-                if blue > 0.5 && red < 0.3 && green < 0.3 {
-                    hasFormatting = true
-                    print("[TokenUI]    - Found link formatting at range: \(range)")
-                    stop.pointee = true
+                // More flexible color detection - any non-black/gray color
+                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+                if color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+                    let isColorful = (red > 0.1 && green < red * 0.7 && blue < red * 0.7) ||  // Reddish
+                                    (green > 0.1 && red < green * 0.7 && blue < green * 0.7) ||  // Greenish
+                                    (blue > 0.1 && red < blue * 0.7 && green < blue * 0.7)      // Blueish
+
+                    if isColorful {
+                        hasFormatting = true
+                        print("[TokenUI]    - Found formatted color: R:\(red) G:\(green) B:\(blue) at range: \(range)")
+                        stop.pointee = true
+                    }
                 }
             }
         }
 
+        print("[TokenUI]    - All colors found: \(colorInfo)")
         print("[TokenUI]    - Overall formatting status: \(hasFormatting ? "✅ Present" : "❌ Missing")")
         return hasFormatting
     }

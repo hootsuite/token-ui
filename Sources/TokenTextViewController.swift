@@ -226,122 +226,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
-    // Enhanced debugging to track each layout event
-    private var layoutEventCounter = 0
-    private var lastFormattingStatus = false
 
-    open func layoutManagerDidInvalidateLayout(_ layoutManager: NSLayoutManager) {
-        layoutEventCounter += 1
-        let currentStatus = checkFormattingStatus()
-
-        print("[TokenUI] 🔄 Layout invalidation #\(layoutEventCounter)")
-        print("[TokenUI]    - Formatting BEFORE invalidation: \(currentStatus ? "✅" : "❌")")
-
-        if lastFormattingStatus && !currentStatus {
-            print("[TokenUI]    - ⚠️ FORMATTING LOST DURING THIS INVALIDATION!")
-        }
-
-        lastFormattingStatus = currentStatus
-    }
-
-    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
-        let currentStatus = checkFormattingStatus()
-
-        print("[TokenUI] 📐 Layout completion #\(layoutEventCounter), finished: \(layoutFinishedFlag)")
-        print("[TokenUI]    - Formatting AFTER completion: \(currentStatus ? "✅" : "❌")")
-
-        if lastFormattingStatus && !currentStatus {
-            print("[TokenUI]    - ⚠️ FORMATTING LOST DURING THIS COMPLETION!")
-            // Immediately restore formatting
-            print("[TokenUI]    - 🔧 Attempting to restore formatting...")
-            updateTokenFormatting()
-        }
-
-        lastFormattingStatus = currentStatus
-    }
-
-    private func checkFormattingStatus() -> Bool {
-        let text = viewAsTextView.text ?? ""
-        let attributedText = viewAsTextView.attributedText
-
-        guard text.contains("google.com") || text.contains("#") else { return true }
-
-        let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
-        var hasFormatting = false
-        var colorInfo: [(String, NSRange)] = []
-
-        attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
-            if let color = value as? UIColor {
-                // Get color description and check if it's different from default
-                let colorDesc = color.description
-                colorInfo.append((colorDesc, range))
-
-                // More flexible color detection - any non-black/gray color
-                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-                if color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
-                    let isColorful = (red > 0.1 && green < red * 0.7 && blue < red * 0.7) ||  // Reddish
-                                    (green > 0.1 && red < green * 0.7 && blue < green * 0.7) ||  // Greenish
-                                    (blue > 0.1 && red < blue * 0.7 && green < blue * 0.7)      // Blueish
-
-                    if isColorful {
-                        hasFormatting = true
-                        print("[TokenUI]    - Found formatted color: R:\(red) G:\(green) B:\(blue) at range: \(range)")
-                        stop.pointee = true
-                    }
-                }
-            }
-        }
-
-        print("[TokenUI]    - All colors found: \(colorInfo)")
-        print("[TokenUI]    - Overall formatting status: \(hasFormatting ? "✅ Present" : "❌ Missing")")
-        return hasFormatting
-    }
-
-//    open func layoutManagerDidInvalidateLayout(_ layoutManager: NSLayoutManager) {
-//        print("🔄 Layout manager invalidated layout - this might strip formatting!")
-//    }
-//
-//    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
-//        print("📐 Layout completed, finished: \(layoutFinishedFlag)")
-//
-//        // Check if formatting is lost after layout completion
-//        if layoutFinishedFlag {
-//            DispatchQueue.main.async { [weak self] in
-//                self?.debugFormattingAfterLayout()
-//            }
-//        }
-//    }
-//
-//    private func debugFormattingAfterLayout() {
-//        let text = viewAsTextView.text ?? ""
-//        let attributedText = viewAsTextView.attributedText
-//
-//        print("🎨 Post-layout formatting check:")
-//        print("   - Text: \(text.prefix(50))...")
-//
-//        if text.contains("#") || text.contains("http") {
-//            print("   - Text should have formatting")
-//
-//            // Simple check: count how many characters have foreground color attributes
-//            let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
-//            var coloredCharCount = 0
-//
-//            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
-//                if value != nil {
-//                    coloredCharCount += range.length
-//                }
-//            }
-//
-//            print("   - Characters with color attributes: \(coloredCharCount)/\(fullRange.length)")
-//
-//            if coloredCharCount == 0 {
-//                print("   - ❌ NO FORMATTING FOUND - triggering refresh")
-//                updateTokenFormatting()
-//            } else {
-//                print("   - ✅ Formatting still present")
-//            }
-//        }
-//    }
 
     @objc func preferredContentSizeChanged(_ notification: Notification) {
         tokenTextStorage.updateFormatting()
@@ -875,6 +760,32 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             return false
         }
         return true
+    }
+
+    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
+        if layoutFinishedFlag {
+            // Detect attribute consolidation (formatting loss)
+            let text = viewAsTextView.text ?? ""
+            let attributedText = viewAsTextView.attributedText
+
+            if text.contains("google.com") || text.contains("#") {
+                let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+                var colorRanges: [NSRange] = []
+
+                // Count distinct color ranges
+                attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+                    if value != nil {
+                        colorRanges.append(range)
+                    }
+                }
+
+                // If we have only 1 color range covering entire text, formatting was consolidated
+                if colorRanges.count == 1 && colorRanges.first?.length == fullRange.length {
+                    print("[TokenUI] 🔧 Detected attribute consolidation - restoring formatting")
+                    updateTokenFormatting()
+                }
+            }
+        }
     }
 
     // MARK: TokenTextViewTextStorageDelegate

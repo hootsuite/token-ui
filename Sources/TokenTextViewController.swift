@@ -226,51 +226,112 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    // Enhanced debugging to track each layout event
+    private var layoutEventCounter = 0
+    private var lastFormattingStatus = false
+
     open func layoutManagerDidInvalidateLayout(_ layoutManager: NSLayoutManager) {
-        print("🔄 Layout manager invalidated layout - this might strip formatting!")
+        layoutEventCounter += 1
+        let currentStatus = checkFormattingStatus()
+
+        print("[TokenUI] 🔄 Layout invalidation #\(layoutEventCounter)")
+        print("[TokenUI]    - Formatting BEFORE invalidation: \(currentStatus ? "✅" : "❌")")
+
+        if lastFormattingStatus && !currentStatus {
+            print("[TokenUI]    - ⚠️ FORMATTING LOST DURING THIS INVALIDATION!")
+        }
+
+        lastFormattingStatus = currentStatus
     }
 
     open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
-        print("📐 Layout completed, finished: \(layoutFinishedFlag)")
+        let currentStatus = checkFormattingStatus()
 
-        // Check if formatting is lost after layout completion
-        if layoutFinishedFlag {
-            DispatchQueue.main.async { [weak self] in
-                self?.debugFormattingAfterLayout()
-            }
+        print("[TokenUI] 📐 Layout completion #\(layoutEventCounter), finished: \(layoutFinishedFlag)")
+        print("[TokenUI]    - Formatting AFTER completion: \(currentStatus ? "✅" : "❌")")
+
+        if lastFormattingStatus && !currentStatus {
+            print("[TokenUI]    - ⚠️ FORMATTING LOST DURING THIS COMPLETION!")
+            // Immediately restore formatting
+            print("[TokenUI]    - 🔧 Attempting to restore formatting...")
+            updateTokenFormatting()
         }
+
+        lastFormattingStatus = currentStatus
     }
 
-    private func debugFormattingAfterLayout() {
+    private func checkFormattingStatus() -> Bool {
         let text = viewAsTextView.text ?? ""
         let attributedText = viewAsTextView.attributedText
 
-        print("🎨 Post-layout formatting check:")
-        print("   - Text: \(text.prefix(50))...")
+        guard text.contains("google.com") || text.contains("#") else { return true }
 
-        if text.contains("#") || text.contains("http") {
-            print("   - Text should have formatting")
+        let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+        var hasFormatting = false
 
-            // Simple check: count how many characters have foreground color attributes
-            let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
-            var coloredCharCount = 0
+        attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+            if let color = value as? UIColor {
+                var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+                color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 
-            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
-                if value != nil {
-                    coloredCharCount += range.length
+                // Check if it's a link color (typically blue-ish)
+                if blue > 0.5 && red < 0.3 && green < 0.3 {
+                    hasFormatting = true
+                    print("[TokenUI]    - Found link formatting at range: \(range)")
+                    stop.pointee = true
                 }
             }
-
-            print("   - Characters with color attributes: \(coloredCharCount)/\(fullRange.length)")
-
-            if coloredCharCount == 0 {
-                print("   - ❌ NO FORMATTING FOUND - triggering refresh")
-                updateTokenFormatting()
-            } else {
-                print("   - ✅ Formatting still present")
-            }
         }
+
+        print("[TokenUI]    - Overall formatting status: \(hasFormatting ? "✅ Present" : "❌ Missing")")
+        return hasFormatting
     }
+
+//    open func layoutManagerDidInvalidateLayout(_ layoutManager: NSLayoutManager) {
+//        print("🔄 Layout manager invalidated layout - this might strip formatting!")
+//    }
+//
+//    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
+//        print("📐 Layout completed, finished: \(layoutFinishedFlag)")
+//
+//        // Check if formatting is lost after layout completion
+//        if layoutFinishedFlag {
+//            DispatchQueue.main.async { [weak self] in
+//                self?.debugFormattingAfterLayout()
+//            }
+//        }
+//    }
+//
+//    private func debugFormattingAfterLayout() {
+//        let text = viewAsTextView.text ?? ""
+//        let attributedText = viewAsTextView.attributedText
+//
+//        print("🎨 Post-layout formatting check:")
+//        print("   - Text: \(text.prefix(50))...")
+//
+//        if text.contains("#") || text.contains("http") {
+//            print("   - Text should have formatting")
+//
+//            // Simple check: count how many characters have foreground color attributes
+//            let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+//            var coloredCharCount = 0
+//
+//            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+//                if value != nil {
+//                    coloredCharCount += range.length
+//                }
+//            }
+//
+//            print("   - Characters with color attributes: \(coloredCharCount)/\(fullRange.length)")
+//
+//            if coloredCharCount == 0 {
+//                print("   - ❌ NO FORMATTING FOUND - triggering refresh")
+//                updateTokenFormatting()
+//            } else {
+//                print("   - ✅ Formatting still present")
+//            }
+//        }
+//    }
 
     @objc func preferredContentSizeChanged(_ notification: Notification) {
         tokenTextStorage.updateFormatting()

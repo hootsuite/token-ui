@@ -763,29 +763,60 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     }
 
     open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
-        if layoutFinishedFlag {
-            // Detect attribute consolidation (formatting loss)
-            let text = viewAsTextView.text ?? ""
-            let attributedText = viewAsTextView.attributedText
+        guard layoutFinishedFlag else {
+            return
+        }
 
-            if text.contains("google.com") || text.contains("#") {
-                let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
-                var colorRanges: [NSRange] = []
+        let text = viewAsTextView.text ?? ""
+        let attributedText = viewAsTextView.attributedText
+        let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
 
-                // Count distinct color ranges
-                attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
-                    if value != nil {
-                        colorRanges.append(range)
-                    }
-                }
-
-                // If we have only 1 color range covering entire text, formatting was consolidated
-                if colorRanges.count == 1 && colorRanges.first?.length == fullRange.length {
-                    print("[TokenUI] 🔧 Detected attribute consolidation - restoring formatting")
-                    updateTokenFormatting()
-                }
+        // Count distinct color ranges
+        var colorRanges: [NSRange] = []
+        attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+            if value != nil {
+                colorRanges.append(range)
             }
         }
+
+        // Check if attributes were consolidated (single color range = entire text)
+        let hasConsolidatedAttributes = colorRanges.count == 1 &&
+                                       colorRanges.first?.length == fullRange.length
+
+        guard hasConsolidatedAttributes else {
+            return
+        }
+        
+        // Ask delegate if this text should have formatting
+        if let expectedFormats = delegate?.tokenTextViewTextStorageIsUpdatingFormatting(self, text: text, searchRange: fullRange),
+           !expectedFormats.isEmpty {
+            print("[TokenUI] 🔧 Detected attribute consolidation - restoring formatting")
+            updateTokenFormatting()
+        }
+
+
+//        // Detect attribute consolidation (formatting loss)
+//        let text = viewAsTextView.text ?? ""
+//        let attributedText = viewAsTextView.attributedText
+//
+//        if text.contains("google.com") || text.contains("#") {
+//            let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+//            var colorRanges: [NSRange] = []
+//
+//            // Count distinct color ranges
+//            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+//                if value != nil {
+//                    colorRanges.append(range)
+//                }
+//            }
+//
+//            // If we have only 1 color range covering entire text, formatting was consolidated
+//            if colorRanges.count == 1 && colorRanges.first?.length == fullRange.length {
+//                print("[TokenUI] 🔧 Detected attribute consolidation - restoring formatting")
+//                updateTokenFormatting()
+//            }
+//        }
+
     }
 
     // MARK: TokenTextViewTextStorageDelegate

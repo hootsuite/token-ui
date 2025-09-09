@@ -222,7 +222,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     @objc func refreshFormattingAutomatically() {
         // Small delay to ensure view hierarchy is stable
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.forceRefreshFormatting()
+            self?.updateTokenFormatting()
         }
     }
 
@@ -778,17 +778,6 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     fileprivate func effectiveTokenDisplayText(_ originalText: String) -> String {
         return tokenTextStorage.effectiveTokenDisplayText(originalText)
-    }
-
-    private func forceRefreshFormatting() {
-        guard let textView = self.view as? UITextView else { return }
-
-        let textStorage = textView.textStorage
-
-        textStorage.beginEditing()
-        let fullRange = NSRange(location: 0, length: textStorage.length)
-        textStorage.edited(.editedAttributes, range: fullRange, changeInLength: 0)
-        textStorage.endEditing()
     }
 
 }

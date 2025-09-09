@@ -226,6 +226,52 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         }
     }
 
+    open func layoutManagerDidInvalidateLayout(_ layoutManager: NSLayoutManager) {
+        print("🔄 Layout manager invalidated layout - this might strip formatting!")
+    }
+
+    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
+        print("📐 Layout completed, finished: \(layoutFinishedFlag)")
+
+        // Check if formatting is lost after layout completion
+        if layoutFinishedFlag {
+            DispatchQueue.main.async { [weak self] in
+                self?.debugFormattingAfterLayout()
+            }
+        }
+    }
+
+    private func debugFormattingAfterLayout() {
+        let text = viewAsTextView.text ?? ""
+        let attributedText = viewAsTextView.attributedText
+
+        print("🎨 Post-layout formatting check:")
+        print("   - Text: \(text.prefix(50))...")
+
+        if text.contains("#") || text.contains("http") {
+            print("   - Text should have formatting")
+
+            // Simple check: count how many characters have foreground color attributes
+            let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+            var coloredCharCount = 0
+
+            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, stop in
+                if value != nil {
+                    coloredCharCount += range.length
+                }
+            }
+
+            print("   - Characters with color attributes: \(coloredCharCount)/\(fullRange.length)")
+
+            if coloredCharCount == 0 {
+                print("   - ❌ NO FORMATTING FOUND - triggering refresh")
+                updateTokenFormatting()
+            } else {
+                print("   - ✅ Formatting still present")
+            }
+        }
+    }
+
     @objc func preferredContentSizeChanged(_ notification: Notification) {
         tokenTextStorage.updateFormatting()
     }

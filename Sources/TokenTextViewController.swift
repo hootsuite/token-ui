@@ -195,38 +195,12 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             selector: #selector(TokenTextViewController.preferredContentSizeChanged(_:)),
             name: UIContentSizeCategory.didChangeNotification,
             object: nil)
-
-        // ADD THESE NEW OBSERVERS for automatic formatting refresh
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(TokenTextViewController.refreshFormattingAutomatically),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(TokenTextViewController.refreshFormattingAutomatically),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
     }
-
-    @objc func refreshFormattingAutomatically() {
-        // Small delay to ensure view hierarchy is stable
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.updateTokenFormatting()
-        }
-    }
-
-
 
     @objc func preferredContentSizeChanged(_ notification: Notification) {
         tokenTextStorage.updateFormatting()

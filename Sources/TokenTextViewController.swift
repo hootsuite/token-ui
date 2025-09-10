@@ -736,6 +736,46 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         return true
     }
 
+    open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
+        guard
+            layoutFinishedFlag,
+            let text = viewAsTextView.text
+        else {
+            return
+        }
+
+        let attributedText = viewAsTextView.attributedText
+        let fullRange = NSRange(location: 0, length: attributedText?.length ?? 0)
+
+        // Count distinct color ranges
+        let colorRanges: [NSRange] = {
+            var colorRanges: [NSRange] = []
+            attributedText?.enumerateAttribute(.foregroundColor, in: fullRange, options: []) { value, range, _ in
+                if value != nil {
+                    colorRanges.append(range)
+                }
+            }
+            return colorRanges
+        }()
+
+        // Check if attributes were consolidated
+        let hasConsolidatedAttributes = colorRanges.count == 1 && colorRanges.first?.length == fullRange.length
+
+        guard hasConsolidatedAttributes else {
+            return
+        }
+
+        // Ask delegate if this text should have formatting
+        guard
+            let expectedFormats = delegate?.tokenTextViewTextStorageIsUpdatingFormatting(self, text: text, searchRange: fullRange),
+            !expectedFormats.isEmpty
+        else {
+            return
+        }
+
+        updateTokenFormatting()
+    }
+
     // MARK: TokenTextViewTextStorageDelegate
 
     func textStorageIsUpdatingFormatting(_ sender: TokenTextViewTextStorage, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)]? {

@@ -376,4 +376,98 @@ class TokenTextViewControllerTests: XCTestCase {
         XCTAssertEqual(tokenVC.tokenList.count, 0, "Make token editable with modified emoji, token list count")
         XCTAssertEqual(tokenVC.text, emoji, "Make token editable with modified emoji, text")
     }
+
+    // MARK: - Layout Manager Delegate Tests
+
+    func testLayoutManagerDidCompleteLayout_whenLayoutNotFinished_shouldNotQueryDelegate() {
+        /// Given
+        let tokenViewController = TokenTextViewController()
+        let mockDelegate = MockTokenTextViewControllerDelegate()
+        tokenViewController.delegate = mockDelegate
+        tokenViewController.text = "Check http://google.com"
+        mockDelegate.reset()
+
+        /// When
+        tokenViewController.layoutManager(NSLayoutManager(), didCompleteLayoutFor: nil, atEnd: false)
+
+        /// Then
+        XCTAssertFalse(mockDelegate.textStorageIsUpdatingFormattingCalled, "Should not query delegate when layout not finished")
+    }
+
+    func testLayoutManagerDidCompleteLayout_whenNoText_shouldNotQueryDelegate() {
+        /// Given
+        let tokenViewController = TokenTextViewController()
+        let mockDelegate = MockTokenTextViewControllerDelegate()
+        tokenViewController.delegate = mockDelegate
+        tokenViewController.text = nil
+
+        /// When
+        tokenViewController.layoutManager(NSLayoutManager(), didCompleteLayoutFor: nil, atEnd: true)
+
+        /// Then
+        XCTAssertFalse(mockDelegate.textStorageIsUpdatingFormattingCalled, "Should not query delegate when no text")
+    }
+
+    func testLayoutManagerDidCompleteLayout_whenEmptyExpectedFormats_shouldNotTriggerFormatting() {
+        /// Given
+        let tokenViewController = TokenTextViewController()
+        let mockDelegate = MockTokenTextViewControllerDelegate()
+        mockDelegate.expectedFormats = [] // No expected formats
+        tokenViewController.delegate = mockDelegate
+        tokenViewController.text = "Plain text with no formatting"
+
+        /// When
+        tokenViewController.layoutManager(NSLayoutManager(), didCompleteLayoutFor: nil, atEnd: true)
+
+        /// Then
+        XCTAssertTrue(mockDelegate.textStorageIsUpdatingFormattingCalled, "Should query delegate for expected formats")
+        XCTAssertEqual(mockDelegate.lastQueriedText, "Plain text with no formatting", "Should query with correct text")
+    }
+
+    func testLayoutManagerDidCompleteLayout_whenExpectedFormatsExist_shouldQueryDelegate() {
+        /// Given
+        let tokenViewController = TokenTextViewController()
+        let mockDelegate = MockTokenTextViewControllerDelegate()
+        mockDelegate.expectedFormats = [
+            (attributes: [.foregroundColor: UIColor.blue], forRange: NSRange(location: 6, length: 17))
+        ]
+        tokenViewController.delegate = mockDelegate
+        tokenViewController.text = "Check http://google.com"
+
+        /// When
+        tokenViewController.layoutManager(NSLayoutManager(), didCompleteLayoutFor: nil, atEnd: true)
+
+        /// Then
+        XCTAssertTrue(mockDelegate.textStorageIsUpdatingFormattingCalled, "Should query delegate for expected formats")
+        XCTAssertEqual(mockDelegate.lastQueriedText, "Check http://google.com", "Should query with correct text")
+        XCTAssertEqual(mockDelegate.lastQueriedRange, NSRange(location: 0, length: 23), "Should query with full range")
+    }
+}
+
+private class MockTokenTextViewControllerDelegate: TokenTextViewControllerDelegate {
+    var expectedFormats: [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)] = []
+    var textStorageIsUpdatingFormattingCalled = false
+    var lastQueriedText: String?
+    var lastQueriedRange: NSRange?
+
+    func reset() {
+        textStorageIsUpdatingFormattingCalled = false
+        lastQueriedText = nil
+        lastQueriedRange = nil
+    }
+
+    func tokenTextViewTextStorageIsUpdatingFormatting(_ sender: TokenTextViewController, text: String, searchRange: NSRange) -> [(attributes: [NSAttributedString.Key: Any], forRange: NSRange)] {
+        textStorageIsUpdatingFormattingCalled = true
+        lastQueriedText = text
+        lastQueriedRange = searchRange
+        return expectedFormats
+    }
+
+    func tokenTextViewDidChange(_ sender: TokenTextViewController) {}
+    func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool { return true }
+    func tokenTextViewDidSelectToken(_ sender: TokenTextViewController, tokenRef: TokenReference, fromRect rect: CGRect) {}
+    func tokenTextViewDidDeleteToken(_ sender: TokenTextViewController, tokenRef: TokenReference) {}
+    func tokenTextViewBackgroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? { return nil }
+    func tokenTextViewForegroundColourForTokenRef(_ sender: TokenTextViewController, tokenRef: TokenReference) -> UIColor? { return nil }
+    func tokenTextViewShouldCancelEditingAtInsert(_ sender: TokenTextViewController, newText: String, inputText: String) -> Bool { return false }
 }

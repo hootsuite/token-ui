@@ -35,6 +35,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: TokenTextViewControllerDelegate {
+    func tokenTextViewDidChangeSelection(_ sender: TokenTextViewController, selectedRange: NSRange) {
+    }
 
     func tokenTextViewDidChange(_ sender: TokenTextViewController) {
     }

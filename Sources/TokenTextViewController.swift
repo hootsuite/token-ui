@@ -9,6 +9,9 @@ public protocol TokenTextViewControllerDelegate: AnyObject {
     /// Called when text changes.
     func tokenTextViewDidChange(_ sender: TokenTextViewController)
 
+    /// Called when the cursor position changes (selection changed).
+    func tokenTextViewDidChangeSelection(_ sender: TokenTextViewController, selectedRange: NSRange)
+
     /// Whether an edit should be accepted.
     func tokenTextViewShouldChangeTextInRange(_ sender: TokenTextViewController, range: NSRange, replacementText text: String) -> Bool
 
@@ -44,6 +47,9 @@ public protocol TokenTextViewControllerDelegate: AnyObject {
 
 /// Default implementation for some `TokenTextViewControllerDelegate` methods.
 public extension TokenTextViewControllerDelegate {
+    /// Empty default implementation
+    func tokenTextViewDidChangeSelection(_ sender: TokenTextViewController, selectedRange: NSRange) {
+    }
 
     /// Default value of `false`.
     func tokenTextView(_: TokenTextViewController, shouldAcceptContentOfType type: PasteboardItemType) -> Bool {
@@ -668,6 +674,8 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
                 viewAsTextView.selectedRange = NSRange(location: adjustedSelectionStart, length: adjustedSelectionLength)
             }
         }
+
+        delegate?.tokenTextViewDidChangeSelection(self, selectedRange: viewAsTextView.selectedRange)
     }
 
     fileprivate func clampCursorLocationToToken(_ cursorLocation: Int) -> Int {

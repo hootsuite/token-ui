@@ -583,7 +583,29 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
         viewAsTextView.selectedRange = NSRange(location: location + (text as NSString).length + initialInputLength, length: 0)
         viewAsTextView.autocorrectionType = .no
         viewAsTextView.delegate = inputModeHandler
-        textTappedHandler = inputModeTapHandler
+        delegate?.tokenTextViewDidChange(self)
+        tokenTextStorage.updateFormatting()
+    }
+
+    /// Switches to input editing mode for existing text without inserting anything.
+    /// Use this when the cursor moves to an existing @mention word.
+    /// - Parameters:
+    ///   - anchorRange: The range of the anchor character (e.g., @)
+    ///   - inputRange: The range of the input text after the anchor
+    open func switchToInputEditingModeForExistingText(anchorRange: NSRange, inputRange: NSRange) {
+        tokenTextStorage.addAttributes(
+            [TokenTextViewControllerConstants.inputTextAttributeName: TokenTextViewControllerConstants.inputTextAttributeAnchorValue],
+            range: anchorRange
+        )
+        if inputRange.length > 0 {
+            tokenTextStorage.addAttributes(
+                [TokenTextViewControllerConstants.inputTextAttributeName: TokenTextViewControllerConstants.inputTextAttributeTextValue],
+                range: inputRange
+            )
+        }
+        viewAsTextView.selectedRange = NSRange(location: inputRange.location + inputRange.length, length: 0)
+        viewAsTextView.autocorrectionType = .no
+        viewAsTextView.delegate = inputModeHandler
         delegate?.tokenTextViewDidChange(self)
         tokenTextStorage.updateFormatting()
     }

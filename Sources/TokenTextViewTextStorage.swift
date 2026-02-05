@@ -105,10 +105,6 @@ class TokenTextViewTextStorage: NSTextStorage {
 
             let formattingRange = self.displayRangeFromTokenRange(tokenRange)
             self.addAttributes(tokenFormattingAttributes, range: formattingRange)
-
-            // Add kerning to the leading and trailing space to prevent overlap
-            self.addAttributes([.kern: 3.0], range: NSRange(location: tokenRange.location, length: 1))
-            self.addAttributes([.kern: 3.0], range: NSRange(location: tokenRange.location + tokenRange.length - 1, length: 1))
             return false
         }
 
@@ -237,11 +233,11 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     func effectiveTokenDisplayText(_ originalText: String) -> String {
-        return " \(originalText) "
+        return originalText
     }
 
     fileprivate func displayRangeFromTokenRange(_ tokenRange: NSRange) -> NSRange {
-        return NSRange(location: tokenRange.location + 1, length: tokenRange.length - 2)
+        return tokenRange
     }
 
     // MARK: Input mode

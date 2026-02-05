@@ -147,7 +147,7 @@ class TokenTextViewControllerTests: XCTestCase {
         _ = tokenVC.addToken(9, text: "davidby")
         let tokenList = tokenVC.tokenList
         XCTAssertEqual(tokenList.count, 1, "Token should be added")
-        XCTAssertEqual(tokenList[0].text, " davidby ", "Token should be added with right text")
+        XCTAssertEqual(tokenList[0].text, "davidby", "Token should be added with right text")
     }
 
     func testAddedTokenHasRightReference() {
@@ -172,7 +172,7 @@ class TokenTextViewControllerTests: XCTestCase {
         let tokenRef = tokenVC.addToken(9, text: "davidby").reference
         tokenVC.updateTokenText(tokenRef, newText: "db")
         let tokenList = tokenVC.tokenList
-        XCTAssertEqual(tokenList[0].text, " db ", "Token should be updated with right text")
+        XCTAssertEqual(tokenList[0].text, "db", "Token should be updated with right text")
     }
 
     func testIntersectToken() {
@@ -206,7 +206,7 @@ class TokenTextViewControllerTests: XCTestCase {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "This is awesome"
         tokenVC.tokenizeAllEditableText()
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This is awesome ", "Tokenize all editable text should handle text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This is awesome", "Tokenize all editable text should handle text")
     }
 
     func testTokenizeAllEditableTextWithTextToken() {
@@ -215,8 +215,8 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.addToken(4, text: "is awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 2)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This ")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " is awesome ", "Tokenize all editable text should handle text-token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "is awesome", "Tokenize all editable text should handle text-token")
     }
 
     func testTokenizeAllEditableTextWithTextTokenText() {
@@ -226,21 +226,22 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.appendText("awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 3)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This ")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " is ")
-        XCTAssertEqual(tokenVC.tokenList[2].text, " awesome ", "Tokenize all editable text should handle text-token-text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "is")
+        XCTAssertEqual(tokenVC.tokenList[2].text, "awesome", "Tokenize all editable text should handle text-token-text")
     }
 
     func testTokenizeAllEditableTextWithTextTokenToken() {
         let tokenVC = TokenTextViewController()
         tokenVC.text = "This"
         tokenVC.addToken(4, text: "is")
-        tokenVC.addToken(8, text: "awesome")
+        // Without boundary chars: "This" (4) + "is" (2) = 6, so next token at position 6
+        tokenVC.addToken(6, text: "awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 3)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This ")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " is ")
-        XCTAssertEqual(tokenVC.tokenList[2].text, " awesome ", "Tokenize all editable text should handle text-token-token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "is")
+        XCTAssertEqual(tokenVC.tokenList[2].text, "awesome", "Tokenize all editable text should handle text-token-token")
     }
 
     func testTokenizeAllEditableTextWithToken() {
@@ -248,7 +249,7 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.addToken(0, text: "This is awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 1)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This is awesome ", "Tokenize all editable text should handle token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This is awesome", "Tokenize all editable text should handle token")
     }
 
     func testTokenizeAllEditableTextWithTokenText() {
@@ -257,20 +258,21 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.appendText("is awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 2)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This ", "Tokenize all editable text should handle token-text first token")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " is awesome ", "Tokenize all editable text should handle token-text second token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This", "Tokenize all editable text should handle token-text first token")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "is awesome", "Tokenize all editable text should handle token-text second token")
     }
 
     func testTokenizeAllEditableTextWithTokenTextToken() {
         let tokenVC = TokenTextViewController()
         tokenVC.addToken(0, text: "This")
         tokenVC.appendText("is")
-        tokenVC.addToken(8, text: "awesome")
+        // Without boundary chars: "This" (4) + "is" (2) = 6, so next token at position 6
+        tokenVC.addToken(6, text: "awesome")
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 3)
-        XCTAssertEqual(tokenVC.tokenList[0].text, " This ", "Tokenize all editable text should handle token-text-token first token")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " is ", "Tokenize all editable text should handle token-text-token second token")
-        XCTAssertEqual(tokenVC.tokenList[2].text, " awesome ", "Tokenize all editable text should handle token-text-token third token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "This", "Tokenize all editable text should handle token-text-token first token")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "is", "Tokenize all editable text should handle token-text-token second token")
+        XCTAssertEqual(tokenVC.tokenList[2].text, "awesome", "Tokenize all editable text should handle token-text-token third token")
     }
 
     func testTokenizeAllEditableTextWith50Tokens() {
@@ -289,8 +291,8 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.text = "😀"
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 1, "Tokenize all editable text should handle emoji text, token count")
-        XCTAssertEqual(tokenVC.text, " 😀 ", "Tokenize all editable text should handle emoji text, text")
-        XCTAssertEqual(tokenVC.tokenList[0].text, " 😀 ", "Tokenize all editable text should handle emoji text, token text")
+        XCTAssertEqual(tokenVC.text, "😀", "Tokenize all editable text should handle emoji text, text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "😀", "Tokenize all editable text should handle emoji text, token text")
     }
 
     func testTokenizeAllEditableTextWithModEmojiText() {
@@ -298,8 +300,8 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.text = "👍🏾"
         tokenVC.tokenizeAllEditableText()
         XCTAssertEqual(tokenVC.tokenList.count, 1, "Tokenize all editable text should handle modified emoji text, token count")
-        XCTAssertEqual(tokenVC.text, " 👍🏾 ", "Tokenize all editable text should handle modified emoji text, text")
-        XCTAssertEqual(tokenVC.tokenList[0].text, " 👍🏾 ", "Tokenize all editable text should handle modified emoji text, token text")
+        XCTAssertEqual(tokenVC.text, "👍🏾", "Tokenize all editable text should handle modified emoji text, text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "👍🏾", "Tokenize all editable text should handle modified emoji text, token text")
     }
 
     func testMakeTokenEditableAndMoveToFrontToken() {
@@ -317,20 +319,21 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.makeTokenEditableAndMoveToFront(tokenReference: addedToken.reference)
         XCTAssertEqual(tokenVC.tokenList.count, 1, "Make token editable with token-text, token list count")
         XCTAssertNotEqual(tokenVC.tokenList[0].reference, addedToken.reference, "Make token editable with token-text, first token")
-        XCTAssertEqual(tokenVC.tokenList[0].text, " Red ", "Make token editable with token-text, first token text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "Red", "Make token editable with token-text, first token text")
         XCTAssertTrue(tokenVC.text.hasSuffix("Blue"), "Make token editable with token-text, text")
     }
 
     func testMakeTokenEditableAndMoveToFrontTokenTokenText() {
         let tokenVC = TokenTextViewController()
         let firstToken = tokenVC.addToken(0, text: "Blue")
-        let secondToken = tokenVC.addToken(6, text: "Red")
+        // Without boundary chars: "Blue" (4), so next token at position 4
+        let secondToken = tokenVC.addToken(4, text: "Red")
         tokenVC.appendText("Green")
         tokenVC.makeTokenEditableAndMoveToFront(tokenReference: secondToken.reference)
         XCTAssertEqual(tokenVC.tokenList.count, 2, "Make token editable with token-token-text, token list count")
         XCTAssertEqual(tokenVC.tokenList[0].reference, firstToken.reference, "Make token editable with token-token-text, first token")
         XCTAssertNotEqual(tokenVC.tokenList[1].reference, secondToken.reference, "Make token editable with token-token-text, second token")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " Green ", "Make token editable with token-token-text, second token text")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "Green", "Make token editable with token-token-text, second token text")
         XCTAssertTrue(tokenVC.text.hasSuffix("Red"), "Make token editable with token-token-text, text")
     }
 
@@ -338,12 +341,13 @@ class TokenTextViewControllerTests: XCTestCase {
         let tokenVC = TokenTextViewController()
         let firstToken = tokenVC.addToken(0, text: "Blue")
         tokenVC.appendText("Green")
-        let secondToken = tokenVC.addToken(11, text: "Red")
+        // Without boundary chars: "Blue" (4) + "Green" (5) = 9, so next token at position 9
+        let secondToken = tokenVC.addToken(9, text: "Red")
         tokenVC.makeTokenEditableAndMoveToFront(tokenReference: firstToken.reference)
         XCTAssertEqual(tokenVC.tokenList.count, 2, "Make token editable with token-text-token, token list count")
         XCTAssertEqual(tokenVC.tokenList[1].reference, secondToken.reference, "Make token editable with token-text-token, second token")
         XCTAssertNotEqual(tokenVC.tokenList[0].reference, firstToken.reference, "Make token editable with token-text-token, first token")
-        XCTAssertEqual(tokenVC.tokenList[0].text, " Green ", "Make token editable with token-text-token, first token text")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "Green", "Make token editable with token-text-token, first token text")
         XCTAssertTrue(tokenVC.text.hasSuffix("Blue"), "Make token editable with token-text-token, text")
     }
 
@@ -354,8 +358,8 @@ class TokenTextViewControllerTests: XCTestCase {
         tokenVC.appendText("Green")
         tokenVC.makeTokenEditableAndMoveToFront(tokenReference: firstToken.reference)
         XCTAssertEqual(tokenVC.tokenList.count, 2, "Make token editable with text-token-text, token list count")
-        XCTAssertEqual(tokenVC.tokenList[0].text, " Blue ", "Make token editable with text-token-text, first token")
-        XCTAssertEqual(tokenVC.tokenList[1].text, " Green ", "Make token editable with text-token-text, second token")
+        XCTAssertEqual(tokenVC.tokenList[0].text, "Blue", "Make token editable with text-token-text, first token")
+        XCTAssertEqual(tokenVC.tokenList[1].text, "Green", "Make token editable with text-token-text, second token")
         XCTAssertTrue(tokenVC.text.hasSuffix("Red"), "Make token editable with text-token-text, text")
     }
 

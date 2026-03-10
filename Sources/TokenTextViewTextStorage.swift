@@ -237,7 +237,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     fileprivate func displayRangeFromTokenRange(_ tokenRange: NSRange) -> NSRange {
-        return NSRange(location: tokenRange.location + 1, length: tokenRange.length - 2)
+        return tokenRange
     }
 
     // MARK: Input mode

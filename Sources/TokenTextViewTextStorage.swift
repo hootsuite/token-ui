@@ -233,7 +233,7 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     func effectiveTokenDisplayText(_ originalText: String) -> String {
-        return " \(originalText) "
+        return originalText
     }
 
     fileprivate func displayRangeFromTokenRange(_ tokenRange: NSRange) -> NSRange {

@@ -6,7 +6,7 @@ import UIKit
 class TokenTextViewLayoutManager: NSLayoutManager {
 
     override func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>, count rectCount: Int, forCharacterRange charRange: NSRange, color: UIColor) {
-        UIColor.red.set()  // Testing: force red background
+        color.set()
         for i in 0..<rectCount {
             let backgroundRect = rectArray[i]
             let path = UIBezierPath(rect: backgroundRect)

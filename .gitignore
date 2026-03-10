@@ -34,3 +34,4 @@ Gemfile.lock
 # Jazzy
 #
 docs/
+/.build

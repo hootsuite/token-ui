@@ -73,14 +73,15 @@ class TokenTextViewTextStorage: NSTextStorage {
     }
 
     func updateFormatting() {
-        // Dummy edit to trigger updating all attributes
+        let fullRange = NSRange(location: 0, length: self.length)
         self.beginEditing()
-        self.edited(.editedAttributes, range: NSRange(location: 0, length: 0), changeInLength: 0)
+        self.edited(.editedAttributes, range: fullRange, changeInLength: 0)
         self.dynamicTextNeedsUpdate = true
         self.endEditing()
     }
 
     fileprivate func applyFormattingAttributesToRange(_ searchRange: NSRange) {
+        beginEditing()
 
         // Set default attributes of edited range
         addAttribute(.foregroundColor, value: textColor, range: searchRange)
@@ -119,6 +120,8 @@ class TokenTextViewTextStorage: NSTextStorage {
                 }
             }
         }
+
+        endEditing()
     }
 
     fileprivate func fixDumQuotes() {

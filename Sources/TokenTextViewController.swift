@@ -151,6 +151,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
     fileprivate var inputModeHandler: TokenTextViewControllerInputModeHandler!
     fileprivate var textTappedHandler: ((UITapGestureRecognizer) -> Void)?
     fileprivate var inputIsSuspended = false
+    private var isReapplyingFormatting = false
 
     /// Initializer for `self`.
     required public init?(coder aDecoder: NSCoder) {
@@ -768,6 +769,7 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
 
     open func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
         guard
+            !isReapplyingFormatting,
             layoutFinishedFlag,
             let text = viewAsTextView.text
         else {
@@ -803,7 +805,9 @@ open class TokenTextViewController: UIViewController, UITextViewDelegate, NSLayo
             return
         }
 
+        isReapplyingFormatting = true
         updateTokenFormatting()
+        isReapplyingFormatting = false
     }
 
     // MARK: TokenTextViewTextStorageDelegate

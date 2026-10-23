@@ -23,7 +23,7 @@ public enum PasteboardItemType: String {
 
 }
 
-/// A data structure used to hold pasteboard data and it's `PasteboardItemType`.
+/// A data structure used to hold pasteboard data and its `PasteboardItemType`.
 public struct PasteboardItem {
     public let type: PasteboardItemType
     public let data: Data
